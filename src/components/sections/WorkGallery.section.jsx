@@ -4,17 +4,17 @@
 import { workImagePaths } from "#/constants/workImagePaths";
 // import { Gallery } from "next-gallery";
 import Masonry from "react-masonry-css";
-import { WorkImagePreview } from "./WorkImagePreview";
+import { WorkImagePreview } from "../WorkImagePreview";
 
-export function WorkGallery() {
+export function WorkGallerySection() {
 	return (
 		<section
 			id="trabajos"
 			className="flex flex-col items-center justify-items-center p-8 gap-4"
 		>
-			<div className="text-center text-lg font-semibold">
-				Trabajos realizados
-			</div>
+			<h2 className="text-center text-3xl font-semibold">
+				Trabajos Realizados
+			</h2>
 			{/* <div className="card card-dash bg-base-200 w-96">
 				<div className="card-body">
 					<h3 className="card-title">Garantizamos</h3>

@@ -1,6 +1,6 @@
 export function PromotionSection() {
 	return (
-		<section className="flex justify-center">
+		<section id="promo" className="flex justify-center">
 			<div className="stats shadow bg-base-100">
 				<div className="stat">
 					<div className="stat-title text-center">Materiales</div>
