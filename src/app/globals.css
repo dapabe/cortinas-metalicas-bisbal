@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-	themes: light --default, cupcacke;
+	themes: light --default, bumblebee;
+}
+
+@font-face {
+	font-family: "Marhey";
+	src: url("../assets/Marhey-Regular.woff") format("woff");
 }
 
 /* :root {

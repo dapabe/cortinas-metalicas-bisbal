@@ -8,14 +8,14 @@ import { WorkImagePreview } from "./WorkImagePreview";
 
 export function WorkGallery() {
 	return (
-		<div
+		<section
 			id="trabajos"
 			className="flex flex-col items-center justify-items-center p-8 gap-4"
 		>
 			<div className="text-center text-lg font-semibold">
 				Trabajos realizados
 			</div>
-			<div className="card card-dash bg-base-200 w-96">
+			{/* <div className="card card-dash bg-base-200 w-96">
 				<div className="card-body">
 					<h3 className="card-title">Garantizamos</h3>
 					<p>Responsabilidad, puntualidad y buen servicio.</p>
@@ -23,18 +23,18 @@ export function WorkGallery() {
 					<p>Trabajos de mantenimiento.</p>
 					<p>Urgencias las 24 horas</p>
 				</div>
-			</div>
+			</div> */}
 
-			<div className="block md:hidden overflow-x-scroll w-full">
+			<div className="overflow-x-scroll w-full">
 				<div className="carousel carousel-end rounded-box">
 					{workImagePaths.map((path) => (
-						<div className="carousel-item">
+						<div key={path} className="carousel-item">
 							<WorkImagePreview path={path} />
 						</div>
 					))}
 				</div>
 			</div>
-			<Masonry
+			{/* <Masonry
 				breakpointCols={{ default: 4, 1024: 3, 768: 2, 360: 1 }}
 				className="hidden md:flex w-full max-w-sm -ml-8"
 				columnClassName="pl-8 mb-8 bg-clip-padding"
@@ -42,7 +42,7 @@ export function WorkGallery() {
 				{workImagePaths.map((path) => (
 					<WorkImagePreview path={path} />
 				))}
-			</Masonry>
+			</Masonry> */}
 
 			{/* <ResponsiveMasonry
 				className="w-full"
@@ -55,6 +55,6 @@ export function WorkGallery() {
 					))}
 				</Masonry>
 			</ResponsiveMasonry> */}
-		</div>
+		</section>
 	);
 }

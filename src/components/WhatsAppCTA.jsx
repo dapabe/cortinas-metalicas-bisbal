@@ -3,6 +3,7 @@ import Image from "next/image";
 export function WhatsAppCTA() {
 	return (
 		<a
+			id="wsp"
 			href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metálicas%20Bisbal,%20me%20gustaría%20consultar"
 			target="_blank"
 			rel="noopener noreferrer"
