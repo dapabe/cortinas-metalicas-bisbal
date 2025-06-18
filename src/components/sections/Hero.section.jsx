@@ -21,7 +21,7 @@ export function HeroSection() {
 					Diseño Industrial · Calidad de Primera
 				</div>
 				{/* Titulo */}
-				<div className="mb-16 rounded-md rounded-br-full p-4 pt-0 shadow-xl max-w-sm md:max-w-lg relative">
+				<div className="rounded-md rounded-br-full p-4 pt-0 shadow-xl max-w-sm md:max-w-lg relative">
 					<h1 className="text-5xl text-left font-bold flex flex-wrap gap-x-2">
 						<span className="indent-2">Cortinas</span>{" "}
 						<span className="indent-2">Metálicas</span>{" "}
@@ -32,9 +32,9 @@ export function HeroSection() {
 						<span className="text-5xl font-bold leading-1">Bisbal</span>
 					</div>
 				</div>
-
+				<div className="mt-16"></div>
 				{/* Main Image - SM Breakpoint */}
-				<div className="mb-16 sm:hidden relative w-full">
+				<div className="sm:hidden relative w-full">
 					<Image
 						src={"/work/cortina1.jpeg"}
 						className="mask mask-squircle object-cover"
@@ -74,40 +74,8 @@ export function HeroSection() {
 					</div>
 				</div>
 
-				{/* <p className="text-lg p-4">
-					Y venta de accesorios al mejor precio. <br />
-					Transforma tu negocio y hogar en lugares seguros.
-				</p> */}
-
-				{/* Garantias
-				// <section className="mb-10 ml-6 card shadow-sm max-w-lg bg-base-100 pb-4 px-4">
-				// 	<div>
-				// 		<div className="card-body">
-				// 			<h2 className="text-3xl font-bold">Garantizamos</h2>
-				// 		</div>
-				// 		<ul className="*:flex *:items-center text-lg">
-				// 			<li>
-				// 				<CheckIcon className="size-4 mr-2 text-success" />
-				// 				<span>Responsabilidad, puntualidad y buen servicio.</span>
-				// 			</li>
-				// 			<li>
-				// 				<CheckIcon className="size-4 mr-2 text-success" />
-				// 				<span>Reparaciones, reformas y motorizaciones.</span>
-				// 			</li>
-				// 			<li>
-				// 				<CheckIcon className="size-4 mr-2 text-success" />
-				// 				<span>Trabajos de mantenimiento.</span>
-				// 			</li>
-				// 			<li>
-				// 				<CheckIcon className="size-4 mr-2 text-success" />
-				// 				<span>Urgencias las 24 horas</span>
-				// 			</li>
-				// 		</ul>
-				// 	</div>
-				// </section> */}
-
 				{/* CTA */}
-				<div className="pl-6 pr-4 flex w-full sm:items-center flex-1">
+				<div className="pl-6 flex-1">
 					<nav className="flex flex-col gap-2 max-w-fit">
 						<Link
 							href={"#trabajos"}
@@ -123,7 +91,6 @@ export function HeroSection() {
 						>
 							Ver Promociones
 							<MegaphoneIcon className="size-6" />
-							{/* <ArrowRightIcon className="size-6" /> */}
 						</Link>
 					</nav>
 				</div>

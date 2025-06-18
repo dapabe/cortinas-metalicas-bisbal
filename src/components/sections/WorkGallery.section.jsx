@@ -5,27 +5,47 @@ import { workImagePaths } from "#/constants/workImagePaths";
 // import { Gallery } from "next-gallery";
 import Masonry from "react-masonry-css";
 import { WorkImagePreview } from "../WorkImagePreview";
+import {
+	UsersIcon,
+	WrenchScrewdriverIcon,
+	ExclamationTriangleIcon,
+	Cog6ToothIcon,
+} from "@heroicons/react/24/outline";
+import { SectionTitle } from "../SectionTitle";
 
 export function WorkGallerySection() {
 	return (
-		<section
-			id="trabajos"
-			className="flex flex-col items-center justify-items-center p-8 gap-4"
-		>
-			<h2 className="text-center text-3xl font-semibold">
-				Trabajos Realizados
-			</h2>
-			{/* <div className="card card-dash bg-base-200 w-96">
+		<section id="trabajos" className="flex flex-col p-4 gap-4">
+			<SectionTitle>Trabajos Realizados</SectionTitle>
+			<div className="card card-dash bg-base-200 w-96">
 				<div className="card-body">
-					<h3 className="card-title">Garantizamos</h3>
-					<p>Responsabilidad, puntualidad y buen servicio.</p>
-					<p>Reparaciones, reformas, motorizaciones.</p>
-					<p>Trabajos de mantenimiento.</p>
-					<p>Urgencias las 24 horas</p>
+					<h3 className="card-title underline decoration-primary">
+						Garantizamos
+					</h3>
+					<ul className="*:flex *:items-center *:gap-x-2">
+						<li>
+							<UsersIcon className="size-6 text-primary" />
+							<span>Responsabilidad, puntualidad y buen servicio</span>
+						</li>
+						<li>
+							<WrenchScrewdriverIcon className="size-6 text-primary" />
+							<span>Reparaciones, reformas y motorizaciones</span>
+						</li>
+						<li>
+							<Cog6ToothIcon className="size-6 text-primary" />
+							<span>Trabajos de mantenimiento</span>
+						</li>
+						<li>
+							<ExclamationTriangleIcon className="size-6 text-primary" />
+							<span>
+								Urgencias las <b className="text-primary">24 horas</b>
+							</span>
+						</li>
+					</ul>
 				</div>
-			</div> */}
+			</div>
 
-			<div className="overflow-x-scroll w-full">
+			{/* <div className="overflow-x-scroll w-full">
 				<div className="carousel carousel-end rounded-box">
 					{workImagePaths.map((path) => (
 						<div key={path} className="carousel-item">
@@ -33,28 +53,16 @@ export function WorkGallerySection() {
 						</div>
 					))}
 				</div>
-			</div>
-			{/* <Masonry
-				breakpointCols={{ default: 4, 1024: 3, 768: 2, 360: 1 }}
-				className="hidden md:flex w-full max-w-sm -ml-8"
-				columnClassName="pl-8 mb-8 bg-clip-padding"
+			</div> */}
+			<Masonry
+				breakpointCols={{ 360: 1, 768: 2, 1024: 4 }}
+				className="-ml-2 max-h-80 h-80 overflow-scroll w-auto flex"
+				columnClassName="pl-2 bg-clip-padding *:mb-4"
 			>
 				{workImagePaths.map((path) => (
-					<WorkImagePreview path={path} />
+					<WorkImagePreview key={path} path={path} />
 				))}
-			</Masonry> */}
-
-			{/* <ResponsiveMasonry
-				className="w-full"
-				columnsCountBreakPoints={{ 360: 1, 460: 2, 768: 3, 1024: 4 }}
-				gutterBreakpoints={{ 360: "12px", 768: "16px", 1024: "24px" }}
-			>
-				<Masonry>
-					{workImagePaths.map((path) => (
-						<WorkImagePreview path={path} />
-					))}
-				</Masonry>
-			</ResponsiveMasonry> */}
+			</Masonry>
 		</section>
 	);
 }

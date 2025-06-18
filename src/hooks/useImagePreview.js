@@ -21,13 +21,15 @@ export function useImagePreview() {
 	const setCurrentImagePath = (path) => {
 		const params = new URLSearchParams(sp.toString());
 		params.set("preview", path);
-		router.push(pathname + "?" + createQueryStrings(path));
+		router.replace(pathname + "?" + createQueryStrings(path), {
+			scroll: false,
+		});
 	};
 
 	const closePreview = () => {
 		const params = new URLSearchParams(sp.toString());
 		params.delete("preview");
-		router.push(pathname);
+		router.replace(pathname, { scroll: false });
 	};
 
 	return {
