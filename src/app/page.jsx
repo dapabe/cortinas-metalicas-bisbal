@@ -1,11 +1,11 @@
+"use client";
 import { HeroSection } from "#/components/sections/Hero.section";
-import { ImageModalPreview } from "#/components/ImageModalPreview";
-import { Navbar } from "#/components/Navbar";
 import { PromotionSection } from "#/components/sections/Promotion.section";
 import { WhatsAppCTA } from "#/components/WhatsAppCTA";
 import { WorkGallerySection } from "#/components/sections/WorkGallery.section";
 import { Footer } from "#/components/sections/Footer";
 import { WorkZoneSection } from "#/components/sections/WorkZone.section";
+import { PhotoProvider } from "react-photo-view";
 
 export default function Home() {
 	return (
@@ -16,7 +16,6 @@ export default function Home() {
 				<WorkZoneSection />
 				<WorkGallerySection />
 				{/* <PromotionSection /> */}
-				<ImageModalPreview />
 				<WhatsAppCTA />
 			</main>
 			<Footer />

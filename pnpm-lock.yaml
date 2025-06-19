@@ -23,6 +23,9 @@ importers:
       react-masonry-css:
         specifier: 1.0.16
         version: 1.0.16(react@19.1.0)
+      react-photo-view:
+        specifier: 1.2.7
+        version: 1.2.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-responsive-masonry:
         specifier: 2.7.1
         version: 2.7.1
@@ -1538,6 +1541,12 @@ packages:
     resolution: {integrity: sha512-KSW0hR2VQmltt/qAa3eXOctQDyOu7+ZBevtKgpNDSzT7k5LA/0XntNa9z9HKCdz3QlxmJHglTZ18e4sX4V8zZQ==}
     peerDependencies:
       react: '>=16.0.0'
+
+  react-photo-view@1.2.7:
+    resolution: {integrity: sha512-MfOWVPxuibncRLaycZUNxqYU8D9IA+rbGDDaq6GM8RIoGJal592hEJoRAyRSI7ZxyyJNJTLMUWWL3UIXHJJOpw==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
 
   react-responsive-masonry@2.7.1:
     resolution: {integrity: sha512-Q+u+nOH87PzjqGFd2PgTcmLpHPZnCmUPREHYoNBc8dwJv6fi51p9U6hqwG8g/T8MN86HrFjrU+uQU6yvETU7cA==}
@@ -3393,6 +3402,11 @@ snapshots:
   react-masonry-css@1.0.16(react@19.1.0):
     dependencies:
       react: 19.1.0
+
+  react-photo-view@1.2.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
 
   react-responsive-masonry@2.7.1: {}
 
