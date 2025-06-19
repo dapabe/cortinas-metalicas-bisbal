@@ -24,16 +24,24 @@ export function WorkZoneSection() {
 					desc="Hacemos envios a todo el país."
 				/>
 			</div>
-			<div className="flex w-full gap-4 relative justify-center">
-				<AsideCard
-					title="¿En que lugares solemos trabajar?"
-					icon={Out.MapPinIcon}
-				>
-					<p>
-						Por toda la zona de <b>CABA</b>, <b>Matadero</b> y alrededores.
-					</p>
-				</AsideCard>
 
+			<div className="flex w-full gap-4 justify-center">
+				<aside className="w-max space-y-4 flex flex-col justify-around">
+					<AsideCard
+						title="¿En que lugares solemos trabajar?"
+						icon={Out.MapPinIcon}
+					>
+						<p>
+							Por toda la zona de <b>CABA</b>, <b>Matadero</b> y alrededores
+						</p>
+					</AsideCard>
+
+					<AsideCard title="¿Horarios de atención?" icon={Out.ClockIcon}>
+						<p className="text-left">
+							De lunes a viernes las <b>24 horas</b>
+						</p>
+					</AsideCard>
+				</aside>
 				<div className="flex flex-col justify-center">
 					<video
 						id="demo1"
@@ -47,10 +55,24 @@ export function WorkZoneSection() {
 						Demostración de Cortina Metálica ya instalada
 					</label>
 				</div>
+				<aside className="w-max space-y-4 flex flex-col justify-around">
+					<AsideCard
+						title="¿Hasta donde hacen envios?"
+						icon={Out.GlobeAmericasIcon}
+					>
+						<p>Hacemos envios a todo el país.</p>
+					</AsideCard>
 
-				<AsideCard title="¿Hasta donde hacen envios?" icon={Out.MapIcon}>
-					<p>Hacemos envios a todo el país.</p>
-				</AsideCard>
+					<AsideCard
+						title="¿Que calidad tienen las Cortinas y Persianas?"
+						icon={Out.LockClosedIcon}
+					>
+						<p>
+							Son reforzadas y de calidad industrial de primera categoria, buen
+							aislante acústico y térmico
+						</p>
+					</AsideCard>
+				</aside>
 			</div>
 
 			<div className="divider divider-primary w-1/3 mx-auto"></div>
@@ -100,8 +122,8 @@ function Accordion({ title, desc }) {
  */
 function AsideCard({ title, icon: Icon, children }) {
 	return (
-		<div className="hidden lg:card lg:sticky top-1/3 card-lg shadow-md h-max">
-			<Icon className="absolute size-12 text-secondary -top-8 left-1/2 -translate-x-1/2" />
+		<div className="hidden lg:card card-lg shadow-md h-max">
+			<Icon className="absolute size-12 text-secondary -top-6 left-1/2 -translate-x-1/2" />
 			<div className="card-body max-w-xs text-center">
 				<h3 className="card-title">{title}</h3>
 				{children}
