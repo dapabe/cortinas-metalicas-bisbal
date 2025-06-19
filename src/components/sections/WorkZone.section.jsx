@@ -75,6 +75,21 @@ export function WorkZoneSection() {
 				</aside>
 			</div>
 
+			<div className="join join-vertical max-w-md lg:hidden">
+				<Accordion
+					title="¿Horarios de atención?"
+					desc={
+						<>
+							De lunes a viernes las <b>24 horas</b>
+						</>
+					}
+				/>
+				<Accordion
+					title="¿Que calidad tienen las Cortinas y Persianas?"
+					desc="Son reforzadas y de calidad industrial de primera categoria, buen aislante acústico y térmico"
+				/>
+			</div>
+
 			<div className="divider divider-primary w-1/3 mx-auto"></div>
 
 			<div className="card shadow-sm card-md">
