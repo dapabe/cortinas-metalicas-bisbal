@@ -59,8 +59,8 @@ export function WorkGallerySection() {
 				className="-ml-2 max-h-80 h-80 overflow-scroll w-auto flex"
 				columnClassName="pl-2 bg-clip-padding *:mb-4"
 			>
-				{workImagePaths.map((path) => (
-					<WorkImagePreview key={path} path={path} />
+				{[...workImagePaths.entries()].map((img) => (
+					<WorkImagePreview key={img[0]} id={img[0]} imagePath={img[1]} />
 				))}
 			</Masonry>
 		</section>

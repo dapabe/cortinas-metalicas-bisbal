@@ -1,4 +1,5 @@
 /**
  * @typedef {Object} ICompletedWork
- * @property {string} path
+ * @property {number} id
+ * @property {string} imagePath
  */

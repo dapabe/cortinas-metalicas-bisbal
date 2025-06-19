@@ -2,9 +2,6 @@
 import "#def";
 import Image from "next/image";
 import { MagnifyingGlassPlusIcon } from "@heroicons/react/24/solid";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
-import { useImagePreview } from "#/hooks/useImagePreview";
 import Link from "next/link";
 
 /**
@@ -12,17 +9,17 @@ import Link from "next/link";
  * @param {ICompletedWork} props
  * @returns {JSX.Element}
  */
-export function WorkImagePreview({ path }) {
+export function WorkImagePreview({ id, imagePath }) {
 	return (
 		<Link
-			href={{ query: `preview=${path}` }}
+			href={{ query: { preview: id } }}
 			scroll={false}
 			className="size-max sm:size-64 bg-base-300 relative shadow-md rounded-box"
 		>
 			<div className="relative size-full">
 				<Image
-					src={path}
-					alt="Mini Image Preview"
+					src={imagePath}
+					alt="Mini vista previa"
 					quality={100}
 					fill
 					placeholder="blur"
