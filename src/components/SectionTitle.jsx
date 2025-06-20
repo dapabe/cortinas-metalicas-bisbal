@@ -1,8 +1,14 @@
+import { twMerge } from "tailwind-merge";
+
 /**
  * @component
- * @param {import("react").PropsWithChildren} props
+ * @param {import("react").PropsWithChildren<{className?: string}>} props
  * @returns {JSX.Element}
  */
-export function SectionTitle({ children }) {
-	return <h2 className="text-center text-3xl font-semibold">{children}</h2>;
+export function SectionTitle({ className, children }) {
+	return (
+		<h2 className={twMerge("text-center text-3xl font-semibold", className)}>
+			{children}
+		</h2>
+	);
 }

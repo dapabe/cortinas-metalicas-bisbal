@@ -9,7 +9,10 @@ export function WorkZoneSection() {
 	return (
 		<section className="container mx-auto p-4 flex flex-col gap-4 items-center">
 			<div className="divider divider-primary w-1/3 mx-auto"></div>
-			<SectionTitle>Preguntas Frecuentes</SectionTitle>
+			<SectionTitle>
+				<span className="underline decoration-primary">Preguntas</span>{" "}
+				Frecuentes
+			</SectionTitle>
 			<div className="join join-vertical max-w-md lg:hidden">
 				<Accordion
 					title="¿En que lugares solemos trabajar?"

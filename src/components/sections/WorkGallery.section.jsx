@@ -14,7 +14,10 @@ import { MagnifyingGlassPlusIcon } from "@heroicons/react/24/solid";
 export function WorkGallerySection() {
 	return (
 		<section id="trabajos" className="container mx-auto p-4 space-y-4 relative">
-			<SectionTitle>Trabajos Realizados</SectionTitle>
+			<SectionTitle>
+				<span className="underline decoration-primary">Trabajos</span>{" "}
+				Realizados
+			</SectionTitle>
 			<div className="flex flex-col lg:flex-row items-center lg:items-start lg:justify-around gap-4">
 				<div className="lg:sticky lg:top-1/3">
 					<div className="card lg:card-lg card-dash bg-base-100 w-96 shadow-sm">
