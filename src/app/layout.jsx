@@ -15,6 +15,31 @@ const geistMono = Geist_Mono({
 /** @type {import("next").Metadata} */
 export const metadata = {
 	title: "Cortinas Metálicas Bisbal",
+	description:
+		"Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
+	twitter: {
+		card: "summary_large_image",
+		title: "Cortinas Metálicas Bisbal",
+		description:
+			"Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
+		creator: "@dDenzere",
+	},
+	openGraph: {
+		title: "Cortinas Metálicas Bisbal",
+		description:
+			"Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
+		url: "https://cortinasmetalicasbisbal.com.ar",
+		siteName: "Cortinas Metálicas Bisbal",
+		type: "website",
+		images: [
+			{
+				url: "/work/cortina6.webp",
+				width: 1440,
+				height: 1800,
+				alt: "Cortinas Metálicas Bisbal - Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
+			},
+		],
+	},
 };
 
 export default function RootLayout({ children }) {
