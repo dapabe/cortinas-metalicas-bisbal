@@ -1,7 +1,7 @@
 import { twJoin } from "tailwind-merge";
 import { SectionTitle } from "../SectionTitle";
 import { ReceiptPercentIcon } from "@heroicons/react/24/solid";
-import { HashtagIcon, WrenchIcon } from "@heroicons/react/24/outline";
+import { HashtagIcon } from "@heroicons/react/24/outline";
 import { OpenMail } from "../OpenMail";
 import { CopyPhoneNumber } from "../CopyPhoneNumber";
 
