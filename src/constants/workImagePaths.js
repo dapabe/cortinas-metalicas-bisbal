@@ -3,42 +3,42 @@ export const workImagePaths = new Map([
 	[
 		2,
 		{
-			src: "/work/cortina2.jpeg",
+			src: "/work/cortina2.webp",
 			sizes: [960, 1280],
 		},
 	],
 	[
 		3,
 		{
-			src: "/work/cortina3.jpeg",
+			src: "/work/cortina3.webp",
 			sizes: [1186, 1600],
 		},
 	],
 	[
 		4,
 		{
-			src: "/work/cortina4.jpeg",
+			src: "/work/cortina4.webp",
 			sizes: [960, 1280],
 		},
 	],
 	[
 		5,
 		{
-			src: "/work/cortina5.jpeg",
+			src: "/work/cortina5.webp",
 			sizes: [956, 769],
 		},
 	],
 	[
 		6,
 		{
-			src: "/work/cortina6.jpg",
+			src: "/work/cortina6.webp",
 			sizes: [1440, 1800],
 		},
 	],
 	[
 		7,
 		{
-			src: "/work/cortina7.jpeg",
+			src: "/work/cortina7.webp",
 			sizes: [1600, 1200],
 		},
 	],
@@ -66,21 +66,21 @@ export const workImagePaths = new Map([
 	[
 		11,
 		{
-			src: "/work/cortina11.jpeg",
+			src: "/work/cortina11.webp",
 			sizes: [899, 1599],
 		},
 	],
 	[
 		12,
 		{
-			src: "/work/cortina12.jpeg",
+			src: "/work/cortina12.webp",
 			sizes: [899, 1599],
 		},
 	],
 	[
 		13,
 		{
-			src: "/work/cortina13.jpg",
+			src: "/work/cortina13.webp",
 			sizes: [1204, 1600],
 		},
 	],

@@ -33,7 +33,7 @@ export function HeroSection() {
 				{/* Main Image*/}
 				<div className="relative col-start-1 col-span-full row-start-1 row-span-3 md:col-start-2 lg:col-start-3 lg:z-20 xl:col-start-5 xl:ml-auto">
 					<Image
-						src={"/work/cortina1.jpeg"}
+						src={"/work/cortina1.webp"}
 						className="mask mask-squircle object-cover bg-base-300 md:max-w-2xl lg:max-w-3xl"
 						alt="Cortina metálica siendo instalada en un ambiente calido con vista al exterior"
 						quality={100}
@@ -48,7 +48,7 @@ export function HeroSection() {
 				{/* Persona1 */}
 				<div className="col-start-1 col-span-2 row-start-3 row-span-2 grid-rows-subgrid grid-cols-subgrid grid sm:col-start-4 md:col-start-7 lg:row-start-1 lg:col-start-1 lg:col-span-3 lg:z-10 xl:col-start-4 xl:row-start-2 xl:row-span-2 xl:col-span-2">
 					<Image
-						src={"/work/people1.jpeg"}
+						src={"/work/people1.webp"}
 						className="mask mask-squircle object-cover bg-base-300 shadow-md col-span-full row-span-full"
 						alt="Persona trabajando en la instalación de una cortina metálica"
 						quality={100}
