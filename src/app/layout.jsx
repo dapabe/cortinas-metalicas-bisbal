@@ -15,7 +15,6 @@ const geistMono = Geist_Mono({
 /** @type {import("next").Metadata} */
 export const metadata = {
 	title: "Cortinas Metálicas Bisbal",
-	description: "Instalaciçón de cortinas metálicas por CABA",
 };
 
 export default function RootLayout({ children }) {
