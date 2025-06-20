@@ -67,6 +67,7 @@ export function HeroSection() {
 						quality={100}
 						width={workImagePaths.get(6).sizes[0]}
 						height={workImagePaths.get(6).sizes[1]}
+						loading="lazy"
 					/>
 				</div>
 
