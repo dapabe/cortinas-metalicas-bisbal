@@ -26,9 +26,6 @@ importers:
       react-photo-view:
         specifier: 1.2.7
         version: 1.2.7(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      react-responsive-masonry:
-        specifier: 2.7.1
-        version: 2.7.1
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3
@@ -1550,9 +1547,6 @@ packages:
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
-
-  react-responsive-masonry@2.7.1:
-    resolution: {integrity: sha512-Q+u+nOH87PzjqGFd2PgTcmLpHPZnCmUPREHYoNBc8dwJv6fi51p9U6hqwG8g/T8MN86HrFjrU+uQU6yvETU7cA==}
 
   react@19.1.0:
     resolution: {integrity: sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==}
@@ -3413,8 +3407,6 @@ snapshots:
     dependencies:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
-
-  react-responsive-masonry@2.7.1: {}
 
   react@19.1.0: {}
 

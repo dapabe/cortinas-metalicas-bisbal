@@ -1,7 +1,7 @@
 import { twJoin } from "tailwind-merge";
 import { SectionTitle } from "../SectionTitle";
 import { ReceiptPercentIcon } from "@heroicons/react/24/solid";
-import { WrenchIcon } from "@heroicons/react/24/outline";
+import { HashtagIcon, WrenchIcon } from "@heroicons/react/24/outline";
 import { OpenMail } from "../OpenMail";
 import { CopyPhoneNumber } from "../CopyPhoneNumber";
 
@@ -54,8 +54,10 @@ export function PromotionSection() {
 					</div>
 				</div>
 
-				<div className="stats shadow stats-vertical">
-					<div className="stat">
+				{/* Extra contacto */}
+				<div className="stats shadow stats-vertical overflow-visible">
+					<div className="stat relative">
+						<HashtagIcon className="size-10 lg:size-12 absolute translate-x-1/2 -bottom-4 lg:-top-4 right-1/2 lg:right-2 text-secondary" />
 						<div className="stat-title text-center">
 							Pedí tu presupuesto sin compromiso
 						</div>
