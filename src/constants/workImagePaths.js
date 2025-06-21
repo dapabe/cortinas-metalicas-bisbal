@@ -1,5 +1,4 @@
 export const workImagePaths = new Map([
-	// "/work/cortina1.jpeg",
 	[
 		2,
 		{

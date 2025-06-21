@@ -10,6 +10,7 @@ import Link from "next/link";
 import { workImagePaths } from "#/constants/workImagePaths";
 
 export function HeroSection() {
+	const AuxXLImage = workImagePaths.get(6);
 	return (
 		<section className="w-full relative flex flex-col items-start">
 			{/* Badge */}
@@ -61,13 +62,13 @@ export function HeroSection() {
 				{/* Aux XL Resolution image */}
 				<div className="hidden xl:block col-start-3 col-span-2 row-start-1 row-span-2">
 					<Image
-						src={workImagePaths.get(6).src}
+						src={AuxXLImage.src}
 						className="mask mask-hexagon object-cover bg-base-300 shadow-md"
 						alt="Cortina metálica ya instalada, estilo moderno"
 						quality={100}
-						width={workImagePaths.get(6).sizes[0]}
-						height={workImagePaths.get(6).sizes[1]}
-						loading="lazy"
+						width={AuxXLImage.sizes[0]}
+						height={AuxXLImage.sizes[1]}
+						priority
 					/>
 				</div>
 
