@@ -22,7 +22,7 @@ export function PromotionSection() {
 							Si contratas nuestros servicios
 							<ReceiptPercentIcon className="size-6 inline text-primary" />
 						</h3>
-						<p className="max-w-[70ch] text-center">
+						<p className="max-w-paragraph text-center">
 							Te brindamos facilidades de pago; si eres comerciante puedes:
 						</p>
 						<table className="table text-center">

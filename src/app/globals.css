@@ -1,4 +1,9 @@
 @import "tailwindcss";
+
+@theme {
+	--spacing-paragraph: 70ch;
+}
+
 @plugin "daisyui" {
 	themes: light --default, bumblebee;
 }
