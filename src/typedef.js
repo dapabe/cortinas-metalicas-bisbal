@@ -1,5 +1,6 @@
 /**
- * @typedef {Object} ICompletedWork
- * @property {number} id
- * @property {string} imagePath
+ * @typedef {Object} IAccesoryMetadata
+ * @property {string} name
+ * @property {string} description
+ * @property {[number, number]} sizes - Width and height
  */

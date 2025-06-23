@@ -1,5 +1,4 @@
 export const workImagePaths = new Map([
-	// "/work/cortina1.jpeg",
 	[
 		2,
 		{
@@ -45,21 +44,21 @@ export const workImagePaths = new Map([
 	[
 		8,
 		{
-			src: "/work/cortina8.jpeg",
+			src: "/work/cortina8.webp",
 			sizes: [899, 1599],
 		},
 	],
 	[
 		9,
 		{
-			src: "/work/cortina9.jpeg",
+			src: "/work/cortina9.webp",
 			sizes: [720, 1280],
 		},
 	],
 	[
 		10,
 		{
-			src: "/work/cortina10.jpeg",
+			src: "/work/cortina10.webp",
 			sizes: [899, 1599],
 		},
 	],
