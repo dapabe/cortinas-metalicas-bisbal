@@ -9,7 +9,9 @@ export function AccesorySection() {
 				venta
 			</SectionTitle>
 
-			<AccesoryCardList />
+			<div className="flex justify-center">
+				<AccesoryCardList />
+			</div>
 		</section>
 	);
 }

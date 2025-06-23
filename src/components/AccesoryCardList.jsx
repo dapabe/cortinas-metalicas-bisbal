@@ -1,11 +1,14 @@
 import { accesoriesData } from "#/constants/accesoriesData";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 
 export function AccesoryCardList() {
 	return (
-		<ul className="carousel max-w-64 overflow-scroll bg-base-300">
+		<ol
+			className="carousel w-xs bg-base-300"
+			aria-label="Galeria de accesorios de Cortinas Metálicas a la venta"
+		>
 			{[...accesoriesData.entries()].map(
 				(
 					/** @type {[string, IAccesoryMetadata]} */ [filePath, metadata],
@@ -21,38 +24,46 @@ export function AccesoryCardList() {
 					return (
 						<li
 							id={`accesory:${filePath}`}
-							className="carousel-item relative size-64"
+							data-current={filePath ? true : undefined}
+							className="carousel-item relative w-full"
 							key={filePath}
+							tabIndex={0}
 						>
-							{/* <Image
-								src={`/accesory/${filePath}`}
-								alt={`${metadata.name} - ${metadata.description}`}
-								className="bg-base-300 object-cover"
-								width={metadata.sizes[0]}
-								height={metadata.sizes[1]}
-								loading="lazy"
-							/> */}
-							<div className="absolute left-5 right-5 top-1/2 -translate-1/2 transform flex justify-between">
-								<Link
-									href={`#accesory:${prevFile}`}
-									scroll={false}
-									className="btn btn-circle"
-								>
-									<ChevronLeftIcon className="size-8 text-neutral" />
-								</Link>
-								<Link
-									href={`#accesory:${nextFile}`}
-									scroll={false}
-									className="btn btn-circle"
-								>
-									<ChevronRightIcon className="size-8 text-neutral" />
-								</Link>
-							</div>
+							<figure className="flex flex-col relative">
+								<h3 className="text-center font-bold">{metadata.name}</h3>
+								<Image
+									src={`/accesory/${filePath}`}
+									alt={metadata.name}
+									className="bg-base-300 object-cover"
+									width={metadata.sizes[0]}
+									height={metadata.sizes[1]}
+									loading="lazy"
+								/>
+								{metadata.description && (
+									<figcaption>{metadata.description}</figcaption>
+								)}
+								<nav className="absolute inset-x-0.5 inset-y-1/2 -translate-y-1/2 flex justify-between opacity-0 group-[current]:opacity-100">
+									<Link
+										href={`#accesory:${prevFile}`}
+										scroll={false}
+										className="btn btn-circle btn-xl sm:btn-md"
+									>
+										<ArrowLeftIcon className="" />
+									</Link>
+									<Link
+										href={`#accesory:${nextFile}`}
+										scroll={false}
+										className="btn btn-circle btn-xl sm:btn-md"
+									>
+										<ArrowRightIcon className="" />
+									</Link>
+								</nav>
+							</figure>
 						</li>
 					);
 				}
 			)}
-		</ul>
+		</ol>
 		// 	</div>
 		// </div>
 	);

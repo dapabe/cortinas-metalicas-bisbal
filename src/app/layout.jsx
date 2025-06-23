@@ -14,6 +14,10 @@ const geistMono = Geist_Mono({
 
 /** @type {import("next").Metadata} */
 export const metadata = {
+	authors: {
+		name: "Daniel Patricio Becerra",
+		url: "https://github.com/dapabe",
+	},
 	title: "Cortinas Metálicas Bisbal",
 	description:
 		"Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
@@ -22,7 +26,7 @@ export const metadata = {
 		title: "Cortinas Metálicas Bisbal",
 		description:
 			"Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
-		creator: "@dDenzere",
+		creator: "_danzen",
 	},
 	metadataBase: new URL("http://www.cortinasmetalicasbisbal.com.ar"),
 	alternates: {
