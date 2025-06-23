@@ -24,6 +24,15 @@ export const metadata = {
 			"Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
 		creator: "@dDenzere",
 	},
+	metadataBase: new URL("http://www.cortinasmetalicasbisbal.com.ar"),
+	alternates: {
+		canonical: "/",
+		languages: {
+			"es-AR": "/",
+			"es-ES": "/",
+			es: "/",
+		},
+	},
 	openGraph: {
 		countryName: "Argentina",
 		locale: "es_AR",
@@ -33,14 +42,12 @@ export const metadata = {
 		url: "http://www.cortinasmetalicasbisbal.com.ar",
 		siteName: "Cortinas Metálicas Bisbal",
 		type: "website",
-		images: [
-			{
-				url: "/work/cortina6.webp",
-				width: 1440,
-				height: 1800,
-				alt: "Cortinas Metálicas Bisbal - Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
-			},
-		],
+		images: {
+			url: "/work/cortina6.webp",
+			width: 1440,
+			height: 1800,
+			alt: "Cortinas Metálicas Bisbal - Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
+		},
 	},
 };
 

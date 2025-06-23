@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export function AccesoryCardList() {
 	return (
-		<ul className="carousel max-w-64 overflow-y-scroll">
+		<ul className="carousel max-w-64 overflow-scroll bg-base-300">
 			{[...accesoriesData.entries()].map(
 				(
 					/** @type {[string, IAccesoryMetadata]} */ [filePath, metadata],
