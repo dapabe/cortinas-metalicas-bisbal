@@ -25,10 +25,12 @@ export const metadata = {
 		creator: "@dDenzere",
 	},
 	openGraph: {
+		countryName: "Argentina",
+		locale: "es_AR",
 		title: "Cortinas Metálicas Bisbal",
 		description:
 			"Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
-		url: "https://cortinasmetalicasbisbal.com.ar",
+		url: "http://www.cortinasmetalicasbisbal.com.ar",
 		siteName: "Cortinas Metálicas Bisbal",
 		type: "website",
 		images: [
