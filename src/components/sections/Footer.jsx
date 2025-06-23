@@ -13,9 +13,10 @@ export function Footer() {
 				</p>
 			</aside>
 
-			<nav>
+			<nav aria-label="Enlaces sociales">
 				<h3 className="footer-title">Social</h3>
 				<Link
+					aria-label="Link a la página oficial de Facebook"
 					href={"https://www.facebook.com/share/16namTSGSD/"}
 					target="_blank"
 					rel="noopener noreferrer"
@@ -25,9 +26,10 @@ export function Footer() {
 				</Link>
 			</nav>
 
-			<nav>
+			<nav aria-label="Enlaces de contacto directo">
 				<h3 className="footer-title">Contacto</h3>
 				<Link
+					aria-label="Link para charlar por WhatsApp"
 					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metálicas%20Bisbal,%20me%20gustaría%20consultar"
 					target="_blank"
 					rel="noopener noreferrer"
@@ -37,7 +39,7 @@ export function Footer() {
 				</Link>
 			</nav>
 
-			<nav>
+			<nav aria-label="Enlaces de correo electrónico">
 				<h3 className="footer-title">Correo</h3>
 				<OpenMail email="bisbalcristian70@gmail.com" />
 			</nav>

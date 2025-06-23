@@ -21,7 +21,6 @@ export function AccesoryCardList() {
 							<figure className="card shadow-md size-full">
 								<div className="card-body items-center">
 									<h3 className="text-center font-semibold">{metadata.name}</h3>
-
 									<div className="relative w-full aspect-[4/3] overflow-hidden rounded-box">
 										<Image
 											src={`/accesory/${filePath}`}
@@ -31,27 +30,10 @@ export function AccesoryCardList() {
 											sizes="(max-width: 768px) 100vw, 50vw"
 										/>
 									</div>
-									{metadata.description && (
-										<figcaption className="label bg-base-200 p-2 mt-2 rounded-box text-wrap w-full">
-											{metadata.description}
-										</figcaption>
-									)}
-									{/* <nav className="lg:hidden absolute inset-x-0.5 inset-y-1/2 -translate-y-1/2 flex justify-between transition-opacity">
-										<Link
-											href={`#accesory:${prevFile}`}
-											scroll={false}
-											className="btn btn-circle btn-xl sm:btn-md"
-										>
-											<ArrowLeftIcon />
-										</Link>
-										<Link
-											href={`#accesory:${nextFile}`}
-											scroll={false}
-											className="btn btn-circle btn-xl sm:btn-md"
-										>
-											<ArrowRightIcon />
-										</Link>
-									</nav> */}
+
+									<figcaption className="label bg-base-200 p-2 mt-2 rounded-box text-wrap w-full">
+										{metadata.description}
+									</figcaption>
 								</div>
 							</figure>
 						</li>
@@ -59,7 +41,5 @@ export function AccesoryCardList() {
 				}
 			)}
 		</ul>
-		// 	</div>
-		// </div>
 	);
 }
