@@ -8,7 +8,7 @@ export const accesoriesData = new Map([
 		"acc1.webp",
 		{
 			name: "Motores Tubulares",
-			description: null,
+			description: "Para cortinas y persianas",
 			sizes: [659, 538],
 		},
 	],
@@ -16,7 +16,7 @@ export const accesoriesData = new Map([
 		"acc2.webp",
 		{
 			name: "Motores Paralelos",
-			description: "600, 800, 1.000 , 1.500 reforzado trifásico o monofásico",
+			description: "600, 800, 1.000, 1.500 reforzado trifásico o monofásico",
 			sizes: [659, 494],
 		},
 	],
@@ -48,7 +48,7 @@ export const accesoriesData = new Map([
 	[
 		"acc6.webp",
 		{
-			name: "Tablillas de Aluminio",
+			name: "Guias de Seguridad",
 			description: "Reforzadas y galvanizadas",
 			sizes: [659, 345],
 		},
@@ -56,8 +56,8 @@ export const accesoriesData = new Map([
 	[
 		"acc7.webp",
 		{
-			name: "Guías de Seguridad",
-			description: "Reforzadas y galvanizadas",
+			name: "Puerta de Escape",
+			description: "Reforzada con orejas de candado y cerradura",
 			sizes: [383, 524],
 		},
 	],

@@ -1,12 +1,10 @@
 import { accesoriesData } from "#/constants/accesoriesData";
-import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import Link from "next/link";
 
 export function AccesoryCardList() {
 	return (
-		<ol
-			className="carousel w-xs bg-base-300"
+		<ul
+			className="carousel p-8 w-full gap-2 px-12"
 			aria-label="Galeria de accesorios de Cortinas Metálicas a la venta"
 		>
 			{[...accesoriesData.entries()].map(
@@ -14,56 +12,53 @@ export function AccesoryCardList() {
 					/** @type {[string, IAccesoryMetadata]} */ [filePath, metadata],
 					index
 				) => {
-					const prevFile =
-						[...accesoriesData.keys()][index - 1] ??
-						[...accesoriesData.keys()].slice(-1)[0];
-					const nextFile =
-						[...accesoriesData.keys()][index + 1] ??
-						[...accesoriesData.keys()][0];
-
 					return (
 						<li
-							id={`accesory:${filePath}`}
-							data-current={filePath ? true : undefined}
-							className="carousel-item relative w-full"
+							className="carousel-item rounded-box max-w-64 lg:w-96"
 							key={filePath}
 							tabIndex={0}
 						>
-							<figure className="flex flex-col relative">
-								<h3 className="text-center font-bold">{metadata.name}</h3>
-								<Image
-									src={`/accesory/${filePath}`}
-									alt={metadata.name}
-									className="bg-base-300 object-cover"
-									width={metadata.sizes[0]}
-									height={metadata.sizes[1]}
-									loading="lazy"
-								/>
-								{metadata.description && (
-									<figcaption>{metadata.description}</figcaption>
-								)}
-								<nav className="absolute inset-x-0.5 inset-y-1/2 -translate-y-1/2 flex justify-between opacity-0 group-[current]:opacity-100">
-									<Link
-										href={`#accesory:${prevFile}`}
-										scroll={false}
-										className="btn btn-circle btn-xl sm:btn-md"
-									>
-										<ArrowLeftIcon className="" />
-									</Link>
-									<Link
-										href={`#accesory:${nextFile}`}
-										scroll={false}
-										className="btn btn-circle btn-xl sm:btn-md"
-									>
-										<ArrowRightIcon className="" />
-									</Link>
-								</nav>
+							<figure className="card shadow-md size-full">
+								<div className="card-body items-center">
+									<h3 className="text-center font-semibold">{metadata.name}</h3>
+
+									<div className="relative w-full aspect-[4/3] overflow-hidden rounded-box">
+										<Image
+											src={`/accesory/${filePath}`}
+											alt={metadata.name}
+											className="object-cover"
+											fill
+											sizes="(max-width: 768px) 100vw, 50vw"
+										/>
+									</div>
+									{metadata.description && (
+										<figcaption className="label bg-base-200 p-2 mt-2 rounded-box text-wrap w-full">
+											{metadata.description}
+										</figcaption>
+									)}
+									{/* <nav className="lg:hidden absolute inset-x-0.5 inset-y-1/2 -translate-y-1/2 flex justify-between transition-opacity">
+										<Link
+											href={`#accesory:${prevFile}`}
+											scroll={false}
+											className="btn btn-circle btn-xl sm:btn-md"
+										>
+											<ArrowLeftIcon />
+										</Link>
+										<Link
+											href={`#accesory:${nextFile}`}
+											scroll={false}
+											className="btn btn-circle btn-xl sm:btn-md"
+										>
+											<ArrowRightIcon />
+										</Link>
+									</nav> */}
+								</div>
 							</figure>
 						</li>
 					);
 				}
 			)}
-		</ol>
+		</ul>
 		// 	</div>
 		// </div>
 	);

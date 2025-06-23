@@ -8,10 +8,7 @@ export function AccesorySection() {
 				<span className="underline decoration-primary">Accesorios</span> a la
 				venta
 			</SectionTitle>
-
-			<div className="flex justify-center">
-				<AccesoryCardList />
-			</div>
+			<AccesoryCardList />
 		</section>
 	);
 }
