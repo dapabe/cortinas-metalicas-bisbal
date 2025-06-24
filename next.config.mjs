@@ -21,10 +21,10 @@ const nextConfig = {
 			},
 		],
 	},
-	webpack: (config) => {
-		config.resolve.alias["#const"] = path.resolve(__dirname, "./src/constants");
-		return config;
-	},
+	// webpack: (config) => {
+	// 	config.resolve.alias["#const"] = path.resolve(__dirname, "./src/constants");
+	// 	return config;
+	// },
 };
 
 export default nextConfig;
