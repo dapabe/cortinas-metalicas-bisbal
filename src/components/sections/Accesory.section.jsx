@@ -1,4 +1,4 @@
-import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
+import { AnchorSectionNames } from "#/constants/anchorSectionNames";
 import { AccesoryCardList } from "../AccesoryCardList";
 import { SectionTitle } from "../SectionTitle";
 

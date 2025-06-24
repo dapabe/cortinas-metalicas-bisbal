@@ -6,8 +6,8 @@ import {
 	MegaphoneIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { WorkImagePaths } from "../../constants/WorkImagePaths";
-import { AnchorSectionNames } from "../../constants/AnchorSectionNames";
+import { WorkImagePaths } from "#/constants/workImagePaths";
+import { AnchorSectionNames } from "#/constants/anchorSectionNames";
 
 export function HeroSection() {
 	const AuxXLImage = WorkImagePaths.get(6);

@@ -9,8 +9,8 @@ import {
 import { SectionTitle } from "../SectionTitle";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import { MagnifyingGlassPlusIcon } from "@heroicons/react/24/solid";
-import { AnchorSectionNames } from "../../constants/AnchorSectionNames";
-import { WorkImagePaths } from "../../constants/WorkImagePaths";
+import { AnchorSectionNames } from "#/constants/anchorSectionNames";
+import { WorkImagePaths } from "#/constants/workImagePaths";
 
 export function WorkGallerySection() {
 	return (
