@@ -1,5 +1,4 @@
 "use client";
-import { WorkImagePaths } from "#/constants/WorkImagePaths";
 import Masonry from "react-masonry-css";
 import {
 	UsersIcon,
@@ -11,6 +10,7 @@ import { SectionTitle } from "../SectionTitle";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import { MagnifyingGlassPlusIcon } from "@heroicons/react/24/solid";
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
+import { WorkImagePaths } from "#/constants/WorkImagePaths";
 
 export function WorkGallerySection() {
 	return (
