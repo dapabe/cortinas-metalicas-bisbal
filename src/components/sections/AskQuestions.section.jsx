@@ -4,7 +4,7 @@ import { SectionTitle } from "../SectionTitle";
 import Link from "next/link";
 import * as Solid from "@heroicons/react/24/solid";
 import * as Out from "@heroicons/react/24/outline";
-import { AnchorSectionNames } from "#const/anchorSectionNames";
+import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 
 export function AskQuestionsSection() {
 	return (

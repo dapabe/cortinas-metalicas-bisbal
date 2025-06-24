@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { WorkImagePaths } from "#const/workImagePaths";
-import { AnchorSectionNames } from "#const/anchorSectionNames";
+import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 
 export function HeroSection() {
 	const AuxXLImage = WorkImagePaths.get(6);
