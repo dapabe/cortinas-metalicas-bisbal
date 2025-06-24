@@ -1,4 +1,4 @@
-import { AccesoriesData } from "#/constants/accesoriesData";
+import { AccesoriesData } from "#const/accesoriesData";
 import Image from "next/image";
 
 export function AccesoryCardList() {

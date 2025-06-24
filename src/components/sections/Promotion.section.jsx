@@ -3,7 +3,7 @@ import { ReceiptPercentIcon } from "@heroicons/react/24/solid";
 import { HashtagIcon } from "@heroicons/react/24/outline";
 import { OpenMail } from "../OpenMail";
 import { CopyPhoneNumber } from "../CopyPhoneNumber";
-import { AnchorSectionNames } from "#/constants/anchorSectionNames";
+import { AnchorSectionNames } from "#const/anchorSectionNames";
 
 export function PromotionSection() {
 	return (

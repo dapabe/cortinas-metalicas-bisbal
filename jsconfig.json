@@ -1,7 +1,9 @@
 {
 	"compilerOptions": {
+		"baseUrl": ".",
 		"paths": {
 			"#/*": ["./src/*"],
+			"#const/*": ["./src/constants/*"],
 			"#def": ["./src/typedef.jsdoc.js"]
 		}
 	}
