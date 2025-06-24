@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"paths": {
 			"#/*": ["./src/*"],
-			"#def": ["./src/typedef.js"]
+			"#def": ["./src/typedef.jsdoc.js"]
 		}
 	}
 }

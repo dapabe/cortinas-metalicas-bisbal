@@ -1,4 +1,4 @@
-import { accesoriesData } from "#/constants/accesoriesData";
+import { AccesoriesData } from "#/constants/AccesoriesData";
 import Image from "next/image";
 
 export function AccesoryCardList() {
@@ -7,7 +7,7 @@ export function AccesoryCardList() {
 			className="carousel p-8 w-full gap-2 px-12"
 			aria-label="Galeria de accesorios de Cortinas Metálicas a la venta"
 		>
-			{[...accesoriesData.entries()].map(
+			{[...AccesoriesData.entries()].map(
 				(
 					/** @type {[string, IAccesoryMetadata]} */ [filePath, metadata],
 					index

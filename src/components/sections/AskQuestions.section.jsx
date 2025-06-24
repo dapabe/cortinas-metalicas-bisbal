@@ -4,12 +4,18 @@ import { SectionTitle } from "../SectionTitle";
 import Link from "next/link";
 import * as Solid from "@heroicons/react/24/solid";
 import * as Out from "@heroicons/react/24/outline";
+import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 
-export function WorkZoneSection() {
+export function AskQuestionsSection() {
 	return (
-		<section className="container mx-auto p-4 flex flex-col gap-4 items-center">
+		<section
+			id={AnchorSectionNames.FrequentlyAskedQuestions}
+			className="container mx-auto p-4 flex flex-col gap-4 items-center"
+		>
 			<div className="divider divider-primary w-1/3 mx-auto"></div>
-			<SectionTitle>
+			<SectionTitle
+				anchorSectionName={AnchorSectionNames.FrequentlyAskedQuestions}
+			>
 				<span className="underline decoration-primary">Preguntas</span>{" "}
 				Frecuentes
 			</SectionTitle>
@@ -101,7 +107,7 @@ export function WorkZoneSection() {
 						¿Te gustaria ver los accesorios disponibles?
 					</p>
 					<Link
-						href={"#accesorios"}
+						href={`#${AnchorSectionNames.Accesories}`}
 						className="btn btn-primary btn-outline w-fit mx-auto"
 					>
 						Ver Accesorios{" "}

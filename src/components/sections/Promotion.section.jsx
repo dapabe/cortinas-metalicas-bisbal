@@ -1,14 +1,17 @@
-import { twJoin } from "tailwind-merge";
 import { SectionTitle } from "../SectionTitle";
 import { ReceiptPercentIcon } from "@heroicons/react/24/solid";
 import { HashtagIcon } from "@heroicons/react/24/outline";
 import { OpenMail } from "../OpenMail";
 import { CopyPhoneNumber } from "../CopyPhoneNumber";
+import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 
 export function PromotionSection() {
 	return (
-		<section id="promo" className="container mx-auto space-y-4">
-			<SectionTitle>
+		<section
+			id={AnchorSectionNames.Promotion}
+			className="container mx-auto space-y-4"
+		>
+			<SectionTitle anchorSectionName={AnchorSectionNames.Promotion}>
 				¡<span className="underline decoration-primary">Aprovecha</span>{" "}
 				nuestras promociones exclusivas!
 			</SectionTitle>
@@ -76,20 +79,5 @@ export function PromotionSection() {
 				</div>
 			</div>
 		</section>
-	);
-}
-
-/**
- * @component
- * @param {import("react").PropsWithChildren<{primary?: boolean}>} props
- * @return {JSX.Element}
- */
-function Emphasize({ children, primary }) {
-	return (
-		<b>
-			<span className={twJoin(primary ? "text-primary" : "text-secondary")}>
-				{children}
-			</span>
-		</b>
 	);
 }

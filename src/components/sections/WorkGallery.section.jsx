@@ -1,5 +1,5 @@
 "use client";
-import { workImagePaths } from "#/constants/workImagePaths";
+import { WorkImagePaths } from "#/constants/WorkImagePaths";
 import Masonry from "react-masonry-css";
 import {
 	UsersIcon,
@@ -10,11 +10,15 @@ import {
 import { SectionTitle } from "../SectionTitle";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import { MagnifyingGlassPlusIcon } from "@heroicons/react/24/solid";
+import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 
 export function WorkGallerySection() {
 	return (
-		<section id="trabajos" className="container mx-auto p-4 space-y-4 relative">
-			<SectionTitle>
+		<section
+			id={AnchorSectionNames.JobPreview}
+			className="container mx-auto p-4 space-y-4 relative"
+		>
+			<SectionTitle anchorSectionName={AnchorSectionNames.JobPreview}>
 				<span className="underline decoration-primary">Trabajos</span>{" "}
 				Realizados
 			</SectionTitle>
@@ -55,7 +59,7 @@ export function WorkGallerySection() {
 						className="-ml-2 max-w-4xl flex flex-1"
 						columnClassName="pl-2 bg-clip-padding *:mb-4 flex flex-col w-max"
 					>
-						{[...workImagePaths.entries()].map((img) => (
+						{[...WorkImagePaths.entries()].map((img) => (
 							<PhotoView
 								key={img[0]}
 								width={img[1].sizes[0]}

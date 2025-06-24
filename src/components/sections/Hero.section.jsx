@@ -7,10 +7,11 @@ import {
 	MegaphoneIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { workImagePaths } from "#/constants/workImagePaths";
+import { WorkImagePaths } from "#/constants/WorkImagePaths";
+import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 
 export function HeroSection() {
-	const AuxXLImage = workImagePaths.get(6);
+	const AuxXLImage = WorkImagePaths.get(6);
 	return (
 		<section className="w-full relative flex flex-col items-start">
 			{/* Badge */}
@@ -74,9 +75,12 @@ export function HeroSection() {
 
 				{/* CTA */}
 				<div className="z-20 my-auto col-start-1 col-span-5 row-start-5 sm:row-start-4 lg:row-start-3 lg:mt-0 lg:mb-auto xl:col-span-2">
-					<nav className="flex flex-col gap-2 max-w-fit">
+					<nav
+						aria-label="Links a secciones importantes del sitio web"
+						className="flex flex-col gap-2 max-w-fit"
+					>
 						<Link
-							href={"#trabajos"}
+							href={`#${AnchorSectionNames.JobPreview}`}
 							className="btn btn-primary font-bold rounded-box"
 						>
 							Ver Trabajos Realizados
@@ -84,7 +88,7 @@ export function HeroSection() {
 						</Link>
 
 						<Link
-							href={"#promo"}
+							href={`#${AnchorSectionNames.Promotion}`}
 							className="btn btn-secondary btn-outline font-bond rounded-box"
 						>
 							Ver Promociones
