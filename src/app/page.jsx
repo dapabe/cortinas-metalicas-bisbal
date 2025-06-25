@@ -5,6 +5,7 @@ import { WorkGallerySection } from "#/components/sections/WorkGallery.section";
 import { AskQuestionsSection } from "#/components/sections/AskQuestions.section";
 import { AccesorySection } from "#/components/sections/Accesory.section";
 import { Footer } from "#/components/sections/Footer";
+import { SendReviewSection } from "#/components/sections/SendReview.section";
 
 export default function Home() {
 	return (
@@ -15,6 +16,7 @@ export default function Home() {
 				<WorkGallerySection />
 				<PromotionSection />
 				<AccesorySection />
+				{/* <SendReviewSection /> */}
 				<WhatsAppCTA />
 			</main>
 			<Footer />
