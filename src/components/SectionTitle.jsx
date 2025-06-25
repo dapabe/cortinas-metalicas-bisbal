@@ -1,4 +1,5 @@
 "use client";
+import { useToastStore } from "#/stores/toaster.store";
 import { LinkIcon } from "@heroicons/react/24/solid";
 import { twMerge } from "tailwind-merge";
 
@@ -11,10 +12,13 @@ import { twMerge } from "tailwind-merge";
  * @returns {JSX.Element}
  */
 export function SectionTitle({ anchorSectionName, className, children }) {
-	const copyUrl = async () =>
+	const { addToast } = useToastStore();
+	const copyUrl = async () => {
 		await navigator.clipboard.writeText(
 			window.location.origin + `/#${anchorSectionName}`
 		);
+		addToast({ status: "info", content: "Link copiado al portapapeles" });
+	};
 	return (
 		<h2
 			className={twMerge(

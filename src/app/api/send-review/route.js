@@ -1,40 +1,67 @@
 import { MessageReviewSchema } from "#/schemas/MessageReview.schema";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
-import nodemailer from "nodemailer";
+import emailjs, { EmailJSResponseStatus } from "@emailjs/nodejs";
 
 /** @param {Request} req */
 export async function POST(req) {
 	try {
 		const body = await req.json();
 		const template = await MessageReviewSchema.parseAsync(body);
+		template.env = process.env.NODE_ENV;
+		// // Rate limiting check could be added here
 
-		const transporter = nodemailer.createTransport({
-			host: "smtp.gmail.com",
-			port: 465,
-			secure: true,
-			auth: {
-				type: "OAuth2",
-				user: process.env.MAIL_USER,
-				accessToken: process.env.MAIL_TOKEN,
-			},
-		});
+		const res = await emailjs.send(
+			process.env.EMAILJS_SERVICE_ID,
+			process.env.EMAILJS_TEMPLATE_ID,
+			template,
+			{
+				publicKey: process.env.EMAILJS_PUBLIC_KEY,
+				privateKey: process.env.EMAILJS_PRIVATE_KEY,
+			}
+		);
 
-		return NextResponse.json({ success: true });
+		if (res.status !== 200) throw res;
+
+		return NextResponse.json(
+			{ success: true, message: "¡Gracias por tu reseña!" },
+			{ status: 200 }
+		);
 	} catch (error) {
-		if (error instanceof EmailJSResponseStatus) {
-			return new Response("Ha ocurrido un error, intentelo más tarde.", {
-				status: error.status,
-				statusText: error.text,
-			});
-		}
+		console.error("Email sending error:", error);
+
+		// Zod validation errors
 		if (error instanceof ZodError) {
 			const serverErrors = Object.fromEntries(
-				error?.issues?.map((issue) => [issue.path[0], issue.message]) || []
+				error.issues.map((issue) => [issue.path[0], issue.message])
 			);
 
-			return NextResponse.json({ success: false, errors: serverErrors });
+			return NextResponse.json(
+				{ success: false, errors: serverErrors },
+				{ status: 400 }
+			);
 		}
-		return NextResponse.json({ success: false });
+
+		// EmailJS specific errors
+		if (error instanceof EmailJSResponseStatus) {
+			return NextResponse.json(
+				{
+					success: false,
+					message:
+						"Ha ocurrido un error al enviar el mensaje, inténtelo mas tarde",
+					error: error.message,
+				},
+				{ status: error?.status ?? 500 }
+			);
+		}
+
+		// Generic server error
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Ha ocurrido un error, contacte con el desarrollador",
+			},
+			{ status: 500 }
+		);
 	}
 }

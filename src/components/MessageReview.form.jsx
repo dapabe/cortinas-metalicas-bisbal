@@ -5,14 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MessageReviewSchema } from "#/schemas/MessageReview.schema";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { twJoin } from "tailwind-merge";
-import { useMemo } from "react";
 import z3 from "zod";
 
 export function MessageReviewForm() {
 	const {
 		handleSubmit,
 		register,
-		formState: { errors },
+		formState: { errors, isSubmitting },
 	} = useForm({
 		defaultValues: {
 			name: "",
@@ -23,15 +22,20 @@ export function MessageReviewForm() {
 
 	/** @param {z3.TypeOf<typeof MessageReviewSchema>} data*/
 	const onSubmit = async (data, form) => {
-		await fetch("/api/send-review", {
+		const res = await fetch("/api/send-review", {
 			method: "POST",
 			body: JSON.stringify(data),
-		})
-			.then(() => console.log("first"))
-			.catch((x) => console.log(x));
+		});
+		if (!res.ok || res.status !== 200) {
+			console.log(res);
+		}
+		console.log(await res.json());
 	};
 	return (
-		<form className="card shadow-md max-w-sm" onSubmit={handleSubmit(onSubmit)}>
+		<form
+			className="card shadow-md w-full max-w-sm"
+			onSubmit={handleSubmit(onSubmit)}
+		>
 			<div className="card-body">
 				<fieldset className="fieldset">
 					<legend className="fieldset-legend">
@@ -39,6 +43,7 @@ export function MessageReviewForm() {
 					</legend>
 					<input
 						{...register("name")}
+						placeholder="ej: Don José"
 						className={twJoin(
 							"input",
 							errors?.name ? "input-error" : "input-neutral"
@@ -53,10 +58,11 @@ export function MessageReviewForm() {
 
 				<fieldset className="fieldset">
 					<legend className="fieldset-legend">
-						Mensaje <span className="text-error">*</span>
+						Reseña <span className="text-error">*</span>
 					</legend>
 					<textarea
 						{...register("message")}
+						placeholder="El trabajo que hicieron en mi negocio.."
 						className={twJoin(
 							"textarea h-24 resize-none",
 							errors?.message ? "textarea-error" : "textarea-neutral"
@@ -69,9 +75,19 @@ export function MessageReviewForm() {
 				</fieldset>
 
 				<div className="card-actions justify-end">
-					<button type="submit" className="btn btn-info ">
-						Enviar Mensaje
-						<PaperAirplaneIcon className="size-6" />
+					<button
+						type="submit"
+						disabled={isSubmitting}
+						className={"btn btn-info"}
+					>
+						{isSubmitting ? (
+							<span className="loading loading-dots loading-md"></span>
+						) : (
+							<>
+								Enviar Mensaje
+								<PaperAirplaneIcon className="size-6" />
+							</>
+						)}
 					</button>
 				</div>
 			</div>
