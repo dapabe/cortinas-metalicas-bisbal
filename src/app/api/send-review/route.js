@@ -8,8 +8,6 @@ export async function POST(req) {
 	try {
 		const body = await req.json();
 		const template = await MessageReviewSchema.parseAsync(body);
-		template.env = process.env.NODE_ENV;
-		// // Rate limiting check could be added here
 
 		const res = await emailjs.send(
 			process.env.EMAILJS_SERVICE_ID,
@@ -18,6 +16,11 @@ export async function POST(req) {
 			{
 				publicKey: process.env.EMAILJS_PUBLIC_KEY,
 				privateKey: process.env.EMAILJS_PRIVATE_KEY,
+				limitRate: {
+					id: "app",
+					// 1 request per minute
+					throttle: 60_000,
+				},
 			}
 		);
 
@@ -31,7 +34,7 @@ export async function POST(req) {
 			{ status: 200 }
 		);
 	} catch (error) {
-		console.error("Email sending error:", error);
+		console.error("Email sending error:", JSON.stringify(error));
 
 		// Zod validation errors
 		if (error instanceof ZodError) {
@@ -52,9 +55,8 @@ export async function POST(req) {
 					success: false,
 					message:
 						"Ha ocurrido un error al enviar el mensaje, inténtelo mas tarde",
-					error: error.message,
 				},
-				{ status: error?.status ?? 500 }
+				{ status: error.status }
 			);
 		}
 
@@ -62,7 +64,7 @@ export async function POST(req) {
 		return NextResponse.json(
 			{
 				success: false,
-				message: "Ha ocurrido un error, contacte con el desarrollador",
+				message: "Ha ocurrido un error inesperado, inténtelo más tarde",
 			},
 			{ status: 500 }
 		);

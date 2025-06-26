@@ -16,7 +16,7 @@ export default function Home() {
 				<WorkGallerySection />
 				<PromotionSection />
 				<AccesorySection />
-				{/* <SendReviewSection /> */}
+				<SendReviewSection />
 				<WhatsAppCTA />
 			</main>
 			<Footer />

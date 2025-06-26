@@ -13,6 +13,7 @@ export function AccesorySection() {
 				venta
 			</SectionTitle>
 			<AccesoryCardList />
+			<div className="divider divider-primary w-1/3 mx-auto"></div>
 		</section>
 	);
 }

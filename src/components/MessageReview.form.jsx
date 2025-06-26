@@ -23,16 +23,18 @@ export function MessageReviewForm() {
 	});
 
 	/** @param {z3.TypeOf<typeof MessageReviewSchema>} data*/
-	const onSubmit = async (data, form) => {
+	const onSubmit = async (data) => {
 		const res = await fetch("/api/send-review", {
 			method: "POST",
 			body: JSON.stringify(data),
 		});
 		const api = await res.json();
 		if (!res.ok || res.status !== 200) {
-			return toast.addToast({ status: "error", content: api.message });
+			if (res.status == 500)
+				return toast.addToast({ status: "error", content: api.message });
+			return toast.addToast({ status: "warning", content: api.message });
 		}
-		toast.addToast({ status: "success", content: api.message });
+		return toast.addToast({ status: "success", content: api.message });
 	};
 	return (
 		<form

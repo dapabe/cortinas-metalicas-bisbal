@@ -8,7 +8,7 @@
 /**
  * @typedef {Object} IToast
  * @property {number} id
- * @property {"error" | "success" | "info"} status
+ * @property {"error" | "success" | "info" | "warning"} status
  * @property {string} content
  */
 

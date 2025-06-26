@@ -3,6 +3,7 @@ import { useToastStore } from "#/stores/toaster.store";
 import {
 	CheckIcon,
 	ExclamationCircleIcon,
+	ExclamationTriangleIcon,
 	InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { cloneElement, useEffect, useMemo, useRef, useState } from "react";
@@ -30,7 +31,6 @@ export function Toaster() {
 			{toasts.map((t) => (
 				<ToastMessage key={t.id} {...t} />
 			))}
-			{/* <ToastMessage id={"asda"} status="error" content="test" /> */}
 		</ul>
 	);
 }
@@ -41,17 +41,17 @@ export function Toaster() {
  * @returns {JSX.Element}
  */
 function ToastMessage({ id, content, status }) {
-	const { removeToast } = useToastStore();
+	// const { removeToast } = useToastStore();
 	const [isExiting, setExiting] = useState(false);
 	const [progress, setProgress] = useState(100);
 	const animRef = useRef(null);
 	const duration = 4000;
 	const fadeOutDuration = 300;
 
-	const handleClose = () => {
-		setExiting(true);
-		setTimeout(() => removeToast(id), fadeOutDuration);
-	};
+	// const handleClose = () => {
+	// 	setExiting(true);
+	// 	setTimeout(() => removeToast(id), fadeOutDuration);
+	// };
 
 	useEffect(() => {
 		const startTime = Date.now();
@@ -88,6 +88,8 @@ function ToastMessage({ id, content, status }) {
 				return <ExclamationCircleIcon />;
 			case "success":
 				return <CheckIcon />;
+			case "warning":
+				return <ExclamationTriangleIcon />;
 			default:
 				return <InformationCircleIcon />;
 		}
@@ -99,6 +101,8 @@ function ToastMessage({ id, content, status }) {
 				return "alert-error";
 			case "success":
 				return "alert-success";
+			case "warning":
+				return "alert-warning";
 			default:
 				return "alert-info";
 		}
