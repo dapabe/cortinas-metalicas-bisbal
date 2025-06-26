@@ -24,7 +24,10 @@ export async function POST(req) {
 		if (res.status !== 200) throw res;
 
 		return NextResponse.json(
-			{ success: true, message: "¡Gracias por tu reseña!" },
+			{
+				success: true,
+				message: "¡Gracias por tu reseña, la veremos en la brevedad!",
+			},
 			{ status: 200 }
 		);
 	} catch (error) {

@@ -4,6 +4,7 @@ import { HashtagIcon } from "@heroicons/react/24/outline";
 import { OpenMail } from "../OpenMail";
 import { CopyPhoneNumber } from "../CopyPhoneNumber";
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
+import Link from "next/link";
 
 export function PromotionSection() {
 	return (
@@ -68,12 +69,33 @@ export function PromotionSection() {
 							<CopyPhoneNumber phoneNumber="54 9 11269 42624" />
 						</div>
 					</div>
+
 					<div className="stat">
 						<div className="stat-title text-center">
 							Asesorate con nuestros expertos
 						</div>
 						<div className="stat-value text-center text-lg">
 							<OpenMail email="bisbalcristian70@gmail.com" />
+						</div>
+					</div>
+
+					<div className="stat">
+						<div className="stat-title text-center">
+							También brindamos servicios por Mercado Libre
+						</div>
+						<div className="stat-actions flex justify-center">
+							<Link
+								aria-label="Link hacia el post del servicio en Mercado Libre"
+								href={
+									"https://servicio.mercadolibre.com.ar/MLA-1506820187-cortinas-metalicas-bisbal-_JM"
+								}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="btn btn-primary btn-outline mt-2 btn-lg"
+							>
+								Ir a Mercado Libre
+								<img src="/meli.svg" className="size-10 ml-2" loading="lazy" />
+							</Link>
 						</div>
 					</div>
 				</div>

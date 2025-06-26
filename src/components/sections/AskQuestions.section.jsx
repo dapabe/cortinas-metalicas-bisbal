@@ -23,7 +23,7 @@ export function AskQuestionsSection() {
 					title="¿En que lugares solemos trabajar?"
 					desc={
 						<>
-							Por toda la zona de <b>CABA</b>, <b>Matadero</b> y alrededores.
+							Por toda la zona de <b>CABA</b>, <b>Matadero</b> y alrededores
 						</>
 					}
 				/>
@@ -46,7 +46,7 @@ export function AskQuestionsSection() {
 
 					<AsideCard title="¿Horarios de atención?" icon={Out.ClockIcon}>
 						<p className="text-left">
-							De lunes a viernes las <b>24 horas</b>
+							De lunes a viernes las <b>24 horas</b> todos los días del año
 						</p>
 					</AsideCard>
 				</aside>
@@ -59,7 +59,7 @@ export function AskQuestionsSection() {
 							controlsList="nodownload noplaybackrate"
 							className="aspect-video 2xl:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs lg:max-w-md mx-auto"
 						>
-							Tu navegador no admite el elemento <code>video</code>.
+							Tu navegador no admite el elemento <code>video</code>
 						</video>
 						<video
 							id="demo1"
@@ -68,7 +68,7 @@ export function AskQuestionsSection() {
 							controlsList="nodownload noplaybackrate"
 							className="aspect-video 2xl:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs lg:max-w-md mx-auto"
 						>
-							Tu navegador no admite el elemento <code>video</code>.
+							Tu navegador no admite el elemento <code>video</code>
 						</video>
 					</div>
 					<figcaption className="text-center text-sm italic">
@@ -101,7 +101,7 @@ export function AskQuestionsSection() {
 					title="¿Horarios de atención?"
 					desc={
 						<>
-							De lunes a viernes las <b>24 horas</b>
+							De lunes a viernes las <b>24 horas</b> todos los días del año
 						</>
 					}
 				/>
