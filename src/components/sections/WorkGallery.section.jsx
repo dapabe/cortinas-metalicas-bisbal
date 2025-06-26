@@ -1,4 +1,5 @@
 "use client";
+import "react-photo-view/dist/react-photo-view.css";
 import Masonry from "react-masonry-css";
 import {
 	UsersIcon,

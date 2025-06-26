@@ -63,7 +63,7 @@ export function HeroSection() {
 				<div className="hidden xl:block col-start-3 col-span-2 row-start-1 row-span-2">
 					<Image
 						src={AuxXLImage.src}
-						className="mask mask-hexagon object-cover bg-base-300 shadow-md"
+						className="mask mask-squircle object-cover bg-base-300 shadow-md"
 						alt="Cortina metálica ya instalada, estilo moderno"
 						quality={100}
 						width={AuxXLImage.sizes[0]}

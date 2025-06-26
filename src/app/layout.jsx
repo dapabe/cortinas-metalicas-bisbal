@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import "react-photo-view/dist/react-photo-view.css";
 import { Toaster } from "#/components/Toaster";
 
 const geistSans = Geist({
@@ -48,7 +47,7 @@ export const metadata = {
 		siteName: "Cortinas Metálicas Bisbal",
 		type: "website",
 		images: {
-			url: "/work/cortina6.webp",
+			url: "/work/cortina6.jpg",
 			width: 1440,
 			height: 1800,
 			alt: "Cortinas Metálicas Bisbal - Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",

@@ -1,10 +1,9 @@
-"use client";
-import React, { useState } from "react";
 import { SectionTitle } from "../SectionTitle";
 import Link from "next/link";
 import * as Solid from "@heroicons/react/24/solid";
 import * as Out from "@heroicons/react/24/outline";
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
+import { Accordion } from "../Accordion";
 
 export function AskQuestionsSection() {
 	return (
@@ -51,19 +50,32 @@ export function AskQuestionsSection() {
 						</p>
 					</AsideCard>
 				</aside>
-				<div className="flex flex-col justify-center">
-					<video
-						id="demo1"
-						src="/work/demo1.mp4"
-						controls
-						className="aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs md:max-w-md mx-auto"
-					>
-						Tu navegador no admite el elemento <code>video</code>.
-					</video>
-					<label htmlFor="demo1" className="text-center text-sm italic">
-						Demostración de Cortina Metálica ya instalada
-					</label>
-				</div>
+				<figure className="space-y-2">
+					<div className="flex flex-col justify-center gap-4 lg:flex-row">
+						<video
+							id="demo1"
+							src="/work/demo1.mp4"
+							controls
+							controlsList="nodownload noplaybackrate"
+							className="aspect-video lg:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs md:max-w-md mx-auto"
+						>
+							Tu navegador no admite el elemento <code>video</code>.
+						</video>
+						<video
+							id="demo1"
+							src="/work/demo5.mp4"
+							controls
+							controlsList="nodownload noplaybackrate"
+							className="aspect-video lg:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs md:max-w-md mx-auto"
+						>
+							Tu navegador no admite el elemento <code>video</code>.
+						</video>
+					</div>
+					<figcaption className="text-center text-sm italic">
+						Demostraciones de Cortina Metálica ya instalada
+					</figcaption>
+				</figure>
+
 				<aside className="w-max space-y-4 flex flex-col justify-around">
 					<AsideCard
 						title="¿Hasta donde hacen envios?"
@@ -116,26 +128,6 @@ export function AskQuestionsSection() {
 				</div>
 			</div>
 		</section>
-	);
-}
-
-/**
- * @component
- * @param {{ title: React.ReactNode, desc: React.ReactNode}} props
- * @returns {JSX.Element}
- */
-function Accordion({ title, desc }) {
-	const [check, setCheck] = useState(false);
-	return (
-		<div className="join-item collapse collapse-arrow bg-base-200 border border-base-300">
-			<input
-				type="radio"
-				checked={check}
-				onChange={() => setCheck((x) => !x)}
-			/>
-			<h3 className="collapse-title font-semibold">{title}</h3>
-			<p className="collapse-content text-sm">{desc}</p>
-		</div>
 	);
 }
 
