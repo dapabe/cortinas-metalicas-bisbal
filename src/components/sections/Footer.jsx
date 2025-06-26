@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { OpenMail } from "../OpenMail";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 
 export function Footer() {
 	return (
@@ -20,9 +21,10 @@ export function Footer() {
 					href={"https://www.facebook.com/share/16namTSGSD/"}
 					target="_blank"
 					rel="noopener noreferrer"
-					className="link link-hover"
+					className="link link-hover inline-flex items-center gap-x-1"
 				>
 					Facebook
+					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
 				</Link>
 			</nav>
 
@@ -33,15 +35,29 @@ export function Footer() {
 					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metálicas%20Bisbal,%20me%20gustaría%20consultar"
 					target="_blank"
 					rel="noopener noreferrer"
-					className="link link-hover"
+					className="link link-hover inline-flex items-center gap-x-1"
 				>
 					WhatsApp
+					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
+				</Link>
+				<Link
+					aria-label="Link hacia el post del servicio en Mercado Libre"
+					href="https://servicio.mercadolibre.com.ar/MLA-1506820187-cortinas-metalicas-bisbal-_JM"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="link link-hover inline-flex items-center gap-x-1"
+				>
+					Mercado Libre
+					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
 				</Link>
 			</nav>
 
 			<nav aria-label="Enlaces de correo electrónico">
 				<h3 className="footer-title">Correo</h3>
-				<OpenMail email="bisbalcristian70@gmail.com" />
+				<div className="inline-flex items-center gap-x-1">
+					<OpenMail email="bisbalcristian70@gmail.com" />
+					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
+				</div>
 			</nav>
 		</footer>
 	);

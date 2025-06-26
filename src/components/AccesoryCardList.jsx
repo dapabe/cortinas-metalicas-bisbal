@@ -8,15 +8,11 @@ export function AccesoryCardList() {
 			aria-label="Galeria de accesorios de Cortinas Metálicas a la venta"
 		>
 			{[...AccesoriesData.entries()].map(
-				(
-					/** @type {[string, IAccesoryMetadata]} */ [filePath, metadata],
-					index
-				) => {
+				(/** @type {[string, IAccesoryMetadata]} */ [filePath, metadata]) => {
 					return (
 						<li
-							className="carousel-item rounded-box max-w-64 lg:w-96"
 							key={filePath}
-							tabIndex={0}
+							className="carousel-item rounded-box max-w-64 lg:w-96"
 						>
 							<figure className="card shadow-md size-full">
 								<div className="card-body items-center">
