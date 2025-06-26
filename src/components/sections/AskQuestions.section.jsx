@@ -51,13 +51,13 @@ export function AskQuestionsSection() {
 					</AsideCard>
 				</aside>
 				<figure className="space-y-2">
-					<div className="flex flex-col justify-center gap-4 lg:flex-row">
+					<div className="flex flex-col justify-center gap-4 2xl:flex-row">
 						<video
 							id="demo1"
 							src="/work/demo1.mp4"
 							controls
 							controlsList="nodownload noplaybackrate"
-							className="aspect-video lg:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs md:max-w-md mx-auto"
+							className="aspect-video 2xl:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs lg:max-w-md mx-auto"
 						>
 							Tu navegador no admite el elemento <code>video</code>.
 						</video>
@@ -66,7 +66,7 @@ export function AskQuestionsSection() {
 							src="/work/demo5.mp4"
 							controls
 							controlsList="nodownload noplaybackrate"
-							className="aspect-video lg:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs md:max-w-md mx-auto"
+							className="aspect-video 2xl:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs lg:max-w-md mx-auto"
 						>
 							Tu navegador no admite el elemento <code>video</code>.
 						</video>
@@ -81,7 +81,7 @@ export function AskQuestionsSection() {
 						title="¿Hasta donde hacen envios?"
 						icon={Out.GlobeAmericasIcon}
 					>
-						<p>Hacemos envios a todo el país.</p>
+						<p>Hacemos envios a todo el país</p>
 					</AsideCard>
 
 					<AsideCard

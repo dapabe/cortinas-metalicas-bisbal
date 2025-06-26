@@ -6,8 +6,10 @@ import { MessageReviewSchema } from "#/schemas/MessageReview.schema";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { twJoin } from "tailwind-merge";
 import z3 from "zod";
+import { useToastStore } from "#/stores/toaster.store";
 
 export function MessageReviewForm() {
+	const toast = useToastStore();
 	const {
 		handleSubmit,
 		register,
@@ -26,10 +28,11 @@ export function MessageReviewForm() {
 			method: "POST",
 			body: JSON.stringify(data),
 		});
+		const api = await res.json();
 		if (!res.ok || res.status !== 200) {
-			console.log(res);
+			return toast.addToast({ status: "error", content: api.message });
 		}
-		console.log(await res.json());
+		toast.addToast({ status: "success", content: api.message });
 	};
 	return (
 		<form
