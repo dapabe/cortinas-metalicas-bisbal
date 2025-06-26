@@ -4,7 +4,7 @@ import Image from "next/image";
 export function AccesoryCardList() {
 	return (
 		<ul
-			className="carousel p-8 w-full gap-2 px-12"
+			className="carousel yes-scrollbar p-8 w-full gap-2 px-12"
 			aria-label="Galeria de accesorios de Cortinas Metálicas a la venta"
 		>
 			{[...AccesoriesData.entries()].map(

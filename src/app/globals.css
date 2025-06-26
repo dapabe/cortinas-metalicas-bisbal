@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@layer utilities {
+	.yes-scrollbar {
+		scrollbar-width: auto;
+	}
+	.yes-scrollbar::-webkit-scrollbar {
+		display: inline-block;
+	}
+}
+
 @theme {
 	--spacing-paragraph: 70ch;
 }
