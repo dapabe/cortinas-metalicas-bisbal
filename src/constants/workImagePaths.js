@@ -1,4 +1,4 @@
-export const workImagePaths = new Map([
+export const WorkImagePaths = new Map([
 	[
 		2,
 		{

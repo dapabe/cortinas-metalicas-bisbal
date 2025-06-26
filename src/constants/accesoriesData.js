@@ -3,7 +3,7 @@ import "#def";
 /**
  *  @type {Map<String, IAccesoryMetadata>}
  */
-export const accesoriesData = new Map([
+export const AccesoriesData = new Map([
 	[
 		"acc1.webp",
 		{

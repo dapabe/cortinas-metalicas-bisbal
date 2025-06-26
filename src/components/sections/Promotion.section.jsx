@@ -1,14 +1,18 @@
-import { twJoin } from "tailwind-merge";
 import { SectionTitle } from "../SectionTitle";
 import { ReceiptPercentIcon } from "@heroicons/react/24/solid";
 import { HashtagIcon } from "@heroicons/react/24/outline";
 import { OpenMail } from "../OpenMail";
 import { CopyPhoneNumber } from "../CopyPhoneNumber";
+import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
+import Link from "next/link";
 
 export function PromotionSection() {
 	return (
-		<section id="promo" className="container mx-auto space-y-4">
-			<SectionTitle>
+		<section
+			id={AnchorSectionNames.Promotion}
+			className="container mx-auto space-y-4"
+		>
+			<SectionTitle anchorSectionName={AnchorSectionNames.Promotion}>
 				¡<span className="underline decoration-primary">Aprovecha</span>{" "}
 				nuestras promociones exclusivas!
 			</SectionTitle>
@@ -65,6 +69,7 @@ export function PromotionSection() {
 							<CopyPhoneNumber phoneNumber="54 9 11269 42624" />
 						</div>
 					</div>
+
 					<div className="stat">
 						<div className="stat-title text-center">
 							Asesorate con nuestros expertos
@@ -73,23 +78,28 @@ export function PromotionSection() {
 							<OpenMail email="bisbalcristian70@gmail.com" />
 						</div>
 					</div>
+
+					<div className="stat">
+						<div className="stat-title text-center">
+							También brindamos servicios por Mercado Libre
+						</div>
+						<div className="stat-actions flex justify-center">
+							<Link
+								aria-label="Link hacia el post del servicio en Mercado Libre"
+								href={
+									"https://servicio.mercadolibre.com.ar/MLA-1506820187-cortinas-metalicas-bisbal-_JM"
+								}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="btn btn-primary btn-outline mt-2 btn-lg"
+							>
+								Ir a Mercado Libre
+								<img src="/meli.svg" className="size-10 ml-2" loading="lazy" />
+							</Link>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
-	);
-}
-
-/**
- * @component
- * @param {import("react").PropsWithChildren<{primary?: boolean}>} props
- * @return {JSX.Element}
- */
-function Emphasize({ children, primary }) {
-	return (
-		<b>
-			<span className={twJoin(primary ? "text-primary" : "text-secondary")}>
-				{children}
-			</span>
-		</b>
 	);
 }

@@ -1,15 +1,20 @@
-"use client";
-import React, { useState } from "react";
 import { SectionTitle } from "../SectionTitle";
 import Link from "next/link";
 import * as Solid from "@heroicons/react/24/solid";
 import * as Out from "@heroicons/react/24/outline";
+import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
+import { Accordion } from "../Accordion";
 
-export function WorkZoneSection() {
+export function AskQuestionsSection() {
 	return (
-		<section className="container mx-auto p-4 flex flex-col gap-4 items-center">
+		<section
+			id={AnchorSectionNames.FrequentlyAskedQuestions}
+			className="container mx-auto p-4 flex flex-col gap-4 items-center"
+		>
 			<div className="divider divider-primary w-1/3 mx-auto"></div>
-			<SectionTitle>
+			<SectionTitle
+				anchorSectionName={AnchorSectionNames.FrequentlyAskedQuestions}
+			>
 				<span className="underline decoration-primary">Preguntas</span>{" "}
 				Frecuentes
 			</SectionTitle>
@@ -18,7 +23,7 @@ export function WorkZoneSection() {
 					title="¿En que lugares solemos trabajar?"
 					desc={
 						<>
-							Por toda la zona de <b>CABA</b>, <b>Matadero</b> y alrededores.
+							Por toda la zona de <b>CABA</b>, <b>Matadero</b> y alrededores
 						</>
 					}
 				/>
@@ -41,29 +46,42 @@ export function WorkZoneSection() {
 
 					<AsideCard title="¿Horarios de atención?" icon={Out.ClockIcon}>
 						<p className="text-left">
-							De lunes a viernes las <b>24 horas</b>
+							De lunes a viernes las <b>24 horas</b> todos los días del año
 						</p>
 					</AsideCard>
 				</aside>
-				<div className="flex flex-col justify-center">
-					<video
-						id="demo1"
-						src="/work/demo1.mp4"
-						controls
-						className="aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs md:max-w-md mx-auto"
-					>
-						Tu navegador no admite el elemento <code>video</code>.
-					</video>
-					<label htmlFor="demo1" className="text-center text-sm italic">
-						Demostración de Cortina Metálica ya instalada
-					</label>
-				</div>
+				<figure className="space-y-2">
+					<div className="flex flex-col justify-center gap-4 2xl:flex-row">
+						<video
+							id="demo1"
+							src="/work/demo1.mp4"
+							controls
+							controlsList="nodownload noplaybackrate"
+							className="aspect-video 2xl:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs lg:max-w-md mx-auto"
+						>
+							Tu navegador no admite el elemento <code>video</code>
+						</video>
+						<video
+							id="demo1"
+							src="/work/demo5.mp4"
+							controls
+							controlsList="nodownload noplaybackrate"
+							className="aspect-video 2xl:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs lg:max-w-md mx-auto"
+						>
+							Tu navegador no admite el elemento <code>video</code>
+						</video>
+					</div>
+					<figcaption className="text-center text-sm italic">
+						Demostraciones de Cortina Metálica ya instalada
+					</figcaption>
+				</figure>
+
 				<aside className="w-max space-y-4 flex flex-col justify-around">
 					<AsideCard
 						title="¿Hasta donde hacen envios?"
 						icon={Out.GlobeAmericasIcon}
 					>
-						<p>Hacemos envios a todo el país.</p>
+						<p>Hacemos envios a todo el país</p>
 					</AsideCard>
 
 					<AsideCard
@@ -83,7 +101,7 @@ export function WorkZoneSection() {
 					title="¿Horarios de atención?"
 					desc={
 						<>
-							De lunes a viernes las <b>24 horas</b>
+							De lunes a viernes las <b>24 horas</b> todos los días del año
 						</>
 					}
 				/>
@@ -101,7 +119,7 @@ export function WorkZoneSection() {
 						¿Te gustaria ver los accesorios disponibles?
 					</p>
 					<Link
-						href={"#accesorios"}
+						href={`#${AnchorSectionNames.Accesories}`}
 						className="btn btn-primary btn-outline w-fit mx-auto"
 					>
 						Ver Accesorios{" "}
@@ -110,26 +128,6 @@ export function WorkZoneSection() {
 				</div>
 			</div>
 		</section>
-	);
-}
-
-/**
- * @component
- * @param {{ title: React.ReactNode, desc: React.ReactNode}} props
- * @returns {JSX.Element}
- */
-function Accordion({ title, desc }) {
-	const [check, setCheck] = useState(false);
-	return (
-		<div className="join-item collapse collapse-arrow bg-base-200 border border-base-300">
-			<input
-				type="radio"
-				checked={check}
-				onChange={() => setCheck((x) => !x)}
-			/>
-			<h3 className="collapse-title font-semibold">{title}</h3>
-			<p className="collapse-content text-sm">{desc}</p>
-		</div>
 	);
 }
 
