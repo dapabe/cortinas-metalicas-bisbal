@@ -4,7 +4,7 @@ export default function robots() {
 		rules: {
 			userAgent: "*",
 			allow: "/",
-			disallow: ["/api/"],
+			disallow: ["/api/", "/work/demo1.mp4", "/work/demo5.mp4"],
 		},
 		sitemap: "https://www.cortinasbisbal.com.ar/sitemap.xml",
 	};
