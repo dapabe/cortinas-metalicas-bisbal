@@ -3,7 +3,7 @@ import Script from "next/script";
 
 export function GoogleAnalytics() {
 	return (
-		<Head key={"GoogleAnalytics"}>
+		<>
 			{/* <!-- Google tag (gtag.js) --> */}
 			<Script
 				async
@@ -17,6 +17,6 @@ export function GoogleAnalytics() {
 
         gtag('config', 'G-9548H3F814');
       `}</Script>
-		</Head>
+		</>
 	);
 }
