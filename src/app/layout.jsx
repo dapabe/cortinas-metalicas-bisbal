@@ -45,7 +45,7 @@ export const metadata = {
 		title: "Cortinas Metálicas Bisbal",
 		description:
 			"Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
-		url: "http://www.cortinasmetalicasbisbal.com.ar",
+		url: "https://www.cortinasbisbal.com.ar",
 		siteName: "Cortinas Metálicas Bisbal",
 		type: "website",
 		images: {
