@@ -50,7 +50,7 @@ export const metadata = {
 		siteName: "Cortinas Metálicas Bisbal",
 		type: "website",
 		images: {
-			url: "/work/cortina6.jpg",
+			url: PROD_WEBSITE.toString() + "work/cortina6.jpg",
 			width: 1440,
 			height: 1800,
 			alt: "Cortinas Metálicas Bisbal - Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
@@ -58,6 +58,9 @@ export const metadata = {
 	},
 	keywords: [
 		"Cortinas metálicas",
+		"Cortinas enrollables",
+		"Cortinas metálicas en CABA",
+		"Cortinas enrollables en CABA",
 		"Persianas enrollables",
 		"Reparación de cortinas metálicas",
 		"Motorización de cortinas metálicas",

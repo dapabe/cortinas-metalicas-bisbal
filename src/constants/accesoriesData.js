@@ -40,7 +40,7 @@ export const AccesoriesData = new Map([
 	[
 		"acc5.webp",
 		{
-			name: "Tablillas de Madera",
+			name: "Tablillas de Chapa Reforzada",
 			description: "Símil Madera",
 			sizes: [622, 830],
 		},

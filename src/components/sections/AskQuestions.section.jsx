@@ -29,7 +29,7 @@ export function AskQuestionsSection() {
 				/>
 				<Accordion
 					title="¿Hasta donde hacen envios?"
-					desc="Hacemos envios a todo el país."
+					desc="Hacemos envios a todo el país"
 				/>
 			</div>
 
