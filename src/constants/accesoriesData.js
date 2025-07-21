@@ -40,13 +40,21 @@ export const AccesoriesData = new Map([
 	[
 		"acc5.webp",
 		{
+			name: "Tablillas de Madera",
+			description: "Símil Madera",
+			sizes: [622, 830],
+		},
+	],
+	[
+		"acc6.webp",
+		{
 			name: "Tablillas Ciegas",
 			description: "Reforzadas y galvanizadas",
 			sizes: [659, 439],
 		},
 	],
 	[
-		"acc6.webp",
+		"acc7.webp",
 		{
 			name: "Guias de Seguridad",
 			description: "Reforzadas y galvanizadas",
@@ -54,7 +62,7 @@ export const AccesoriesData = new Map([
 		},
 	],
 	[
-		"acc7.webp",
+		"acc8.webp",
 		{
 			name: "Puerta de Escape",
 			description: "Reforzada con orejas de candado y cerradura",
