@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { OpenMail } from "../OpenMail";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
@@ -56,6 +54,26 @@ export function Footer() {
 				<h3 className="footer-title">Correo</h3>
 				<div className="inline-flex items-center gap-x-1">
 					<OpenMail email="bisbalcristian70@gmail.com" />
+					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
+				</div>
+			</nav>
+
+			<nav aria-label="Creador del sitio web">
+				<h3 className="footer-title">Creador del sitio web</h3>
+				<div className="inline-flex items-center gap-x-1">
+					<OpenMail email="dapadev@hotmail.com" />
+					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
+				</div>
+				<div className="inline-flex items-center gap-x-1">
+					<Link
+						aria-label="Link hacia otras formas de contacto del creador"
+						href="https://linktr.ee/denzere"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="link link-hover inline-flex items-center gap-x-1"
+					>
+						Otras formas de contacto
+					</Link>
 					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
 				</div>
 			</nav>
