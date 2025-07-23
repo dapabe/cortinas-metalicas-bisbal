@@ -12,6 +12,7 @@
     "@emailjs/nodejs": "5.0.2",
     "@heroicons/react": "2.2.0",
     "@hookform/resolvers": "5.1.1",
+    "jspdf": "3.0.1",
     "next": "15.3.3",
     "nodemailer": "7.0.3",
     "react": "^19.0.0",
