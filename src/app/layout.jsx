@@ -1,5 +1,6 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { Toaster } from "#/components/Toaster";
 import { GoogleAnalytics } from "#/components/google/GoogleAnalytics";
 
@@ -45,7 +46,7 @@ export const metadata = {
 		locale: "es_AR",
 		title: "Cortinas Metálicas Bisbal",
 		description:
-			"Instalación, Reparación y Motorizacion de Cortinas Metálicas, y Persianas por CABA, Matadero y alrededores.",
+			"Instalación, Reparación, Motorizacion de Cortinas Metálicas y Persianas por CABA, Matadero y alrededores.",
 		url: PROD_WEBSITE,
 		siteName: "Cortinas Metálicas Bisbal",
 		type: "website",
@@ -85,6 +86,7 @@ export default function RootLayout({ children }) {
 			>
 				{children}
 				<Toaster />
+				<VercelAnalytics />
 			</body>
 		</html>
 	);
