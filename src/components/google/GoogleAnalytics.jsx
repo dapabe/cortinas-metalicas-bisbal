@@ -16,6 +16,15 @@ export function GoogleAnalytics() {
 
         gtag('config', 'G-9548H3F814');
       `}</Script>
+
+			{/* <!-- Event snippet for Vista de página conversion page --> */}
+			<Script id="google-conversion" strategy="afterInteractive">
+				{`gtag('event', 'conversion', {
+      			'send_to': 'AW-17275363072/nKINCN-Fw-QaEIC-xK1A',
+      			'value': 1.0,
+      			'currency': 'ARS'
+  				});`}
+			</Script>
 		</>
 	);
 }

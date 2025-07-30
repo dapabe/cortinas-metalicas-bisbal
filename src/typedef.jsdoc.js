@@ -21,7 +21,7 @@
 /**
  * @typedef {Object} IBudgetItem
  * @property {string} id
- * @property {string} name
+ * @property {string} description
  * @property {number} price
  * @property {number} quantity
  * @property {number} discount

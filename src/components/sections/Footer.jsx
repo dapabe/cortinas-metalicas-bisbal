@@ -60,10 +60,10 @@ export function Footer() {
 
 			<nav aria-label="Creador del sitio web">
 				<h3 className="footer-title">Creador del sitio web</h3>
-				<div className="inline-flex items-center gap-x-1">
+				{/* <div className="inline-flex items-center gap-x-1">
 					<OpenMail email="dapadev@hotmail.com" />
 					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
-				</div>
+				</div> */}
 				<div className="inline-flex items-center gap-x-1">
 					<Link
 						aria-label="Link hacia otras formas de contacto del creador"
@@ -72,10 +72,19 @@ export function Footer() {
 						rel="noopener noreferrer"
 						className="link link-hover inline-flex items-center gap-x-1"
 					>
-						Otras formas de contacto
+						Formas de contacto
 					</Link>
 					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
 				</div>
+				{/* <div className="inline-flex items-center gap-x-1">
+					<Link
+						tabIndex={-1}
+						href="/backoffice"
+						className="link link-hover inline-flex items-center gap-x-1"
+					>
+						Personal Autorizado
+					</Link>
+				</div> */}
 			</nav>
 		</footer>
 	);

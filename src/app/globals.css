@@ -7,6 +7,13 @@
 	.yes-scrollbar::-webkit-scrollbar {
 		display: inline-block;
 	}
+
+	.a4-container {
+		width: 210mm;
+		height: 297mm;
+		/* margin: 0 auto;
+		padding: 1rem; */
+	}
 }
 
 @theme {
@@ -15,4 +22,12 @@
 
 @plugin "daisyui" {
 	themes: light --default, bumblebee;
+}
+
+@layer base {
+	input[type="number"]::-webkit-inner-spin-button,
+	input[type="number"]::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
 }
