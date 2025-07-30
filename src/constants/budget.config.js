@@ -2,7 +2,7 @@ export const BudgetConfig = {
 	Titles: {
 		Description: "Descripción",
 		Quantity: "Cantidad",
-		UnitPrice: "P. Unitario",
+		UnitPrice: "Precio Unitario",
 		Total: "Total",
 	},
 };
