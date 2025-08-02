@@ -7,24 +7,23 @@ import {
 	useFieldArray,
 	useForm,
 	useFormContext,
+	useWatch,
 } from "react-hook-form";
 
 /**
  * @typedef {Object} IBudgetForm
+ * @property {boolean} _onlyShowTotal
  * @property {IBudgetItem[]} list
  */
 
 export function BudgetTableForm() {
 	const budget = useBudgetStore();
-	const { control, register, handleSubmit } = useForm({
+	const methods = useForm({
 		/** @type {IBudgetForm} */
 		defaultValues: {
+			_onlyShowTotal: false,
 			list: [],
 		},
-	});
-	const arr = useFieldArray({
-		control,
-		name: "list",
 	});
 
 	/**	@param {IBudgetForm} data */
@@ -32,117 +31,264 @@ export function BudgetTableForm() {
 		budget.generatePDF(data.list);
 	};
 
+	return (
+		<FormProvider {...methods}>
+			<form
+				className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100"
+				onSubmit={methods.handleSubmit(onSubmit)}
+			>
+				<table className="table">
+					<thead>
+						<tr>
+							<th>
+								<label className="label">
+									<input
+										type="checkbox"
+										className="checkbox"
+										{...methods.register("_onlyShowTotal")}
+									/>
+									Mostrar solo el resumen final
+								</label>
+							</th>
+							<th colSpan={3}></th>
+							<th colSpan={1}>
+								<button type="submit" className="btn btn-success">
+									Descargar PDF
+								</button>
+							</th>
+						</tr>
+						<tr className="[&>th]:text-center">
+							<th>{BudgetConfig.Titles.Description}</th>
+							<th>{BudgetConfig.Titles.Quantity}</th>
+							<th>{BudgetConfig.Titles.UnitPrice}</th>
+							<th>{BudgetConfig.Titles.Total}</th>
+							<th></th>
+						</tr>
+					</thead>
+					<BudgetTableForm.ItemList />
+				</table>
+			</form>
+		</FormProvider>
+	);
+}
+
+BudgetTableForm.ItemList = function ItemList() {
+	const { control } = useFormContext();
+	const arr = useFieldArray({
+		control: control,
+		name: "list",
+	});
+
+	const list = useWatch({
+		control: control,
+		name: "list",
+	});
+
 	useEffect(() => {
-		if (!arr.fields.length) {
+		if (!list.length) {
 			arr.append({ description: "", quantity: 1, price: 0 });
 		}
 	}, []);
 
 	return (
-		<form
-			className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100"
-			onSubmit={handleSubmit(onSubmit)}
-		>
-			<table className="table">
-				<thead>
-					<tr>
-						<th colSpan={2}></th>
-						<th colSpan={2}>
-							<button type="submit" className="btn btn-success">
-								Descargar PDF
-							</button>
-						</th>
-					</tr>
-					<tr className="[&>th]:text-center">
-						<th>{BudgetConfig.Titles.Description}</th>
-						<th>{BudgetConfig.Titles.Quantity}</th>
-						<th>{BudgetConfig.Titles.UnitPrice}</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{arr.fields.map((field, index) => (
-						<tr key={field.id}>
-							<td>
-								<textarea
-									{...register(`list.${index}.description`)}
-									className="textarea textarea-sm resize-none"
-								/>
-							</td>
-							<td>
-								<div className="join">
-									<button
-										className="btn btn-sm join-item rounded-l-full"
-										onClick={() =>
-											arr.update(index, {
-												...field,
-												quantity: parseInt(field.quantity) - 1,
-											})
-										}
-									>
-										-
-									</button>
-									<input
-										type="number"
-										{...register(`list.${index}.quantity`)}
-										className="input input-sm join-item w-12"
-									/>
-									<button
-										className="btn btn-sm join-item rounded-r-full"
-										onClick={() =>
-											arr.update(index, {
-												...field,
-												quantity: parseInt(field.quantity) + 1,
-											})
-										}
-									>
-										+
-									</button>
-								</div>
-							</td>
-							<td>
-								<label className="input input-sm w-32">
-									<span className="label">$</span>
-									<input type="number" {...register(`list.${index}.price`)} />
-								</label>
-							</td>
-							<td>
-								<button
-									type="button"
-									className="btn btn-sm btn-block btn-error"
-									onClick={() => arr.remove(index)}
-								>
-									<XMarkIcon className="size-6" />
-								</button>
-							</td>
-						</tr>
-					))}
-					{arr.fields.length ? (
-						<tr>
-							<td colSpan={3}></td>
-							<td>
-								Total:{" "}
-								<span className="font-mono font-semibold">
-									${budget.calculateTotal(arr.fields)}
-								</span>
-							</td>
-						</tr>
-					) : null}
-					<tr>
-						<td colSpan={3} className="text-center">
-							<button
-								className="btn btn-block"
-								onClick={() =>
-									arr.append({ description: "", quantity: 1, price: 0 })
-								}
-							>
-								<PlusCircleIcon className="inline size-6" />
-								Nuevo Item
-							</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</form>
+		<tbody>
+			{list.map((_, index) => (
+				<BudgetTableForm.RowItem key={index} index={index} />
+			))}
+			<BudgetTableForm.TableResult />
+			<BudgetTableForm.AddItem />
+		</tbody>
 	);
-}
+};
+
+/**
+ * @component
+ * @param {{index: number }} props
+ */
+BudgetTableForm.RowItem = function RowItem({ index }) {
+	const { register } = useFormContext();
+
+	return (
+		<tr>
+			<td>
+				<textarea
+					{...register(`list.${index}.description`)}
+					className="textarea textarea-sm min-w-32 resize-none"
+				/>
+			</td>
+			<td>
+				<BudgetTableForm.InputQuantity index={index} />
+			</td>
+			<td>
+				<BudgetTableForm.InputPrice index={index} />
+			</td>
+			<td>
+				<BudgetTableForm.RowTotal index={index} />
+			</td>
+			<td>
+				<BudgetTableForm.RemoveItem index={index} />
+			</td>
+		</tr>
+	);
+};
+
+/**
+ * @component
+ * @param {{index: number }} props
+ */
+BudgetTableForm.InputQuantity = function InputQuantity({ index }) {
+	const { register, getValues, setValue } = useFormContext();
+
+	const quantity = getValues(`list.${index}.quantity`);
+
+	return (
+		<div className="join">
+			<button
+				type="button"
+				className="btn btn-sm join-item rounded-l-full"
+				disabled={quantity <= 1}
+				onClick={() => {
+					const newValue = Math.max(1, parseInt(quantity) - 1);
+					setValue(`list.${index}.quantity`, newValue);
+				}}
+			>
+				-
+			</button>
+			<input
+				type="number"
+				inputMode="numeric"
+				min={1}
+				{...register(`list.${index}.quantity`)}
+				className="join-item input input-sm invalid:input-error w-12"
+			/>
+			<button
+				type="button"
+				className="btn btn-sm join-item rounded-r-full"
+				onClick={() => {
+					const newValue = parseInt(quantity) + 1;
+					setValue(`list.${index}.quantity`, newValue);
+				}}
+			>
+				+
+			</button>
+		</div>
+	);
+};
+
+BudgetTableForm.InputPrice = function InputPrice({ index }) {
+	const { control, register } = useFormContext();
+
+	/** @type {number} */
+	const value = useWatch({ control, name: `list.${index}.price` });
+
+	return (
+		<label
+			aria-invalid={value < 0 ? "true" : undefined}
+			className="input input-sm aria-[invalid]:input-error w-32"
+		>
+			<span className="label">$</span>
+			<input
+				type="number"
+				inputMode="numeric"
+				min={0}
+				{...register(`list.${index}.price`)}
+			/>
+		</label>
+	);
+};
+
+BudgetTableForm.RowTotal = function RowTotal({ index }) {
+	const budget = useBudgetStore();
+	const { control } = useFormContext();
+
+	/** @type {IBudgetForm} */
+	const form = useWatch({
+		control: control,
+	});
+
+	return (
+		<div className="text-center max-w-40 truncate">
+			<span className="font-mono font-semibold">
+				{form._onlyShowTotal
+					? "-"
+					: budget.formatCurrency(
+							form.list[index].quantity * form.list[index].price
+					  )}
+			</span>
+		</div>
+	);
+};
+
+/**
+ * @component
+ * @param {{index: number}} props
+ */
+BudgetTableForm.RemoveItem = function RemoveItem({ index }) {
+	const { control } = useFormContext();
+	const arr = useFieldArray({
+		control,
+		name: "list",
+	});
+
+	/**	@type {IBudgetItem[]} */
+	const items = useWatch({ control, name: "list" });
+
+	return (
+		<button
+			type="button"
+			disabled={items.length <= 1}
+			className="btn btn-sm btn-block btn-error"
+			onClick={() => arr.remove(index)}
+		>
+			<XMarkIcon className="size-6" />
+		</button>
+	);
+};
+
+BudgetTableForm.TableResult = function TableResult() {
+	const budget = useBudgetStore();
+	const { control } = useFormContext();
+
+	/** @type {IBudgetItem[]} */
+	const data = useWatch({
+		control,
+		name: "list",
+	});
+
+	if (!data.length) return null;
+
+	return (
+		<tr>
+			{/* <td colSpan={3}></td> */}
+			<td colSpan={"100%"}>
+				Total:{" "}
+				<span className="font-mono font-semibold">
+					{budget.calculateTotal(data)}
+				</span>
+			</td>
+		</tr>
+	);
+};
+
+BudgetTableForm.AddItem = function AddItem() {
+	const { control } = useFormContext();
+	const { append } = useFieldArray({
+		control,
+		name: "list",
+	});
+
+	return (
+		<tr>
+			<td colSpan={"100%"} className="text-center">
+				<button
+					type="button"
+					className="btn btn-block"
+					onClick={() => append({ description: "", quantity: 1, price: 0 })}
+				>
+					<PlusCircleIcon className="inline size-6" />
+					Nuevo Item
+				</button>
+			</td>
+		</tr>
+	);
+};

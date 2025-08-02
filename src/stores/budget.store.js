@@ -9,7 +9,7 @@ import { BudgetConfig } from "#/constants/budget.config";
  * @property {number} subtotal
  * @property {number} total
  * @property {(value: number) => string} formatCurrency
- * @property {(values: IBudgetItem[]) => IBudgetTotal} calculateTotal
+ * @property {(values: IBudgetItem[]) => string} calculateTotal
  * @property {(values: IBudgetItem[]) => void} generatePDF
  */
 
@@ -32,7 +32,7 @@ export const useBudgetStore = create((set, get) => ({
 		let total = values.reduce((acc, item) => {
 			return acc + item.price * item.quantity;
 		}, get().total);
-		return total;
+		return get().formatCurrency(total);
 	},
 	generatePDF: (values) => {
 		const doc = new jsPDF({
