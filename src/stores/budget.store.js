@@ -9,8 +9,8 @@ import { BudgetConfig } from "#/constants/budget.config";
  * @property {number} subtotal
  * @property {number} total
  * @property {(value: number) => string} formatCurrency
- * @property {(values: IBudgetItem[]) => string} calculateTotal
- * @property {(values: IBudgetItem[]) => void} generatePDF
+ * @property {(values: IBudgetItem[]) => number} calculateTotal
+ * @property {(data: import("#/components/pages/backoffice/BudgetTable.form").IBudgetForm) => void} generatePDF
  */
 
 const currencyIntl = new Intl.NumberFormat("es-AR", {
@@ -32,9 +32,9 @@ export const useBudgetStore = create((set, get) => ({
 		let total = values.reduce((acc, item) => {
 			return acc + item.price * item.quantity;
 		}, get().total);
-		return get().formatCurrency(total);
+		return total;
 	},
-	generatePDF: (values) => {
+	generatePDF: (data) => {
 		const doc = new jsPDF({
 			orientation: "portrait",
 			unit: "mm",
@@ -54,7 +54,7 @@ export const useBudgetStore = create((set, get) => ({
 
 		autoTable(doc, {
 			head: [Object.values(BudgetConfig.Titles)],
-			body: values.map((x) => [
+			body: data.list.map((x) => [
 				x.description,
 				x.quantity,
 				get().formatCurrency(x.price),

@@ -3,6 +3,6 @@ export const BudgetConfig = {
 		Description: "Descripción",
 		Quantity: "Cantidad",
 		UnitPrice: "Precio Unitario",
-		Total: "Total",
+		Subtotal: "Subtotal",
 	},
 };
