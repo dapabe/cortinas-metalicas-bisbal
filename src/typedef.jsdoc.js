@@ -24,7 +24,7 @@
  * @property {number} price
  * @property {number} quantity
  * @property {number} discount
- * @property {number} total
+ * @property {number} subtotal
  */
 
 /**

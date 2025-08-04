@@ -3,6 +3,13 @@ export const BudgetConfig = {
 		Description: "Descripción",
 		Quantity: "Cantidad",
 		UnitPrice: "Precio Unitario",
+		Discount: "Descuento",
 		Subtotal: "Subtotal",
+	},
+	PDF: {
+		Fields: {
+			createdAt: "createdAt",
+			validUntil: "validUntil",
+		},
 	},
 };

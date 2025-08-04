@@ -1,3 +1,8 @@
+/** @type {import("next").Metadata} */
+export const metadata = {
+	title: "Backoffice - Cortinas Metálicas Bisbal",
+};
+
 export default function Layout({ children }) {
 	return (
 		<div className="flex flex-col min-h-screen">

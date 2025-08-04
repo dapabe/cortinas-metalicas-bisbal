@@ -1,5 +1,3 @@
-"use client";
-
 import { BudgetTableForm } from "#/components/pages/backoffice/BudgetTable.form";
 
 export default function Page() {

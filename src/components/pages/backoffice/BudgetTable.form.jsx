@@ -1,7 +1,8 @@
+"use client";
 import { BudgetConfig } from "#/constants/budget.config";
 import { useBudgetStore } from "#/stores/budget.store";
-import { PlusCircleIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useEffect } from "react";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { useEffect, useMemo } from "react";
 import {
 	FormProvider,
 	useFieldArray,
@@ -9,74 +10,140 @@ import {
 	useFormContext,
 	useWatch,
 } from "react-hook-form";
-
-/**
- * @typedef {Object} IBudgetForm
- * @property {boolean} _onlyShowTotal
- * @property {IBudgetItem[]} list
- * @property {number} total
- */
+import { BudgetTableFormRow } from "./BudgetTable.form.Row";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { BudgetFormSchema } from "#/schemas/BudgetForm.schema";
 
 export function BudgetTableForm() {
 	const budget = useBudgetStore();
 	const methods = useForm({
-		/** @type {IBudgetForm} */
+		/** @type {import("#/schemas/BudgetForm.schema").IBudgetForm} */
 		defaultValues: {
 			_onlyShowTotal: false,
+			createdAt: new Date().toISOString().split("T")[0],
+			validUntil: null,
+			clientName: null,
+			clientLocation: null,
+			clientContact: null,
+			clientID: null,
 			list: [],
 			total: 0,
 		},
+		resolver: zodResolver(BudgetFormSchema),
 	});
 
 	/**	@param {IBudgetForm} data */
 	const onSubmit = (data) => {
-		budget.generatePDF(data);
+		console.log(data);
+		// budget.generatePDF(data);
 	};
 
 	return (
 		<FormProvider {...methods}>
 			<form
-				className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100"
+				className="flex flex-col gap-4"
 				onSubmit={methods.handleSubmit(onSubmit)}
 			>
-				<table className="table">
-					<thead>
-						<tr>
-							<th>
-								<label className="label">
-									<input
-										type="checkbox"
-										className="checkbox"
-										{...methods.register("_onlyShowTotal")}
-									/>
-									Modificar solo el resumen final
-								</label>
-							</th>
-							<th colSpan={3}></th>
-							<th colSpan={1}>
-								<button type="submit" className="btn btn-success">
-									Descargar PDF
-								</button>
-							</th>
-						</tr>
-						<tr className="[&>th]:text-center">
-							<th>{BudgetConfig.Titles.Description}</th>
-							<th>{BudgetConfig.Titles.Quantity}</th>
-							<th>{BudgetConfig.Titles.UnitPrice}</th>
-							<th>{BudgetConfig.Titles.Subtotal}</th>
-							<th></th>
-						</tr>
-					</thead>
-					<BudgetTableForm.ItemList />
-					<tfoot>
-						<tr>
-							<BudgetTableForm.TableResult />
-						</tr>
-						<tr>
-							<BudgetTableForm.AddItem />
-						</tr>
-					</tfoot>
-				</table>
+				<section className="flex gap-4">
+					<fieldset className="fieldset bg-base-200 p-4 rounded-box w-max">
+						<legend className="fieldset-legend text-lg">
+							Datos del cliente
+						</legend>
+
+						<div className="flex gap-2">
+							<label className="input">
+								<span className="label">
+									Nombre/Razón social
+									<span className="text-error">*</span>
+								</span>
+								<input type="text" {...methods.register("clientName")} />
+							</label>
+							<label className="input">
+								<span className="label">Dirección</span>
+								<input type="text" {...methods.register("clientLocation")} />
+							</label>
+						</div>
+						<div className="flex gap-2">
+							<label className="input">
+								<span className="label">Contacto</span>
+								<input type="text" {...methods.register("clientContact")} />
+							</label>
+							<label className="input">
+								<span className="label">CUIT/CUIL/DNI</span>
+								<input type="text" {...methods.register("clientID")} />
+							</label>
+						</div>
+					</fieldset>
+
+					<fieldset className="fieldset bg-base-200 p-4 rounded-box w-max">
+						<legend className="fieldset-legend text-lg">
+							Fechas del presupuesto
+						</legend>
+
+						<div className="flex flex-col gap-2">
+							<label className="input">
+								<span className="label">Creado el</span>
+								<input
+									type="date"
+									min={new Date().toISOString().split("T")[0]}
+									{...methods.register("createdAt")}
+								/>
+							</label>
+							<label className="input">
+								<span className="label">Válido hasta</span>
+								<input
+									type="date"
+									min={new Date().toISOString().split("T")[0]}
+									{...methods.register("validUntil")}
+								/>
+							</label>
+						</div>
+					</fieldset>
+
+					<div className="p-4 w-max flex items-center justify-center mx-auto">
+						<button type="submit" className="btn btn-success">
+							Descargar PDF
+						</button>
+					</div>
+				</section>
+
+				<div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+					<table className="table">
+						<thead>
+							<tr>
+								<th>
+									<label className="label">
+										<input
+											type="checkbox"
+											className="checkbox"
+											{...methods.register("_onlyShowTotal")}
+										/>
+										Modificar solo el resumen final
+									</label>
+								</th>
+								<th colSpan={3}></th>
+								<th colSpan={1}></th>
+							</tr>
+							<tr className="[&>th]:text-center">
+								<th>{BudgetConfig.Titles.Description}</th>
+								<th>{BudgetConfig.Titles.Quantity}</th>
+								<th>{BudgetConfig.Titles.UnitPrice}</th>
+								<th>{BudgetConfig.Titles.Discount}</th>
+								<th>{BudgetConfig.Titles.Subtotal}</th>
+								<th></th>
+							</tr>
+						</thead>
+						<BudgetTableForm.ItemList />
+						<tfoot>
+							<tr>
+								<BudgetTableForm.TableResult />
+							</tr>
+							<tr>
+								<BudgetTableForm.AddItem />
+							</tr>
+						</tfoot>
+					</table>
+				</div>
 			</form>
 		</FormProvider>
 	);
@@ -96,165 +163,22 @@ BudgetTableForm.ItemList = function ItemList() {
 
 	useEffect(() => {
 		if (!list.length) {
-			arr.append({ description: "", quantity: 1, price: 0 });
+			arr.append({
+				description: "",
+				quantity: 1,
+				price: 0,
+				discount: 0,
+				subtotal: 0,
+			});
 		}
 	}, []);
 
 	return (
 		<tbody>
 			{list.map((_, index) => (
-				<BudgetTableForm.RowItem key={index} index={index} />
+				<BudgetTableFormRow key={index} index={index} />
 			))}
 		</tbody>
-	);
-};
-
-/**
- * @component
- * @param {{index: number }} props
- */
-BudgetTableForm.RowItem = function RowItem({ index }) {
-	const { register } = useFormContext();
-
-	return (
-		<tr>
-			<td>
-				<textarea
-					{...register(`list.${index}.description`)}
-					className="textarea textarea-sm min-w-32 resize-none"
-				/>
-			</td>
-			<td>
-				<BudgetTableForm.InputQuantity index={index} />
-			</td>
-			<td>
-				<BudgetTableForm.InputPrice index={index} />
-			</td>
-			<td>
-				<BudgetTableForm.RowTotal index={index} />
-			</td>
-			<td>
-				<BudgetTableForm.RemoveItem index={index} />
-			</td>
-		</tr>
-	);
-};
-
-/**
- * @component
- * @param {{index: number }} props
- */
-BudgetTableForm.InputQuantity = function InputQuantity({ index }) {
-	const { register, getValues, setValue } = useFormContext();
-
-	const quantity = getValues(`list.${index}.quantity`);
-
-	return (
-		<div className="join">
-			<button
-				type="button"
-				className="btn btn-sm join-item rounded-l-full"
-				disabled={quantity <= 1}
-				onClick={() => {
-					const newValue = Math.max(1, parseInt(quantity) - 1);
-					setValue(`list.${index}.quantity`, newValue);
-				}}
-			>
-				-
-			</button>
-			<input
-				type="number"
-				inputMode="numeric"
-				min={1}
-				{...register(`list.${index}.quantity`)}
-				className="join-item input input-sm invalid:input-error w-12"
-			/>
-			<button
-				type="button"
-				className="btn btn-sm join-item rounded-r-full"
-				onClick={() => {
-					const newValue = parseInt(quantity) + 1;
-					setValue(`list.${index}.quantity`, newValue);
-				}}
-			>
-				+
-			</button>
-		</div>
-	);
-};
-
-BudgetTableForm.InputPrice = function InputPrice({ index }) {
-	const { control, register } = useFormContext();
-
-	/** @type {boolean} */
-	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
-
-	/** @type {number} */
-	const value = useWatch({ control, name: `list.${index}.price` });
-
-	if (_onlyShowTotal) return "-";
-
-	return (
-		<label
-			aria-invalid={value < 0 ? "true" : undefined}
-			className="input input-sm aria-[invalid]:input-error w-32"
-		>
-			<span className="label">$</span>
-			<input
-				type="number"
-				inputMode="numeric"
-				min={0}
-				{...register(`list.${index}.price`)}
-			/>
-		</label>
-	);
-};
-
-BudgetTableForm.RowTotal = function RowTotal({ index }) {
-	const budget = useBudgetStore();
-	const { control } = useFormContext();
-
-	/** @type {IBudgetForm} */
-	const form = useWatch({
-		control: control,
-	});
-
-	return (
-		<div className="text-center max-w-40 truncate">
-			<span className="font-mono font-semibold">
-				{form._onlyShowTotal
-					? "-"
-					: budget.formatCurrency(
-							form.list[index].quantity * form.list[index].price
-					  )}
-			</span>
-		</div>
-	);
-};
-
-/**
- * @component
- * @param {{index: number}} props
- */
-BudgetTableForm.RemoveItem = function RemoveItem({ index }) {
-	const { control } = useFormContext();
-	const arr = useFieldArray({
-		control,
-		name: "list",
-	});
-
-	/**	@type {IBudgetItem[]} */
-	const items = useWatch({ control, name: "list" });
-
-	return (
-		<button
-			type="button"
-			disabled={items.length <= 1}
-			className="btn btn-sm btn-block btn-error"
-			onClick={() => arr.remove(index)}
-		>
-			<XMarkIcon className="size-6" />
-		</button>
 	);
 };
 
@@ -264,32 +188,35 @@ BudgetTableForm.TableResult = function TableResult() {
 
 	/** @type {IBudgetItem[]} */
 	const formList = useWatch({ control, name: "list" });
+	/** @type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
 
-	useEffect(() => {
-		const total = budget.calculateTotal(formList);
-		if (!_onlyShowTotal && formList.length) setValue("total", total);
+	const displayedTotal = useMemo(
+		() => budget.calculateTotal(formList),
+		[formList]
+	);
 
-		return () => setValue("total", total);
+	useEffect(() => {
+		if (!_onlyShowTotal && formList.length) setValue("total", displayedTotal);
+		return () => setValue("total", displayedTotal);
 	}, [_onlyShowTotal, formList]);
 
 	if (!formList.length) return null;
 
 	return (
-		<td colSpan={1}>
+		<td colSpan={"100%"}>
 			<label className="input input-md">
 				Total:
 				{_onlyShowTotal ? (
 					<input
 						type="number"
 						inputMode="number"
-						disabled={!_onlyShowTotal}
 						className="grow"
 						{...register("total")}
 					/>
 				) : (
 					<span className="font-mono font-semibold">
-						{budget.formatCurrency(budget.calculateTotal(formList))}
+						{budget.formatCurrency(displayedTotal)}
 					</span>
 				)}
 			</label>
@@ -309,7 +236,15 @@ BudgetTableForm.AddItem = function AddItem() {
 			<button
 				type="button"
 				className="btn btn-block"
-				onClick={() => append({ description: "", quantity: 1, price: 0 })}
+				onClick={() =>
+					append({
+						description: "",
+						quantity: 1,
+						price: 0,
+						discount: 0,
+						subtotal: 0,
+					})
+				}
 			>
 				<PlusCircleIcon className="inline size-6" />
 				Nuevo Item

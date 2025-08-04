@@ -6,8 +6,6 @@ import { BudgetConfig } from "#/constants/budget.config";
 /**
  * @typedef {Object} IBudgetStore
  * @property {number} _IVA;
- * @property {number} subtotal
- * @property {number} total
  * @property {(value: number) => string} formatCurrency
  * @property {(values: IBudgetItem[]) => number} calculateTotal
  * @property {(data: import("#/components/pages/backoffice/BudgetTable.form").IBudgetForm) => void} generatePDF
@@ -23,15 +21,14 @@ const currencyIntl = new Intl.NumberFormat("es-AR", {
 /**
  * @type {import("zustand").UseBoundStore<import("zustand").StoreApi<IBudgetStore>>}
  */
-export const useBudgetStore = create((set, get) => ({
+export const useBudgetStore = create((_, get) => ({
 	_IVA: 1.21, // 21% IVA
-	subtotal: 0,
-	total: 0,
 	formatCurrency: (value) => currencyIntl.format(value),
 	calculateTotal: (values) => {
 		let total = values.reduce((acc, item) => {
-			return acc + item.price * item.quantity;
-		}, get().total);
+			const subtotal = acc + item.price * item.quantity;
+			return subtotal - (subtotal * item.discount) / 100;
+		}, 0);
 		return total;
 	},
 	generatePDF: (data) => {
