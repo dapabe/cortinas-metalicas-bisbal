@@ -1,14 +1,13 @@
 import { create } from "zustand";
-import { jsPDF } from "jspdf";
-import { autoTable } from "jspdf-autotable";
 import { BudgetConfig } from "#/constants/budget.config";
+import { PDFDocument } from "pdf-lib";
 
 /**
  * @typedef {Object} IBudgetStore
  * @property {number} _IVA;
  * @property {(value: number) => string} formatCurrency
  * @property {(values: IBudgetItem[]) => number} calculateTotal
- * @property {(data: import("#/components/pages/backoffice/BudgetTable.form").IBudgetForm) => void} generatePDF
+ * @property {(data: import("#/schemas/BudgetForm.schema").IBudgetForm) => void} generatePDF
  */
 
 const currencyIntl = new Intl.NumberFormat("es-AR", {
@@ -17,6 +16,13 @@ const currencyIntl = new Intl.NumberFormat("es-AR", {
 	minimumFractionDigits: 2,
 	maximumFractionDigits: 2,
 });
+/**	@param {Date} date */
+const formatDateToString = (date) =>
+	new Date(date).toLocaleDateString("es-AR", {
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+	});
 
 /**
  * @type {import("zustand").UseBoundStore<import("zustand").StoreApi<IBudgetStore>>}
@@ -31,41 +37,32 @@ export const useBudgetStore = create((_, get) => ({
 		}, 0);
 		return total;
 	},
-	generatePDF: (data) => {
-		const doc = new jsPDF({
-			orientation: "portrait",
-			unit: "mm",
-			format: "a4",
-		});
-
-		doc.setFont("Helvetica", "normal");
-		doc.setFontSize(12);
-		doc.text("Presupuesto", 10, 10);
-		doc.text(`Subtotal: ${get().formatCurrency(get().subtotal)}`, 10, 20);
-		doc.text(
-			`IVA: ${get().formatCurrency(get().subtotal * (get()._IVA - 1))}`,
-			10,
-			30
+	generatePDF: async (data) => {
+		const templateBytes = await fetch("/CortinasBisbal-Plantilla.pdf").then(
+			(x) => x.arrayBuffer()
 		);
-		doc.text(`Total: ${get().formatCurrency(get().total)}`, 10, 40);
+		let doc = await PDFDocument.load(templateBytes);
+		const form = doc.getForm();
+		/**
+		 * @param {string} fieldName
+		 * @param {(value: any) => string|null} cb
+		 */
+		const setField = (fieldName, cb = null) => {
+			let f = form.getTextField(fieldName);
+			f.setText(cb ? cb(data[fieldName]) : data[fieldName]);
+			f.enableReadOnly();
+		};
+		setField("createdAt", (v) => formatDateToString(v));
+		setField("validUntil", (v) => (v ? formatDateToString(v) : undefined));
+		setField("clientName");
+		setField("clientLocation");
+		setField("clientContact");
+		setField("clientID");
 
-		autoTable(doc, {
-			head: [Object.values(BudgetConfig.Titles)],
-			body: data.list.map((x) => [
-				x.description,
-				x.quantity,
-				get().formatCurrency(x.price),
-			]),
-		});
-
-		const simpleDate = new Date().toLocaleDateString("es-AR", {
-			year: "numeric",
-			month: "2-digit",
-			day: "2-digit",
-		});
-
-		// doc.autoPrint({ variant: "javascript" });
-		doc.output("dataurlnewwindow");
-		// doc.save(`cortinasbisbal-presupuesto-${simpleDate}.pdf`);
+		setField("total", (v) => currencyIntl.format(parseInt(v)));
+		setField("notes");
+		const bytes = await doc.save();
+		const blob = new Blob([bytes], { type: "application/pdf" });
+		window.open(URL.createObjectURL(blob));
 	},
 }));

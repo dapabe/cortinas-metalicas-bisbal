@@ -112,20 +112,17 @@ BudgetTableFormRow.InputQuantity = function InputQuantity({ index }) {
  * @param {{index: number }} props
  */
 BudgetTableFormRow.InputPrice = function InputPrice({ index }) {
-	const { control, register } = useFormContext();
+	const { control, register, formState } = useFormContext();
 
 	/** @type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
-
-	/** @type {number} */
-	const value = useWatch({ control, name: `list.${index}.price` });
 
 	if (_onlyShowTotal) return "-";
 
 	return (
 		<div className="flex justify-center">
 			<label
-				aria-invalid={value < 0 ? "true" : undefined}
+				aria-invalid={!!formState.errors?.list?.[index] ? "true" : undefined}
 				className="input input-sm aria-[invalid]:input-error w-32"
 			>
 				<span className="label">$</span>

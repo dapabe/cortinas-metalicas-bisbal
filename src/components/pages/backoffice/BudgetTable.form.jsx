@@ -13,6 +13,7 @@ import {
 import { BudgetTableFormRow } from "./BudgetTable.form.Row";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BudgetFormSchema } from "#/schemas/BudgetForm.schema";
+import { HorizontalTextInput } from "#/components/form/HorizontalText.input";
 
 export function BudgetTableForm() {
 	const budget = useBudgetStore();
@@ -22,20 +23,20 @@ export function BudgetTableForm() {
 			_onlyShowTotal: false,
 			createdAt: new Date().toISOString().split("T")[0],
 			validUntil: null,
-			clientName: null,
-			clientLocation: null,
-			clientContact: null,
-			clientID: null,
+			clientName: "",
+			clientLocation: "",
+			clientContact: "",
+			clientID: "",
 			list: [],
-			total: 0,
+			notes: "",
+			total: "0",
 		},
 		resolver: zodResolver(BudgetFormSchema),
 	});
 
 	/**	@param {IBudgetForm} data */
 	const onSubmit = (data) => {
-		console.log(data);
-		// budget.generatePDF(data);
+		budget.generatePDF(data);
 	};
 
 	return (
@@ -44,45 +45,40 @@ export function BudgetTableForm() {
 				className="flex flex-col gap-4"
 				onSubmit={methods.handleSubmit(onSubmit)}
 			>
-				<section className="flex gap-4">
-					<fieldset className="fieldset bg-base-200 p-4 rounded-box w-max">
+				<section className="grid gap-4 grid-cols-4">
+					<fieldset className="col-span-4 md:col-span-2 fieldset bg-base-200 p-4 rounded-box w-fit">
 						<legend className="fieldset-legend text-lg">
 							Datos del cliente
 						</legend>
 
-						<div className="flex gap-2">
-							<label className="input">
-								<span className="label">
-									Nombre/Razón social
-									<span className="text-error">*</span>
-								</span>
-								<input type="text" {...methods.register("clientName")} />
-							</label>
-							<label className="input">
-								<span className="label">Dirección</span>
-								<input type="text" {...methods.register("clientLocation")} />
-							</label>
+						<div className="flex gap-2 flex-col lg:flex-row">
+							<HorizontalTextInput
+								label="Nombre/Razón Social"
+								isRequired
+								inputName="clientName"
+							/>
+							<HorizontalTextInput
+								label="Dirección"
+								inputName="clientLocation"
+							/>
 						</div>
-						<div className="flex gap-2">
-							<label className="input">
-								<span className="label">Contacto</span>
-								<input type="text" {...methods.register("clientContact")} />
-							</label>
-							<label className="input">
-								<span className="label">CUIT/CUIL/DNI</span>
-								<input type="text" {...methods.register("clientID")} />
-							</label>
+						<div className="flex gap-2 flex-col lg:flex-row">
+							<HorizontalTextInput label="Contacto" inputName="clientContact" />
+							<HorizontalTextInput label="CUIT/CUIL/DNI" inputName="clientID" />
 						</div>
 					</fieldset>
 
-					<fieldset className="fieldset bg-base-200 p-4 rounded-box w-max">
+					<fieldset className="col-span-4 md:col-span-1 fieldset bg-base-200 p-4 rounded-box h-max mx-auto">
 						<legend className="fieldset-legend text-lg">
 							Fechas del presupuesto
 						</legend>
 
-						<div className="flex flex-col gap-2">
+						<div className="flex gap-2 flex-col">
 							<label className="input">
-								<span className="label">Creado el</span>
+								<span className="label">
+									Creado el
+									<span className="text-error">*</span>
+								</span>
 								<input
 									type="date"
 									min={new Date().toISOString().split("T")[0]}
@@ -91,16 +87,22 @@ export function BudgetTableForm() {
 							</label>
 							<label className="input">
 								<span className="label">Válido hasta</span>
-								<input
-									type="date"
-									min={new Date().toISOString().split("T")[0]}
-									{...methods.register("validUntil")}
-								/>
+								<input type="date" {...methods.register("validUntil")} />
 							</label>
 						</div>
 					</fieldset>
 
-					<div className="p-4 w-max flex items-center justify-center mx-auto">
+					<fieldset className="col-span-4 md:col-span-2 fieldset bg-base-200 p-4 rounded-box">
+						<legend className="fieldset-legend text-lg">
+							Notas Adicionales
+						</legend>
+						<textarea
+							className="textarea resize-none w-full"
+							{...methods.register("notes")}
+						></textarea>
+					</fieldset>
+
+					<div className="col-span-full lg:col-span-1 p-4 flex items-center justify-center mx-auto">
 						<button type="submit" className="btn btn-success">
 							Descargar PDF
 						</button>
@@ -165,10 +167,10 @@ BudgetTableForm.ItemList = function ItemList() {
 		if (!list.length) {
 			arr.append({
 				description: "",
-				quantity: 1,
-				price: 0,
-				discount: 0,
-				subtotal: 0,
+				quantity: "1",
+				price: "0",
+				discount: "0",
+				subtotal: "0",
 			});
 		}
 	}, []);
@@ -197,8 +199,9 @@ BudgetTableForm.TableResult = function TableResult() {
 	);
 
 	useEffect(() => {
-		if (!_onlyShowTotal && formList.length) setValue("total", displayedTotal);
-		return () => setValue("total", displayedTotal);
+		if (!_onlyShowTotal && formList.length)
+			setValue("total", displayedTotal.toString());
+		return () => setValue("total", displayedTotal.toString());
 	}, [_onlyShowTotal, formList]);
 
 	if (!formList.length) return null;
@@ -239,10 +242,10 @@ BudgetTableForm.AddItem = function AddItem() {
 				onClick={() =>
 					append({
 						description: "",
-						quantity: 1,
-						price: 0,
-						discount: 0,
-						subtotal: 0,
+						quantity: "1",
+						price: "0",
+						discount: "0",
+						subtotal: "0",
 					})
 				}
 			>
