@@ -207,7 +207,7 @@ BudgetTableFormRow.RowTotal = function RowTotal({ index }) {
 	/** @type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
 
-	/**	@type {IBudgetItem} */
+	/**	@type {import("#/schemas/BudgetForm.schema").IBudgetItem} */
 	const item = useWatch({ control, name: `list.${index}` });
 
 	/**	@type {number} */
@@ -240,7 +240,7 @@ BudgetTableFormRow.RemoveItem = function RemoveItem({ index }) {
 		name: "list",
 	});
 
-	/**	@type {IBudgetItem[]} */
+	/**	@type {import("#/schemas/BudgetForm.schema").IBudgetItem[]} */
 	const items = useWatch({ control, name: "list" });
 
 	return (

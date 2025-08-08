@@ -16,9 +16,16 @@ export const BudgetFormSchema = z3.object({
 	clientContact: z3.string().optional(),
 	clientID: z3.string().optional(),
 	list: BudgetItemSchema.array().min(1),
-	notes: z3.string().optional(),
 	total: z3.coerce.number().min(0),
+	notes: z3.string().optional(),
+	warranty: z3.string().optional(),
+	workCompletion: z3.string().optional(),
+	important: z3.string().optional(),
 });
+
+/**
+ * 	@typedef {z3.infer<typeof BudgetItemSchema>} IBudgetItem
+ */
 
 /**
  *  @typedef {Object} AUX

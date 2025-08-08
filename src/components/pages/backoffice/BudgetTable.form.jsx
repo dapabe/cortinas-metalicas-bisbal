@@ -28,13 +28,18 @@ export function BudgetTableForm() {
 			clientContact: "",
 			clientID: "",
 			list: [],
-			notes: "",
 			total: "0",
+			notes: "",
+			warranty: "De 1 año.",
+			workCompletion:
+				"En todo caso de requerir el trabajo se debe abonar con anticipación el 60% y el 40% restante al finalizar el trabajo.",
+			important:
+				"Los trabajos de electricidad no los realizamos, contrate al electricista.",
 		},
 		resolver: zodResolver(BudgetFormSchema),
 	});
 
-	/**	@param {IBudgetForm} data */
+	/**	@param {import("#/schemas/BudgetForm.schema").IBudgetForm} data */
 	const onSubmit = (data) => {
 		budget.generatePDF(data);
 	};
@@ -46,7 +51,7 @@ export function BudgetTableForm() {
 				onSubmit={methods.handleSubmit(onSubmit)}
 			>
 				<section className="grid gap-4 grid-cols-4">
-					<fieldset className="col-span-4 md:col-span-2 fieldset bg-base-200 p-4 rounded-box w-fit">
+					<fieldset className="col-span-4 md:col-span-2 fieldset bg-base-200 p-4 rounded-box w-fit mx-auto">
 						<legend className="fieldset-legend text-lg">
 							Datos del cliente
 						</legend>
@@ -68,7 +73,7 @@ export function BudgetTableForm() {
 						</div>
 					</fieldset>
 
-					<fieldset className="col-span-4 md:col-span-1 fieldset bg-base-200 p-4 rounded-box h-max mx-auto">
+					<fieldset className="col-span-4 md:col-span-2 lg:col-span-1 fieldset bg-base-200 p-4 rounded-box  m-auto">
 						<legend className="fieldset-legend text-lg">
 							Fechas del presupuesto
 						</legend>
@@ -92,7 +97,7 @@ export function BudgetTableForm() {
 						</div>
 					</fieldset>
 
-					<fieldset className="col-span-4 md:col-span-2 fieldset bg-base-200 p-4 rounded-box">
+					<fieldset className="col-span-4 md:col-span-2 md:col-start-3 fieldset bg-base-200 p-4 rounded-box">
 						<legend className="fieldset-legend text-lg">
 							Notas Adicionales
 						</legend>
@@ -102,7 +107,7 @@ export function BudgetTableForm() {
 						></textarea>
 					</fieldset>
 
-					<div className="col-span-full lg:col-span-1 p-4 flex items-center justify-center mx-auto">
+					<div className="col-span-full lg:col-span-1 lg:row-start-1 lg:col-start-4 p-4 flex items-center justify-center mx-auto">
 						<button type="submit" className="btn btn-success">
 							Descargar PDF
 						</button>
@@ -127,11 +132,11 @@ export function BudgetTableForm() {
 								<th colSpan={1}></th>
 							</tr>
 							<tr className="[&>th]:text-center">
-								<th>{BudgetConfig.Titles.Description}</th>
-								<th>{BudgetConfig.Titles.Quantity}</th>
-								<th>{BudgetConfig.Titles.UnitPrice}</th>
-								<th>{BudgetConfig.Titles.Discount}</th>
-								<th>{BudgetConfig.Titles.Subtotal}</th>
+								<th>{BudgetConfig.TableHeader.Description}</th>
+								<th>{BudgetConfig.TableHeader.Quantity}</th>
+								<th>{BudgetConfig.TableHeader.UnitPrice}</th>
+								<th>{BudgetConfig.TableHeader.Discount}</th>
+								<th>{BudgetConfig.TableHeader.Subtotal}</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -188,7 +193,7 @@ BudgetTableForm.TableResult = function TableResult() {
 	const budget = useBudgetStore();
 	const { control, register, setValue } = useFormContext();
 
-	/** @type {IBudgetItem[]} */
+	/** @type {import("#/schemas/BudgetForm.schema").IBudgetItem[]} */
 	const formList = useWatch({ control, name: "list" });
 	/** @type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
