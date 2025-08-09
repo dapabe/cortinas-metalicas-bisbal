@@ -18,19 +18,14 @@ export function AskQuestionsSection() {
 				<span className="underline decoration-primary">Preguntas</span>{" "}
 				Frecuentes
 			</SectionTitle>
+
 			<div className="join join-vertical max-w-md lg:hidden">
-				<Accordion
-					title="¿En que lugares solemos trabajar?"
-					desc={
-						<>
-							Por toda la zona de <b>CABA</b>, <b>Matadero</b> y alrededores
-						</>
-					}
-				/>
-				<Accordion
-					title="¿Hasta donde hacen envios?"
-					desc="Hacemos envios a todo el país"
-				/>
+				<Accordion title="¿En que lugares solemos trabajar?">
+					Por toda la zona de <b>CABA</b> y <b>Provincia de Buenos Aires</b>
+				</Accordion>
+				<Accordion title="¿Hasta donde hacen envios?">
+					Hacemos envios a <b>todo el país</b>
+				</Accordion>
 			</div>
 
 			<div className="flex w-full gap-4 justify-center">
@@ -39,17 +34,14 @@ export function AskQuestionsSection() {
 						title="¿En que lugares solemos trabajar?"
 						icon={Out.MapPinIcon}
 					>
-						<p>
-							Por toda la zona de <b>CABA</b>, <b>Matadero</b> y alrededores
-						</p>
+						Por toda la zona de <b>CABA</b> y <b>Provincia de Buenos Aires</b>
 					</AsideCard>
 
 					<AsideCard title="¿Horarios de atención?" icon={Out.ClockIcon}>
-						<p className="text-left">
-							De lunes a viernes las <b>24 horas</b> todos los días del año
-						</p>
+						De lunes a viernes las <b>24 horas</b> todos los días del año
 					</AsideCard>
 				</aside>
+
 				<figure className="space-y-2">
 					<div className="flex flex-col justify-center gap-4 2xl:flex-row">
 						<video
@@ -81,34 +73,27 @@ export function AskQuestionsSection() {
 						title="¿Hasta donde hacen envios?"
 						icon={Out.GlobeAmericasIcon}
 					>
-						<p>Hacemos envios a todo el país</p>
+						Hacemos envios a <b>todo el país</b>
 					</AsideCard>
 
 					<AsideCard
-						title="¿Que calidad tienen las Cortinas y Persianas?"
+						title="¿Que calidad tienen las Cortinas Metálicas?"
 						icon={Out.LockClosedIcon}
 					>
-						<p>
-							Son reforzadas y de calidad industrial de primera categoria, buen
-							aislante acústico y térmico
-						</p>
+						Son reforzadas y de calidad industrial de primera categoria, buen
+						aislante acústico y térmico
 					</AsideCard>
 				</aside>
 			</div>
 
 			<div className="join join-vertical max-w-md lg:hidden">
-				<Accordion
-					title="¿Horarios de atención?"
-					desc={
-						<>
-							De lunes a viernes las <b>24 horas</b> todos los días del año
-						</>
-					}
-				/>
-				<Accordion
-					title="¿Que calidad tienen las Cortinas y Persianas?"
-					desc="Son reforzadas y de calidad industrial de primera categoria, buen aislante acústico y térmico"
-				/>
+				<Accordion title="¿Horarios de atención?">
+					De lunes a viernes las <b>24 horas</b> todos los días del año
+				</Accordion>
+				<Accordion title="¿Que calidad tienen las Cortinas Metálicas?">
+					Son reforzadas y de calidad industrial de primera categoria, buen
+					aislante acústico y térmico
+				</Accordion>
 			</div>
 
 			<div className="divider divider-primary w-1/3 mx-auto"></div>
@@ -142,7 +127,7 @@ function AsideCard({ title, icon: Icon, children }) {
 			<Icon className="absolute size-12 text-secondary -top-6 left-1/2 -translate-x-1/2" />
 			<div className="card-body max-w-xs text-center">
 				<h3 className="card-title">{title}</h3>
-				{children}
+				<p>{children}</p>
 			</div>
 		</div>
 	);
