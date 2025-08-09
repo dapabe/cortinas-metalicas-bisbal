@@ -19,16 +19,6 @@
  */
 
 /**
- * @typedef {Object} IBudgetItem
- * @property {string} id
- * @property {string} description
- * @property {number} price
- * @property {number} quantity
- * @property {number} discount
- * @property {number} total
- */
-
-/**
  * @typedef {Object} IBudgetTotal
  * @property {number} subtotal
  * @property {number} total

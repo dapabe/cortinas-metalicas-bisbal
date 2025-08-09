@@ -3,10 +3,10 @@ import { useState } from "react";
 
 /**
  * @component
- * @param {{ title: React.ReactNode, desc: React.ReactNode}} props
+ * @param {import("react").PropsWithChildren<{ title: React.ReactNode}>} props
  * @returns {JSX.Element}
  */
-export function Accordion({ title, desc }) {
+export function Accordion({ title, children }) {
 	const [check, setCheck] = useState(false);
 	return (
 		<div className="join-item collapse collapse-arrow bg-base-200 border border-base-300">
@@ -16,7 +16,7 @@ export function Accordion({ title, desc }) {
 				onChange={() => setCheck((x) => !x)}
 			/>
 			<h3 className="collapse-title font-semibold">{title}</h3>
-			<p className="collapse-content text-sm">{desc}</p>
+			<p className="collapse-content text-sm">{children}</p>
 		</div>
 	);
 }

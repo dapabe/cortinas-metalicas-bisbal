@@ -8,11 +8,6 @@ import { Footer } from "#/components/sections/Footer";
 import { SendReviewSection } from "#/components/sections/SendReview.section";
 
 export default function Home() {
-	console.log(
-		"Creado por: %cDaniel Patricio Becerra - https://github.com/dapabe",
-		"color: #fff; background-color: #000; padding: 2px 4px; border-radius: 4px;"
-	);
-
 	return (
 		<div className="min-h-screen font-[family-name:var(--font-geist-sans)] flex flex-col relative bg-base-100 gap-y-4">
 			<main className="flex-1 space-y-4 flex flex-col">
