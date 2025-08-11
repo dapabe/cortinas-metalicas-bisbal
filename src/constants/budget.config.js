@@ -1,3 +1,5 @@
+import { rgb } from "pdf-lib";
+
 export const BudgetConfig = {
 	Titles: {
 		Table: "DETALLE DE PRODUCTOS Y SERVICIOS",
@@ -16,6 +18,10 @@ export const BudgetConfig = {
 		Fields: {
 			createdAt: "createdAt",
 			validUntil: "validUntil",
+		},
+		Colors: {
+			SubHeaderText: rgb(0.16, 0.38, 0.6),
+			SubHeaderBG: rgb(0.92, 0.94, 0.96),
 		},
 		FontSizes: {
 			SM: 10,

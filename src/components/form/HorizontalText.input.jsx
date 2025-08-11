@@ -14,7 +14,7 @@ export function HorizontalTextInput({ label, isRequired = false, inputName }) {
 	return (
 		<label
 			aria-invalid={!!formState.errors[inputName] ? "true" : undefined}
-			className="input aria-[invalid]:input-error"
+			className="input aria-[invalid]:input-error w-full"
 		>
 			<span className="label">
 				{label}

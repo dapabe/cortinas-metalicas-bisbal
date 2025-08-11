@@ -18,6 +18,8 @@ import fontkit from "@pdf-lib/fontkit";
  * @property {{
  * 	SegoeUIBoldFont: PDFFont,
  * }} _PDFConfigs
+ * @property {(page: PDFPage, yPos: number, text: string)=> void} drawSubHeader
+ * @property {(page: PDFPage, yPos: number)=>void} drawTextDecoration
  * @property {(page: PDFPage, data: import("../schemas/BudgetForm.schema").IBudgetForm)=> number} createProductTable
  * @property {(data: import("../schemas/BudgetForm.schema").IBudgetForm) => void} generatePDF
  */
@@ -32,7 +34,7 @@ import fontkit from "@pdf-lib/fontkit";
 const currencyIntl = new Intl.NumberFormat("es-AR", {
 	style: "currency",
 	currency: "ARS",
-	minimumFractionDigits: 2,
+	minimumFractionDigits: 0,
 	maximumFractionDigits: 2,
 });
 /**	@param {Date} date */
@@ -95,10 +97,8 @@ export const useBudgetStore = create((set, get) => ({
 
 		const firstPage = doc.getPages()[0];
 
-		const tableHeight = get().createProductTable(firstPage, data);
+		let tableHeight = get().createProductTable(firstPage, data);
 		// const calculatedHeight = 200 - tableHeight;
-
-		const textWithMargin = BudgetConfig.PDF.LayoutSizes.Margin.Left + 2;
 
 		// [
 		// 	{ txt: BudgetConfig.Titles.Notes, y: 250 },
@@ -110,35 +110,67 @@ export const useBudgetStore = create((set, get) => ({
 		// 		y: x.y - calculatedHeight,
 		// 	});
 		// });
+		tableHeight -= 32;
+		get().drawSubHeader(firstPage, tableHeight, BudgetConfig.Titles.Notes);
+		tableHeight -= 24;
+		firstPage.drawText(data.notes, {
+			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
+			y: tableHeight,
+			size: BudgetConfig.PDF.FontSizes.SM,
+		});
 
 		const bytes = await doc.save();
 		const blob = new Blob([bytes], { type: "application/pdf" });
 		window.open(URL.createObjectURL(blob));
 	},
 
-	createProductTable: (page, data) => {
-		let fixedHeight = 20;
-		let initialHeight = 500;
-		let totalHeight = initialHeight;
-
-		page.drawRectangle({
-			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
-			y: totalHeight - 12,
-			color: rgb(0.92, 0.94, 0.96),
-			height: fixedHeight + 12,
-			width: page.getWidth() - BudgetConfig.PDF.LayoutSizes.Margin.Left * 2,
+	drawSubHeader: (page, yPos, text) => {
+		page.drawText(text, {
+			x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
+			y: yPos,
+			size: BudgetConfig.PDF.FontSizes.MD,
+			color: BudgetConfig.PDF.Colors.SubHeaderText,
 		});
+		get().drawTextDecoration(page, yPos);
+	},
+
+	drawTextDecoration: (page, yPos) => {
 		page.drawLine({
-			thickness: 0.5,
+			thickness: 1,
+			color: BudgetConfig.PDF.Colors.SubHeaderText,
 			start: {
 				x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
-				y: totalHeight - 12,
+				y: yPos - 11,
 			},
 			end: {
 				x: page.getWidth() - BudgetConfig.PDF.LayoutSizes.Margin.Left,
-				y: totalHeight - 12,
+				y: yPos - 11,
 			},
 		});
+	},
+
+	createProductTable: (page, data) => {
+		let fixedHeight = 20;
+		let initialHeight = 540;
+		let totalHeight = initialHeight;
+		const mVertical = 50;
+
+		const addPage = () => {
+			const p = page.doc.addPage();
+			totalHeight = p.getHeight();
+			return p;
+		};
+
+		get().drawSubHeader(page, totalHeight, BudgetConfig.Titles.Table);
+		totalHeight -= fixedHeight + 12;
+		page.drawRectangle({
+			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
+			y: totalHeight - 12,
+			color: BudgetConfig.PDF.Colors.SubHeaderBG,
+			height: fixedHeight + 12,
+			width: page.getWidth() - BudgetConfig.PDF.LayoutSizes.Margin.Left * 2,
+		});
+
 		page.drawText(BudgetConfig.TableHeader.Description, {
 			x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
 			y: totalHeight,
@@ -157,7 +189,9 @@ export const useBudgetStore = create((set, get) => ({
 
 		totalHeight -= fixedHeight + 12;
 
-		data.list.forEach((item, idx) => {
+		data.list.forEach((item) => {
+			if (totalHeight - fixedHeight < mVertical) page = addPage();
+
 			page.drawText(item.description, {
 				x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
 				y: totalHeight,
@@ -169,25 +203,33 @@ export const useBudgetStore = create((set, get) => ({
 				y: totalHeight,
 				size: BudgetConfig.PDF.FontSizes.SM,
 			});
-			page.drawText(currencyIntl.format(item.subtotal), {
-				x: 500,
-				y: totalHeight,
-				size: BudgetConfig.PDF.FontSizes.SM,
-			});
+
+			// if (!data._onlyShowTotal) {
+			// page.drawText(currencyIntl.format(item.subtotal), {
+			// 	x: 500,
+			// 	y: totalHeight,
+			// 	size: BudgetConfig.PDF.FontSizes.SM,
+			// });
+			// }
+
 			totalHeight -= fixedHeight;
 		});
+		if (totalHeight - fixedHeight < mVertical) page = addPage();
+
 		totalHeight -= 12;
+		// Result footer
 		page.drawRectangle({
 			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
 			y: totalHeight - 12,
-			color: rgb(0.92, 0.94, 0.96),
+			color: BudgetConfig.PDF.Colors.SubHeaderBG,
 			height: fixedHeight + 12,
-			width: page.getWidth() - 232,
+			width: page.getWidth() - BudgetConfig.PDF.LayoutSizes.Margin.Left * 2,
 		});
 		page.drawText(BudgetConfig.Titles.BudgetTotal, {
 			x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
 			y: totalHeight,
 			size: BudgetConfig.PDF.FontSizes.MD,
+			color: BudgetConfig.PDF.Colors.SubHeaderText,
 		});
 		page.drawText(currencyIntl.format(data.total), {
 			x: 400,

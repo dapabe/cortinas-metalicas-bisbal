@@ -1,7 +1,7 @@
 import z3 from "zod";
 
 const BudgetItemSchema = z3.object({
-	description: z3.string(),
+	description: z3.string().trim().min(3),
 	price: z3.coerce.number().min(0),
 	quantity: z3.coerce.number().min(1),
 	discount: z3.coerce.number().min(0).max(100),
@@ -9,9 +9,10 @@ const BudgetItemSchema = z3.object({
 });
 
 export const BudgetFormSchema = z3.object({
+	_onlyShowTotal: z3.boolean(),
 	createdAt: z3.coerce.date(),
 	validUntil: z3.coerce.date().nullable(),
-	clientName: z3.string().min(3),
+	clientName: z3.string().trim().min(3),
 	clientLocation: z3.string().optional(),
 	clientContact: z3.string().optional(),
 	clientID: z3.string().optional(),
@@ -28,10 +29,5 @@ export const BudgetFormSchema = z3.object({
  */
 
 /**
- *  @typedef {Object} AUX
- *  @property {boolean} _onlyShowTotal
- */
-
-/**
- *  @typedef {AUX & z3.infer<typeof BudgetFormSchema>} IBudgetForm
+ *  @typedef {z3.infer<typeof BudgetFormSchema>} IBudgetForm
  */

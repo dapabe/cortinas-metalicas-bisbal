@@ -20,7 +20,7 @@ export function BudgetTableForm() {
 	const methods = useForm({
 		/** @type {import("#/schemas/BudgetForm.schema").IBudgetForm} */
 		defaultValues: {
-			_onlyShowTotal: false,
+			_onlyShowTotal: true,
 			createdAt: new Date().toISOString().split("T")[0],
 			validUntil: null,
 			clientName: "",
@@ -29,7 +29,7 @@ export function BudgetTableForm() {
 			clientID: "",
 			list: [],
 			total: "0",
-			notes: "",
+			notes: "Ninguna",
 			warranty: "De 1 año.",
 			workCompletion:
 				"En todo caso de requerir el trabajo se debe abonar con anticipación el 60% y el 40% restante al finalizar el trabajo.",
@@ -73,7 +73,7 @@ export function BudgetTableForm() {
 						</div>
 					</fieldset>
 
-					<fieldset className="col-span-4 md:col-span-2 lg:col-span-1 fieldset bg-base-200 p-4 rounded-box  m-auto">
+					<fieldset className="col-span-4 md:col-span-2 lg:col-span-1 fieldset bg-base-200 p-4 rounded-box m-auto">
 						<legend className="fieldset-legend text-lg">
 							Fechas del presupuesto
 						</legend>
@@ -92,8 +92,26 @@ export function BudgetTableForm() {
 							</label>
 							<label className="input">
 								<span className="label">Válido hasta</span>
-								<input type="date" {...methods.register("validUntil")} />
+								<input
+									type="date"
+									// min={new Date().toISOString().split("T")[0]}
+									{...methods.register("validUntil")}
+								/>
 							</label>
+						</div>
+					</fieldset>
+
+					<fieldset className="col-span-4 md:col-span-2 fieldset bg-base-200 p-4 rounded-box">
+						<legend className="fieldset-legend text-lg">
+							Términos y Condiciones
+						</legend>
+						<div className="flex flex-col w-full gap-2">
+							<HorizontalTextInput label="Garantía" inputName="warranty" />
+							<HorizontalTextInput
+								label="Condición de trabajo"
+								inputName="workCompletion"
+							/>
+							<HorizontalTextInput label="Importante" inputName="important" />
 						</div>
 					</fieldset>
 
@@ -117,8 +135,8 @@ export function BudgetTableForm() {
 				<div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
 					<table className="table">
 						<thead>
-							<tr>
-								<th>
+							{/* <tr> */}
+							{/* <th>
 									<label className="label">
 										<input
 											type="checkbox"
@@ -127,10 +145,9 @@ export function BudgetTableForm() {
 										/>
 										Modificar solo el resumen final
 									</label>
-								</th>
-								<th colSpan={3}></th>
-								<th colSpan={1}></th>
-							</tr>
+								</th> */}
+							{/* <th colSpan={1}></th> */}
+							{/* </tr> */}
 							<tr className="[&>th]:text-center">
 								<th>{BudgetConfig.TableHeader.Description}</th>
 								<th>{BudgetConfig.TableHeader.Quantity}</th>
@@ -170,6 +187,7 @@ BudgetTableForm.ItemList = function ItemList() {
 
 	useEffect(() => {
 		if (!list.length) {
+			// for (let index = 0; index < 30; index++) {
 			arr.append({
 				description: "",
 				quantity: "1",
@@ -203,13 +221,11 @@ BudgetTableForm.TableResult = function TableResult() {
 		[formList]
 	);
 
-	useEffect(() => {
-		if (!_onlyShowTotal && formList.length)
-			setValue("total", displayedTotal.toString());
-		return () => setValue("total", displayedTotal.toString());
-	}, [_onlyShowTotal, formList]);
-
-	if (!formList.length) return null;
+	// useEffect(() => {
+	// 	if (!_onlyShowTotal && formList.length)
+	// 		setValue("total", displayedTotal.toString());
+	// 	return () => setValue("total", displayedTotal.toString());
+	// }, [_onlyShowTotal, formList]);
 
 	return (
 		<td colSpan={"100%"}>
@@ -243,7 +259,7 @@ BudgetTableForm.AddItem = function AddItem() {
 		<td colSpan={"100%"} className="text-center">
 			<button
 				type="button"
-				className="btn btn-block"
+				className="btn btn-block btn-info"
 				onClick={() =>
 					append({
 						description: "",
