@@ -209,7 +209,7 @@ BudgetTableForm.ItemList = function ItemList() {
 
 BudgetTableForm.TableResult = function TableResult() {
 	const budget = useBudgetStore();
-	const { control, register, setValue } = useFormContext();
+	const { control, register } = useFormContext();
 
 	/** @type {import("#/schemas/BudgetForm.schema").IBudgetItem[]} */
 	const formList = useWatch({ control, name: "list" });
