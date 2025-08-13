@@ -1,3 +1,6 @@
+ignoredBuiltDependencies:
+  - '@vercel/speed-insights'
+
 onlyBuiltDependencies:
   - '@firebase/util'
   - '@tailwindcss/oxide'
