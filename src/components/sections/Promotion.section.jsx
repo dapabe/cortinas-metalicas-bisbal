@@ -94,7 +94,12 @@ export function PromotionSection() {
 								className="btn btn-primary btn-outline mt-2 btn-lg"
 							>
 								Ir a Mercado Libre
-								<img src="/meli.svg" className="size-10 ml-2" loading="lazy" />
+								<img
+									src="/meli.svg"
+									alt="Logo de Mercado Libre"
+									className="size-10 ml-2"
+									loading="lazy"
+								/>
 							</Link>
 						</div>
 					</div>

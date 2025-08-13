@@ -2,7 +2,7 @@
 import { BudgetConfig } from "#/constants/budget.config";
 import { useBudgetStore } from "#/stores/budget.store";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useId, useMemo } from "react";
 import {
 	FormProvider,
 	useFieldArray,
@@ -20,7 +20,7 @@ export function BudgetTableForm() {
 	const methods = useForm({
 		/** @type {import("#/schemas/BudgetForm.schema").IBudgetForm} */
 		defaultValues: {
-			_onlyShowTotal: false,
+			_onlyShowTotal: true,
 			createdAt: new Date().toISOString().split("T")[0],
 			validUntil: null,
 			clientName: "",
@@ -29,7 +29,7 @@ export function BudgetTableForm() {
 			clientID: "",
 			list: [],
 			total: "0",
-			notes: "",
+			notes: "Ninguna",
 			warranty: "De 1 año.",
 			workCompletion:
 				"En todo caso de requerir el trabajo se debe abonar con anticipación el 60% y el 40% restante al finalizar el trabajo.",
@@ -40,8 +40,11 @@ export function BudgetTableForm() {
 	});
 
 	/**	@param {import("#/schemas/BudgetForm.schema").IBudgetForm} data */
-	const onSubmit = (data) => {
-		budget.generatePDF(data);
+	const onSubmit = async (data) => {
+		await new Promise((res) => {
+			budget.generatePDF(data);
+			res();
+		});
 	};
 
 	return (
@@ -73,7 +76,7 @@ export function BudgetTableForm() {
 						</div>
 					</fieldset>
 
-					<fieldset className="col-span-4 md:col-span-2 lg:col-span-1 fieldset bg-base-200 p-4 rounded-box  m-auto">
+					<fieldset className="col-span-4 md:col-span-2 lg:col-span-1 fieldset bg-base-200 p-4 rounded-box m-auto">
 						<legend className="fieldset-legend text-lg">
 							Fechas del presupuesto
 						</legend>
@@ -92,8 +95,26 @@ export function BudgetTableForm() {
 							</label>
 							<label className="input">
 								<span className="label">Válido hasta</span>
-								<input type="date" {...methods.register("validUntil")} />
+								<input
+									type="date"
+									// min={new Date().toISOString().split("T")[0]}
+									{...methods.register("validUntil")}
+								/>
 							</label>
+						</div>
+					</fieldset>
+
+					<fieldset className="col-span-4 md:col-span-2 fieldset bg-base-200 p-4 rounded-box">
+						<legend className="fieldset-legend text-lg">
+							Términos y Condiciones
+						</legend>
+						<div className="flex flex-col w-full gap-2">
+							<HorizontalTextInput label="Garantía" inputName="warranty" />
+							<HorizontalTextInput
+								label="Condición de trabajo"
+								inputName="workCompletion"
+							/>
+							<HorizontalTextInput label="Importante" inputName="important" />
 						</div>
 					</fieldset>
 
@@ -117,8 +138,8 @@ export function BudgetTableForm() {
 				<div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
 					<table className="table">
 						<thead>
-							<tr>
-								<th>
+							{/* <tr> */}
+							{/* <th>
 									<label className="label">
 										<input
 											type="checkbox"
@@ -127,10 +148,9 @@ export function BudgetTableForm() {
 										/>
 										Modificar solo el resumen final
 									</label>
-								</th>
-								<th colSpan={3}></th>
-								<th colSpan={1}></th>
-							</tr>
+								</th> */}
+							{/* <th colSpan={1}></th> */}
+							{/* </tr> */}
 							<tr className="[&>th]:text-center">
 								<th>{BudgetConfig.TableHeader.Description}</th>
 								<th>{BudgetConfig.TableHeader.Quantity}</th>
@@ -158,20 +178,22 @@ export function BudgetTableForm() {
 
 BudgetTableForm.ItemList = function ItemList() {
 	const { control } = useFormContext();
-	const arr = useFieldArray({
+	const { fields, append } = useFieldArray({
 		control: control,
 		name: "list",
 	});
 
-	const list = useWatch({
-		control: control,
-		name: "list",
-	});
+	const createId = useCallback(
+		() => Math.random().toString(36).slice(2, 11),
+		[]
+	);
 
 	useEffect(() => {
-		if (!list.length) {
-			arr.append({
-				description: "",
+		if (!fields.length) {
+			// for (let index = 0; index < 10; index++) {
+			append({
+				id: createId(),
+				description: "xxx",
 				quantity: "1",
 				price: "0",
 				discount: "0",
@@ -182,8 +204,8 @@ BudgetTableForm.ItemList = function ItemList() {
 
 	return (
 		<tbody>
-			{list.map((_, index) => (
-				<BudgetTableFormRow key={index} index={index} />
+			{fields.map((i, index) => (
+				<BudgetTableFormRow key={i.id} index={index} />
 			))}
 		</tbody>
 	);
@@ -191,7 +213,7 @@ BudgetTableForm.ItemList = function ItemList() {
 
 BudgetTableForm.TableResult = function TableResult() {
 	const budget = useBudgetStore();
-	const { control, register, setValue } = useFormContext();
+	const { control, register } = useFormContext();
 
 	/** @type {import("#/schemas/BudgetForm.schema").IBudgetItem[]} */
 	const formList = useWatch({ control, name: "list" });
@@ -203,13 +225,11 @@ BudgetTableForm.TableResult = function TableResult() {
 		[formList]
 	);
 
-	useEffect(() => {
-		if (!_onlyShowTotal && formList.length)
-			setValue("total", displayedTotal.toString());
-		return () => setValue("total", displayedTotal.toString());
-	}, [_onlyShowTotal, formList]);
-
-	if (!formList.length) return null;
+	// useEffect(() => {
+	// 	if (!_onlyShowTotal && formList.length)
+	// 		setValue("total", displayedTotal.toString());
+	// 	return () => setValue("total", displayedTotal.toString());
+	// }, [_onlyShowTotal, formList]);
 
 	return (
 		<td colSpan={"100%"}>
@@ -238,14 +258,19 @@ BudgetTableForm.AddItem = function AddItem() {
 		control,
 		name: "list",
 	});
+	const createId = useCallback(
+		() => Math.random().toString(36).slice(2, 11),
+		[]
+	);
 
 	return (
 		<td colSpan={"100%"} className="text-center">
 			<button
 				type="button"
-				className="btn btn-block"
+				className="btn btn-block btn-info"
 				onClick={() =>
 					append({
+						id: createId(),
 						description: "",
 						quantity: "1",
 						price: "0",

@@ -38,14 +38,17 @@ export function BudgetTableFormRow({ index }) {
  * @param {{index: number }} props
  */
 BudgetTableFormRow.InputDescription = function InputDescription({ index }) {
-	const { control, register, setValue } = useFormContext();
+	const { control, register, formState } = useFormContext();
 
 	const value = useWatch({ control, name: `list.${index}.description` });
 
 	// const [selected, setSelected] = useState(null);
 
 	return (
-		<label className="input input-md">
+		<label
+			aria-invalid={!!formState.errors?.list?.[index] ? "true" : undefined}
+			className="input input-md aria-[invalid]:input-error"
+		>
 			<button type="button" className="label">
 				<ChevronDownIcon className="size-6" />
 			</button>
@@ -234,12 +237,8 @@ BudgetTableFormRow.RowTotal = function RowTotal({ index }) {
  * @param {{index: number}} props
  */
 BudgetTableFormRow.RemoveItem = function RemoveItem({ index }) {
-	const { control } = useFormContext();
-	const arr = useFieldArray({
-		control,
-		name: "list",
-	});
-
+	const { control, unregister } = useFormContext();
+	const { remove } = useFieldArray({ control, name: `list` });
 	/**	@type {import("#/schemas/BudgetForm.schema").IBudgetItem[]} */
 	const items = useWatch({ control, name: "list" });
 
@@ -248,7 +247,10 @@ BudgetTableFormRow.RemoveItem = function RemoveItem({ index }) {
 			type="button"
 			disabled={items.length <= 1}
 			className="btn btn-sm btn-block btn-error"
-			onClick={() => arr.remove(index)}
+			onClick={() => {
+				unregister(`list.${index}`);
+				remove(index);
+			}}
 		>
 			<XMarkIcon className="size-6" />
 		</button>

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import { Toaster } from "#/components/Toaster";
 import { GoogleAnalytics } from "#/components/google/GoogleAnalytics";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -87,6 +88,7 @@ export default function RootLayout({ children }) {
 				{children}
 				<Toaster />
 				<VercelAnalytics />
+				<SpeedInsights debug />
 			</body>
 		</html>
 	);
