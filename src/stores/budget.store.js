@@ -16,12 +16,14 @@ import fontkit from "@pdf-lib/fontkit";
  * @property {(value: number) => string} formatCurrency
  * @property {(values: import("../schemas/BudgetForm.schema").IBudgetItem[]) => number} calculateTotal
  * @property {{
- * 	CurrentPage: PDFPage,
+ * 	currentPage: PDFPage,
+ * 	heightPointer: number,
  * 	SegoeUIBoldFont: PDFFont,
  * }} _PDFConfigs
- * @property {(page: PDFPage, yPos: number, text: string)=> void} drawSubHeader
- * @property {(page: PDFPage, yPos: number)=>void} drawTextDecoration
- * @property {(page: PDFPage, data: import("../schemas/BudgetForm.schema").IBudgetForm)=> number} createProductTable
+ * @property {()=> PDFPage} addPage
+ * @property {(yPos: number, text: string)=> void} drawSubHeader
+ * @property {(yPos: number)=>void} drawTextDecoration
+ * @property {(data: import("../schemas/BudgetForm.schema").IBudgetForm)=> number} createProductTable
  * @property {(data: import("../schemas/BudgetForm.schema").IBudgetForm) => void} generatePDF
  */
 
@@ -61,6 +63,23 @@ export const useBudgetStore = create((set, get) => ({
 	},
 
 	_PDFConfigs: null,
+	addPage: () => {
+		const p = get()._PDFConfigs.currentPage;
+		const currentIndex = p.doc.getPageIndices()[p.doc.getPageIndices().length];
+
+		const nwP = p.doc.addPage();
+		set({ _PDFConfigs: { currentPage: p, heightPointer: nwP.getHeight() } });
+
+		const pages = nwP.doc.getPages();
+		for (let i = currentIndex; i <= pages.length; i++) {
+			pages[i].drawText(`Página ${currentIndex} de ${pages.length}`, {
+				x: pages[i].getWidth() - BudgetConfig.PDF.LayoutSizes.Margin.Left * 2,
+				y: pages[i].getHeight() - 30,
+				size: BudgetConfig.PDF.FontSizes.SM,
+			});
+		}
+		return nwP;
+	},
 	generatePDF: async (data) => {
 		const templateBytes = await fetch("/CortinasBisbal-Plantilla2.pdf").then(
 			(x) => x.arrayBuffer()
@@ -70,7 +89,13 @@ export const useBudgetStore = create((set, get) => ({
 		const SegoeUIBoldFont = await doc.embedFont(
 			await fetch("/Segoe UI Bold.ttf").then((x) => x.arrayBuffer())
 		);
-		set({ _PDFConfigs: { SegoeUIBoldFont, CurrentPage: doc.getPages()[0] } });
+		set({
+			_PDFConfigs: {
+				SegoeUIBoldFont,
+				currentPage: doc.getPages()[0],
+				heightPointer: 540, // Free space from the 1st page
+			},
+		});
 		const form = doc.getForm();
 		/**
 		 * @function setField
@@ -90,55 +115,42 @@ export const useBudgetStore = create((set, get) => ({
 		setField("clientContact");
 		setField("clientID");
 
-		// setField("total", (v) => currencyIntl.format(parseInt(v)));
-		// setField("notes");
-		// setField("warranty");
-		// setField("workCompletion");
-		// setField("important");
-
-		let tableHeight = get().createProductTable(
-			get()._PDFConfigs.CurrentPage,
-			data
-		);
-		// [
-		// 	{ txt: BudgetConfig.Titles.Notes, y: 250 },
-		// 	// { txt: "RESUMEN DEL PRESUPUESTO", y: 200 },
-		// 	{ txt: BudgetConfig.Titles.TsCs, y: 150 },
-		// ].forEach((x) => {
-		// 	firstPage.drawText(x.txt, {
-		// 		x: textWithMargin,
-		// 		y: x.y - calculatedHeight,
-		// 	});
-		// });
-		const currentPage = get()._PDFConfigs.CurrentPage;
+		let tableHeight = get().createProductTable(data);
 		tableHeight -= 32;
-		get().drawSubHeader(currentPage, tableHeight, BudgetConfig.Titles.Notes);
+
+		// if (tableHeight <= get()._PDFConfigs.currentPage.getHeight()) {
+		// 	tableHeight = get()._PDFConfigs.currentPage.getHeight() - 30;
+		// }
+		get().drawSubHeader(tableHeight, BudgetConfig.Titles.Notes);
+		const currentPage = get()._PDFConfigs.currentPage;
+
 		tableHeight -= 24;
 		currentPage.drawText(data.notes, {
 			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
 			y: tableHeight,
 			size: BudgetConfig.PDF.FontSizes.SM,
 		});
+
 		tableHeight -= 24;
-		get().drawSubHeader(currentPage, tableHeight, BudgetConfig.Titles.TsCs);
+		get().drawSubHeader(tableHeight, BudgetConfig.Titles.TsCs);
 
 		const bytes = await doc.save();
 		const blob = new Blob([bytes], { type: "application/pdf" });
 		window.open(URL.createObjectURL(blob));
 	},
 
-	drawSubHeader: (page, yPos, text) => {
-		page.drawText(text, {
+	drawSubHeader: (yPos, text) => {
+		get()._PDFConfigs.currentPage.drawText(text, {
 			x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
 			y: yPos,
 			size: BudgetConfig.PDF.FontSizes.MD,
 			color: BudgetConfig.PDF.Colors.SubHeaderText,
 		});
-		get().drawTextDecoration(page, yPos);
+		get().drawTextDecoration(yPos);
 	},
 
-	drawTextDecoration: (page, yPos) => {
-		page.drawLine({
+	drawTextDecoration: (yPos) => {
+		get()._PDFConfigs.currentPage.drawLine({
 			thickness: 1,
 			color: BudgetConfig.PDF.Colors.SubHeaderText,
 			start: {
@@ -146,25 +158,25 @@ export const useBudgetStore = create((set, get) => ({
 				y: yPos - 8,
 			},
 			end: {
-				x: page.getWidth() - BudgetConfig.PDF.LayoutSizes.Margin.Left,
+				x:
+					get()._PDFConfigs.currentPage.getWidth() -
+					BudgetConfig.PDF.LayoutSizes.Margin.Left,
 				y: yPos - 8,
 			},
 		});
 	},
 
-	createProductTable: (page, data) => {
+	createProductTable: (data) => {
 		let fixedHeight = 20;
-		let initialHeight = 540;
-		let totalHeight = initialHeight;
-		const mVertical = 50;
+		set((x) => ({
+			...x,
+			_PDFConfigs: { ...x._PDFConfigs, heightPointer: 540 },
+		}));
+		let totalHeight = get()._PDFConfigs.heightPointer;
+		const mVertical = 30;
+		let page = get()._PDFConfigs.currentPage;
 
-		const addPage = () => {
-			const p = page.doc.addPage();
-			totalHeight = p.getHeight();
-			return p;
-		};
-
-		get().drawSubHeader(page, totalHeight, BudgetConfig.Titles.Table);
+		get().drawSubHeader(totalHeight, BudgetConfig.Titles.Table);
 		totalHeight -= fixedHeight + 8;
 		page.drawRectangle({
 			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
@@ -193,10 +205,7 @@ export const useBudgetStore = create((set, get) => ({
 		totalHeight -= fixedHeight + 12;
 
 		data.list.forEach((item) => {
-			if (totalHeight - fixedHeight < mVertical) {
-				page = addPage();
-				set({ _PDFConfigs: { CurrentPage: page } });
-			}
+			if (totalHeight - fixedHeight < mVertical) page = get().addPage();
 
 			page.drawText(item.description, {
 				x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
@@ -220,12 +229,10 @@ export const useBudgetStore = create((set, get) => ({
 
 			totalHeight -= fixedHeight;
 		});
-		if (totalHeight - fixedHeight < mVertical) {
-			page = addPage();
-			set({ _PDFConfigs: { CurrentPage: page } });
-		}
+		if (totalHeight - fixedHeight < mVertical) page = get().addPage();
 
 		totalHeight -= 12;
+
 		// Result footer
 		page.drawRectangle({
 			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,

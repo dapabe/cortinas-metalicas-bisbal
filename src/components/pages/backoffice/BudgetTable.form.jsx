@@ -2,7 +2,7 @@
 import { BudgetConfig } from "#/constants/budget.config";
 import { useBudgetStore } from "#/stores/budget.store";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useId, useMemo } from "react";
 import {
 	FormProvider,
 	useFieldArray,
@@ -40,8 +40,11 @@ export function BudgetTableForm() {
 	});
 
 	/**	@param {import("#/schemas/BudgetForm.schema").IBudgetForm} data */
-	const onSubmit = (data) => {
-		budget.generatePDF(data);
+	const onSubmit = async (data) => {
+		await new Promise((res) => {
+			budget.generatePDF(data);
+			res();
+		});
 	};
 
 	return (
@@ -175,21 +178,22 @@ export function BudgetTableForm() {
 
 BudgetTableForm.ItemList = function ItemList() {
 	const { control } = useFormContext();
-	const arr = useFieldArray({
+	const { fields, append } = useFieldArray({
 		control: control,
 		name: "list",
 	});
 
-	const list = useWatch({
-		control: control,
-		name: "list",
-	});
+	const createId = useCallback(
+		() => Math.random().toString(36).slice(2, 11),
+		[]
+	);
 
 	useEffect(() => {
-		if (!list.length) {
-			// for (let index = 0; index < 30; index++) {
-			arr.append({
-				description: "",
+		if (!fields.length) {
+			// for (let index = 0; index < 10; index++) {
+			append({
+				id: createId(),
+				description: "xxx",
 				quantity: "1",
 				price: "0",
 				discount: "0",
@@ -200,8 +204,8 @@ BudgetTableForm.ItemList = function ItemList() {
 
 	return (
 		<tbody>
-			{list.map((_, index) => (
-				<BudgetTableFormRow key={index} index={index} />
+			{fields.map((i, index) => (
+				<BudgetTableFormRow key={i.id} index={index} />
 			))}
 		</tbody>
 	);
@@ -254,6 +258,10 @@ BudgetTableForm.AddItem = function AddItem() {
 		control,
 		name: "list",
 	});
+	const createId = useCallback(
+		() => Math.random().toString(36).slice(2, 11),
+		[]
+	);
 
 	return (
 		<td colSpan={"100%"} className="text-center">
@@ -262,6 +270,7 @@ BudgetTableForm.AddItem = function AddItem() {
 				className="btn btn-block btn-info"
 				onClick={() =>
 					append({
+						id: createId(),
 						description: "",
 						quantity: "1",
 						price: "0",

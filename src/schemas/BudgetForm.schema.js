@@ -1,6 +1,7 @@
 import z3 from "zod";
 
 const BudgetItemSchema = z3.object({
+	id: z3.string(),
 	description: z3.string().trim().min(3),
 	price: z3.coerce.number().min(0),
 	quantity: z3.coerce.number().min(1),

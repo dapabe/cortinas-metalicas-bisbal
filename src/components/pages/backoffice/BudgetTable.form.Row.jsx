@@ -237,12 +237,8 @@ BudgetTableFormRow.RowTotal = function RowTotal({ index }) {
  * @param {{index: number}} props
  */
 BudgetTableFormRow.RemoveItem = function RemoveItem({ index }) {
-	const { control } = useFormContext();
-	const { remove } = useFieldArray({
-		control,
-		name: "list",
-	});
-
+	const { control, unregister } = useFormContext();
+	const { remove } = useFieldArray({ control, name: `list` });
 	/**	@type {import("#/schemas/BudgetForm.schema").IBudgetItem[]} */
 	const items = useWatch({ control, name: "list" });
 
@@ -251,7 +247,10 @@ BudgetTableFormRow.RemoveItem = function RemoveItem({ index }) {
 			type="button"
 			disabled={items.length <= 1}
 			className="btn btn-sm btn-block btn-error"
-			onClick={() => remove(index)}
+			onClick={() => {
+				unregister(`list.${index}`);
+				remove(index);
+			}}
 		>
 			<XMarkIcon className="size-6" />
 		</button>
