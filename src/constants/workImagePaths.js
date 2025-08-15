@@ -1,3 +1,4 @@
+/**	@type {Map<number, {src: string, sizes: [number, number]}>} */
 export const WorkImagePaths = new Map([
 	[
 		2,
@@ -81,6 +82,13 @@ export const WorkImagePaths = new Map([
 		{
 			src: "/work/cortina13.webp",
 			sizes: [1204, 1600],
+		},
+	],
+	[
+		14,
+		{
+			src: "/work/cort6.avif",
+			sizes: [720, 1280],
 		},
 	],
 ]);

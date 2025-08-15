@@ -19,9 +19,9 @@ export function AccesorySection() {
 					<p className="text-center text-wrap">
 						Si desea consultar por precios o por algún accesorio que no se
 						encuentre en venta, no dude en contactarnos por{" "}
-						<span className="underline underline-offset-2">WhatsApp</span> o
-						consultar nuestro servicio en{" "}
-						<span className="underline underline-offset-2">Mercado Libre</span>.
+						<Underlined>WhatsApp</Underlined>, <Underlined>correo</Underlined> o
+						consultar nuestro servicio en <Underlined>Mercado Libre</Underlined>
+						.
 					</p>
 					{/* <Link
 						href={`#${AnchorSectionNames.Accesories}`}
@@ -36,4 +36,12 @@ export function AccesorySection() {
 			<div className="divider divider-primary w-1/3 mx-auto"></div>
 		</section>
 	);
+}
+
+/**
+ * @component
+ * @param {import("react").PropsWithChildren} props
+ */
+function Underlined({ children }) {
+	return <span className="underline underline-offset-2"> {children}</span>;
 }
