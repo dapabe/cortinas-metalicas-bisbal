@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import {
 	AcademicCapIcon,
@@ -12,7 +11,8 @@ import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
 
 export function HeroSection() {
-	const AuxXLImage = WorkImagePaths.get(14);
+	const People1 = WorkImagePaths.get(14);
+	const People2 = WorkImagePaths.get(21);
 	return (
 		<section className="w-full relative flex flex-col items-start">
 			{/* Badge */}
@@ -27,13 +27,14 @@ export function HeroSection() {
 					<span className="indent-2">Metálicas</span>{" "}
 				</h1>
 
-				<div className="absolute -bottom-10 md:-bottom-8 left-0 py-2 px-4 rounded-b-xl bg-base-100 shadow-xl z-10">
+				<div className="absolute -bottom-10 md:-bottom-8 left-0 py-2 px-4 rounded-b-xl bg-base-100 shadow-xl z-30">
 					<span className="text-5xl font-bold leading-1">Bisbal</span>
 				</div>
 			</div>
-			<div className="container mx-auto grid grid-cols-5 grid-rows-5 md:grid-cols-8 sm:grid-rows-4 lg:grid-rows-3">
+
+			<div className="container mx-auto grid grid-cols-6 grid-rows-3 md:grid-cols-8 lg:grid-rows-2 xl:grid-rows-1">
 				{/* Main Image*/}
-				<div className="relative col-span-full row-start-1 row-span-3 md:col-start-2 lg:col-start-3 lg:z-20 xl:col-start-5 xl:ml-auto">
+				<div className="relative col-span-full row-start-1 row-span-2 md:col-start-2 lg:col-start-3  xl:col-start-5 xl:ml-auto z-20">
 					<Image
 						src={"/work/cortina1.webp"}
 						className="mask mask-squircle bg-base-300 md:max-w-2xl lg:max-w-3xl"
@@ -46,27 +47,26 @@ export function HeroSection() {
 					<InfoFloaters />
 				</div>
 
-				{/* Persona1 */}
-				<div className="col-start-1 col-span-2 row-start-3 row-span-2 grid-rows-subgrid grid-cols-subgrid grid sm:col-start-4 md:col-start-7 lg:row-start-1 lg:col-start-1 lg:col-span-3 lg:z-10 xl:col-start-4 xl:row-start-2 xl:row-span-2 xl:col-span-2">
+				<div className="z-20 col-start-1 col-span-2 row-start-2 row-span-2 lg:col-start-7 xl:col-start-3 xl:row-start-1 xl:row-span-1 xl:my-auto xl:ml-4">
 					<Image
-						src={AuxXLImage.src}
-						className="mask mask-squircle object-cover bg-base-300 shadow-md"
+						src={People1.src}
+						className="mask mask-squircle object-cover bg-base-300 shadow-xl sm:size-44 lg:size-60 xl:size-80"
 						alt="Cortina metálica ya instalada, estilo moderno"
 						quality={70}
-						width={AuxXLImage.sizes[0]}
-						height={AuxXLImage.sizes[1]}
+						width={People1.sizes[0]}
+						height={People1.sizes[1]}
 					/>
 				</div>
 
 				{/* Persona2 */}
-				<div className="col-start-2 col-span-2 row-start-3 row-span-2">
+				<div className="z-20 col-start-5 sm:col-start-5 col-span-2 row-start-1 row-span-1 sm:row-start-2  md:col-start-1 md:row-start-1 md:mt-auto md:mb-2 lg:m-0">
 					<Image
-						src={"/work/people1.webp"}
-						className="mask mask-squircle object-cover bg-base-300"
+						src={People2.src}
+						className="mask mask-squircle bg-base-300 shadow-xl md:size-44 lg:size-fit"
 						alt="Persona trabajando en la instalación de una cortina metálica"
 						quality={70}
-						width={1200}
-						height={1600}
+						width={People2.sizes[0]}
+						height={People2.sizes[1]}
 					/>
 				</div>
 
@@ -78,7 +78,7 @@ export function HeroSection() {
 
 function InfoFloaters() {
 	return (
-		<div className="absolute right-0 bottom-0 sm:bottom-full overflow-visible">
+		<div className="absolute -right-4 bottom-12 sm:bottom-full overflow-visible z-40">
 			<div className="stats shadow-lg bg-base-100 absolute right-4 -bottom-12 overflow-visible">
 				<div className="stat p-2">
 					<AcademicCapIcon className="size-12 text-primary absolute -top-6 right-0" />
@@ -109,7 +109,7 @@ function InfoFloaters() {
 
 function CallToAction() {
 	return (
-		<div className="z-20 my-auto col-start-1 col-span-5 row-start-5 sm:row-start-4 lg:row-start-3 lg:mt-0 lg:mb-auto xl:col-span-2">
+		<div className="z-20 col-start-1 col-span-4 row-start-3  lg:mb-auto lg:row-start-2 xl:col-span-2 px-2 mt-auto sm:mt-0 lg:my-auto xl:mt-0">
 			<nav
 				aria-label="Links a secciones importantes del sitio web"
 				className="flex flex-col gap-2 max-w-fit"

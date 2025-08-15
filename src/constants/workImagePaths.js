@@ -91,4 +91,53 @@ export const WorkImagePaths = new Map([
 			sizes: [720, 1280],
 		},
 	],
+	[
+		15,
+		{
+			src: "/work/cort5.avif",
+			sizes: [720, 1280],
+		},
+	],
+	[
+		16,
+		{
+			src: "/work/cort7.avif",
+			sizes: [720, 1280],
+		},
+	],
+	[
+		17,
+		{
+			src: "/work/cort12.avif",
+			sizes: [1600, 1200],
+		},
+	],
+	[
+		18,
+		{
+			src: "/work/cort13.avif",
+			sizes: [1600, 900],
+		},
+	],
+	[
+		19,
+		{
+			src: "/work/cort14.avif",
+			sizes: [900, 1600],
+		},
+	],
+	[
+		20,
+		{
+			src: "/work/cort15.avif",
+			sizes: [1200, 1600],
+		},
+	],
+	[
+		21,
+		{
+			src: "/work/cort16.avif",
+			sizes: [720, 1280],
+		},
+	],
 ]);
