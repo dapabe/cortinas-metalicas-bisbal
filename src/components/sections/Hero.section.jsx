@@ -11,8 +11,8 @@ import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
 
 export function HeroSection() {
-	const People1 = WorkImagePaths.get(14);
-	const People2 = WorkImagePaths.get(21);
+	const People1 = WorkImagePaths.get(16);
+	const People2 = WorkImagePaths.get(3);
 	return (
 		<section className="w-full relative flex flex-col items-start">
 			{/* Badge */}

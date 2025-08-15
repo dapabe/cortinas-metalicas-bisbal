@@ -4,7 +4,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 
 export function Footer() {
 	return (
-		<footer className="footer sm:footer-horizontal bg-neutral text-neutral-content p-10">
+		<footer className="footer sm:footer-horizontal bg-neutral text-neutral-content p-10 overflow-x-scroll">
 			<aside className="max-w-xs md:mx-auto">
 				<h2 className="text-5xl font-bold">Cortinas Metálicas Bisbal</h2>
 				<p>

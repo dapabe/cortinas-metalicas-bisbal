@@ -4,6 +4,7 @@ import { WorkImagePaths } from "#/constants/workImagePaths";
 import { MagnifyingGlassPlusIcon } from "@heroicons/react/24/outline";
 import Masonry from "react-masonry-css";
 import { PhotoProvider, PhotoView } from "react-photo-view";
+import Image from "next/image";
 
 export function Gallery() {
 	return (
@@ -18,13 +19,15 @@ export function Gallery() {
 						key={img[0]}
 						width={img[1].sizes[0]}
 						height={img[1].sizes[1]}
-						src={`/work/${img[1].src}`}
+						src={img[1].src}
 					>
 						<div className="relative bg-base-300 shadow-lg p-1.5 rounded-box lg:max-w-48">
-							<img
+							<Image
 								src={img[1].src}
 								loading="lazy"
 								alt="Mini vista previa"
+								width={img[1].sizes[0]}
+								height={img[1].sizes[1]}
 								className="rounded-box object-cover"
 							/>
 							{/* Para escritorio */}
