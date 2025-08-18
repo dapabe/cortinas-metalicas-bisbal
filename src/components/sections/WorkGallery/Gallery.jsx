@@ -25,7 +25,7 @@ export function Gallery() {
 							<Image
 								src={img[1].src}
 								loading="lazy"
-								alt="Mini vista previa"
+								alt="Mini vista previa de cortina metalica ya instalada"
 								width={img[1].sizes[0]}
 								height={img[1].sizes[1]}
 								className="rounded-box object-cover"

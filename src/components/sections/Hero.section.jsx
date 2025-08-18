@@ -52,7 +52,7 @@ export function HeroSection() {
 						src={People1.src}
 						className="mask mask-squircle object-cover bg-base-300 shadow-xl sm:size-44 lg:size-60 xl:size-80"
 						alt="Cortina metálica ya instalada, estilo moderno"
-						quality={70}
+						quality={75}
 						width={People1.sizes[0]}
 						height={People1.sizes[1]}
 					/>
@@ -64,7 +64,7 @@ export function HeroSection() {
 						src={People2.src}
 						className="mask mask-squircle bg-base-300 shadow-xl md:size-44 lg:size-fit"
 						alt="Persona trabajando en la instalación de una cortina metálica"
-						quality={70}
+						quality={75}
 						width={People2.sizes[0]}
 						height={People2.sizes[1]}
 					/>

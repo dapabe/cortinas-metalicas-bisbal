@@ -6,7 +6,7 @@ const nextConfig = {
 	},
 
 	images: {
-		formats: ["image/webp", "image/avif"],
+		formats: ["image/avif", "image/webp"],
 		minimumCacheTTL: 2678400, // 31 days
 		localPatterns: [
 			{

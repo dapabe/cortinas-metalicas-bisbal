@@ -3,21 +3,21 @@ export const WorkImagePaths = new Map([
 	[
 		1,
 		{
-			src: "/work/cort14.avif",
+			src: "/work/cort14.webp",
 			sizes: [900, 1600],
 		},
 	],
 	[
 		2,
 		{
-			src: "/work/cort15.avif",
+			src: "/work/cort15.webp",
 			sizes: [1200, 1600],
 		},
 	],
 	[
 		3,
 		{
-			src: "/work/cort16.avif",
+			src: "/work/cort16.webp",
 			sizes: [720, 1280],
 		},
 	],
@@ -101,36 +101,64 @@ export const WorkImagePaths = new Map([
 	[
 		16,
 		{
-			src: "/work/cort6.avif",
+			src: "/work/cort6.webp",
 			sizes: [720, 1280],
 		},
 	],
 	[
 		17,
 		{
-			src: "/work/cort5.avif",
+			src: "/work/cort5.webp",
 			sizes: [720, 1280],
 		},
 	],
 	[
 		18,
 		{
-			src: "/work/cort7.avif",
+			src: "/work/cort7.webp",
 			sizes: [720, 1280],
 		},
 	],
 	[
 		19,
 		{
-			src: "/work/cort12.avif",
+			src: "/work/cort12.webp",
 			sizes: [1600, 1200],
 		},
 	],
 	[
 		20,
 		{
-			src: "/work/cort13.avif",
+			src: "/work/cort13.webp",
 			sizes: [1600, 900],
+		},
+	],
+	[
+		21,
+		{
+			src: "/work/cort10.webp",
+			sizes: [960, 1280],
+		},
+	],
+	[
+		22,
+		{
+			src: "/work/cort11.webp",
+			sizes: [1600, 1200],
+		},
+	],
+	[
+		23,
+		{
+			src: "/work/cort8.webp",
+			sizes: [900, 1600],
+		},
+	],
+	[
+		24,
+		{
+			src: "/work/cort9.webp",
+			sizes: [960, 1280],
 		},
 	],
 ]);
