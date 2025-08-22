@@ -14,6 +14,11 @@ export const BudgetConfig = {
 		Discount: "Descuento",
 		Subtotal: "Subtotal",
 	},
+	TableFooter: {
+		Warranty: "Garantía",
+		WorkConditions: "Condición de Trabajo",
+		Important: "Importante",
+	},
 	PDF: {
 		Fields: {
 			createdAt: "createdAt",
@@ -31,6 +36,7 @@ export const BudgetConfig = {
 		LayoutSizes: {
 			Margin: {
 				Left: 30,
+				Top: 30,
 			},
 		},
 	},
