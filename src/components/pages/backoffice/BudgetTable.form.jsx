@@ -14,9 +14,12 @@ import { BudgetTableFormRow } from "./BudgetTable.form.Row";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BudgetFormSchema } from "#/schemas/BudgetForm.schema";
 import { HorizontalTextInput } from "#/components/form/HorizontalText.input";
+import { useToastStore } from "#/stores/toaster.store";
 
 export function BudgetTableForm() {
 	const budget = useBudgetStore();
+	const toaster = useToastStore();
+
 	const methods = useForm({
 		/** @type {import("#/schemas/BudgetForm.schema").IBudgetForm} */
 		defaultValues: {
@@ -41,10 +44,19 @@ export function BudgetTableForm() {
 
 	/**	@param {import("#/schemas/BudgetForm.schema").IBudgetForm} data */
 	const onSubmit = async (data) => {
-		await new Promise((res) => {
-			budget.generatePDF(data);
-			res();
-		});
+		try {
+			await new Promise((res) => {
+				budget.generatePDF(data);
+				res();
+			});
+		} catch (error) {
+			toaster.addToast({
+				content:
+					"Ha ocurrido un error al crear el presupuesto, contacte con el desarrollador",
+				status: "error",
+			});
+			console.error(error);
+		}
 	};
 
 	return (

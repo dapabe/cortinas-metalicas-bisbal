@@ -31,16 +31,17 @@ import fontkit from "@pdf-lib/fontkit";
  * 	SegoeUINormalFont: PDFFont,
  * 	SegoeUIBoldFont: PDFFont,
  * }} _PDFConfigs
- * @property {(data: IBudgetForm) => void} generatePDF
+ * @property {(data: IBudgetForm) => Promise<void>} generatePDF
  * @property {()=> PDFPage} addPage
- * @property {(yPos: number, text: string, size?: number)=> void} drawSubHeader
+ * @property {(text: string, size?: number)=> void} drawSubHeader
  * @property {(yPos: number)=>void} drawTextDecoration
  * @property {(data: IBudgetForm)=> void} fillDefaultForm
  * @property {(data: IBudgetForm)=> void} createProductTable
  * @property {(data: IBudgetForm)=> void} createFooter
  * @property {()=> void} addPageEnumeration
- * @property {(yPos: number)=> void} safeMoveDown
+ * @property {(amount: number)=> void} safeMoveDown
  * @property {(text: string, config: {xPos: number, font: PDFFont} & iTextOptions)=> number} drawSafeMultilineText
+ * @property {(yAmount: number)=> boolean} willReachPageEnd
  * @property {(text: string, config: {font: PDFFont} & iTextOptions)=> string[]} _splitTextIntoLines
  */
 
@@ -106,9 +107,10 @@ export const useBudgetStore = create((set, get) => ({
 		get().fillDefaultForm(data);
 
 		currentPage.moveUp(540);
-		// get().createProductTable(data);
+		get().createProductTable(data);
 
-		get().drawSubHeader(currentPage.getY(), BudgetConfig.Titles.Notes);
+		get().safeMoveDown(28);
+		get().drawSubHeader(BudgetConfig.Titles.Notes);
 
 		get().safeMoveDown(24);
 		get().drawSafeMultilineText(data.notes, {
@@ -122,7 +124,6 @@ export const useBudgetStore = create((set, get) => ({
 
 		get().safeMoveDown(24);
 		get().drawSubHeader(
-			currentPage.getY(),
 			BudgetConfig.Titles.TsCs,
 			BudgetConfig.PDF.FontSizes.LG
 		);
@@ -135,41 +136,6 @@ export const useBudgetStore = create((set, get) => ({
 		const bytes = await doc.save();
 		const blob = new Blob([bytes], { type: "application/pdf" });
 		window.open(URL.createObjectURL(blob));
-	},
-
-	addPage: () => {
-		const nwP = get()._PDFConfigs.currentPage.doc.addPage();
-		set({ _PDFConfigs: { currentPage: nwP } });
-
-		return get()._PDFConfigs.currentPage;
-	},
-
-	drawSubHeader: (yPos, text, size = BudgetConfig.PDF.FontSizes.MD) => {
-		get()._PDFConfigs.currentPage.drawText(text, {
-			x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
-			y: yPos,
-			size: size,
-			color: BudgetConfig.PDF.Colors.SubHeaderText,
-			font: get()._PDFConfigs.SegoeUIBoldFont,
-		});
-		get().drawTextDecoration(yPos);
-	},
-
-	drawTextDecoration: (yPos) => {
-		get()._PDFConfigs.currentPage.drawLine({
-			thickness: 1,
-			color: BudgetConfig.PDF.Colors.SubHeaderText,
-			start: {
-				x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
-				y: yPos - 8,
-			},
-			end: {
-				x:
-					get()._PDFConfigs.currentPage.getWidth() -
-					BudgetConfig.PDF.LayoutSizes.Margin.Left,
-				y: yPos - 8,
-			},
-		});
 	},
 
 	fillDefaultForm: (data) => {
@@ -195,41 +161,45 @@ export const useBudgetStore = create((set, get) => ({
 
 	createProductTable: (data) => {
 		let fixedHeight = 20;
-		set((x) => ({
-			...x,
-			_PDFConfigs: { ...x._PDFConfigs, heightPointer: 540 },
-		}));
-		const mVertical = 30;
 		let page = get()._PDFConfigs.currentPage;
+		const rectableBgWidth =
+			page.getWidth() - BudgetConfig.PDF.LayoutSizes.Margin.Left * 2;
 
-		get().drawSubHeader(page.getY(), BudgetConfig.Titles.Table);
+		get().drawSubHeader(BudgetConfig.Titles.Table);
+
 		get().safeMoveDown(fixedHeight + 8);
-		/**	Table header bg */
-		const currentY = page.getY();
-		page.drawRectangle({
-			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
-			y: currentY - 12,
-			color: BudgetConfig.PDF.Colors.SubHeaderBG,
-			height: currentY + 12,
-			width: page.getWidth() - BudgetConfig.PDF.LayoutSizes.Margin.Left * 2,
-		});
-		page.drawText(BudgetConfig.TableHeader.Description, {
-			x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
-			size: BudgetConfig.PDF.FontSizes.MD,
-		});
-		page.drawText(BudgetConfig.TableHeader.Quantity, {
-			x: 400,
-			size: BudgetConfig.PDF.FontSizes.MD,
-		});
-		page.drawText(BudgetConfig.TableHeader.Subtotal, {
-			x: 500,
-			size: BudgetConfig.PDF.FontSizes.MD,
-		});
-
+		const drawTableHeader = () => {
+			/**	Table header bg */
+			page.drawRectangle({
+				x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
+				y: page.getY() - 12,
+				color: BudgetConfig.PDF.Colors.SubHeaderBG,
+				height: fixedHeight + 12,
+				width: rectableBgWidth,
+			});
+			page.drawText(BudgetConfig.TableHeader.Description, {
+				x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
+				size: BudgetConfig.PDF.FontSizes.MD,
+			});
+			page.drawText(BudgetConfig.TableHeader.Quantity, {
+				x: 400,
+				size: BudgetConfig.PDF.FontSizes.MD,
+			});
+			page.drawText(BudgetConfig.TableHeader.Subtotal, {
+				x: 500,
+				size: BudgetConfig.PDF.FontSizes.MD,
+			});
+		};
+		drawTableHeader();
 		get().safeMoveDown(fixedHeight + 12);
 
 		data.list.forEach((item) => {
-			if (page.getY() - fixedHeight < mVertical) page = get().addPage();
+			if (get().willReachPageEnd(fixedHeight)) {
+				page = get().addPage();
+				// Draw another header on top of the new page until all items are printed
+				get().safeMoveDown(BudgetConfig.PDF.LayoutSizes.Margin.Top);
+				drawTableHeader();
+			}
 
 			page.drawText(item.description, {
 				x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
@@ -251,16 +221,17 @@ export const useBudgetStore = create((set, get) => ({
 
 			get().safeMoveDown(fixedHeight);
 		});
-		if (page.getY() - fixedHeight < mVertical) page = get().addPage();
+		// if (page.getY() - fixedHeight < BudgetConfig.PDF.LayoutSizes.Margin.Top) page = get().addPage();
 
 		get().safeMoveDown(12);
 
 		// Result footer
 		page.drawRectangle({
 			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
+			y: page.getY() - 12,
 			color: BudgetConfig.PDF.Colors.SubHeaderBG,
 			height: fixedHeight + 12,
-			width: page.getWidth() - BudgetConfig.PDF.LayoutSizes.Margin.Left * 2,
+			width: 362, // Hardcoded to look good
 		});
 		page.drawText(BudgetConfig.Titles.BudgetTotal, {
 			x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
@@ -297,23 +268,21 @@ export const useBudgetStore = create((set, get) => ({
 		drawMiniSubHeader(BudgetConfig.TableFooter.WorkConditions, middleX);
 
 		get().safeMoveDown(16);
-		page.setFont(get()._PDFConfigs.SegoeUINormalFont);
-		page.setFontSize(BudgetConfig.PDF.FontSizes.SM);
-
+		page.setFont(normalFont);
 		/** @type {[[string, number],[string, number]]} */
 		const textAreas = [
 			[data.warranty, textPaddingLeft],
 			[data.workCompletion, middleX],
 		];
 		let yParagraphPosition = page.getY();
-		let maxLinesWritten = [];
+		let maxLinesWritten = [1];
 		for (const i of textAreas) {
 			if (!i[0].trim().length) continue;
 			const generatedLines = get().drawSafeMultilineText(i[0], {
 				xPos: i[1],
 				font: normalFont,
 				fontSize: BudgetConfig.PDF.FontSizes.SM,
-				maxWidth: 260,
+				maxWidth: 260, // Arbitrary value
 			});
 			maxLinesWritten.push(generatedLines);
 			// Return to the top of the paragraph to continue writing next to it
@@ -321,19 +290,59 @@ export const useBudgetStore = create((set, get) => ({
 		}
 		// Paragraph finalized, continue writing below
 		page.moveLeft(0);
-		get().safeMoveDown(
-			Math.max(...maxLinesWritten) * BudgetConfig.PDF.FontSizes.SM + 8
-		);
-
+		const amountToMoveDown =
+			Math.max(...maxLinesWritten) * BudgetConfig.PDF.FontSizes.SM + 8;
+		get().safeMoveDown(amountToMoveDown);
+		console.log(page.getY());
 		drawMiniSubHeader(BudgetConfig.TableFooter.Important, textPaddingLeft);
 
 		get().safeMoveDown(16);
-		page.setFontSize(BudgetConfig.PDF.FontSizes.SM);
 		get().drawSafeMultilineText(data.important, {
 			xPos: textPaddingLeft,
 			font: normalFont,
 			fontSize: BudgetConfig.PDF.FontSizes.SM,
 			maxWidth: 260,
+		});
+	},
+
+	addPage: () => {
+		const nwP = get()._PDFConfigs.currentPage.doc.addPage();
+		set((state) => ({
+			...state,
+			_PDFConfigs: { ...state._PDFConfigs, currentPage: nwP },
+		}));
+
+		return get()._PDFConfigs.currentPage;
+	},
+
+	drawSubHeader: (text, size = BudgetConfig.PDF.FontSizes.MD) => {
+		let page = get()._PDFConfigs.currentPage;
+		// 8 -> text decoration line
+		// if (get().willReachPageEnd(size + 8)) get().safeMoveDown(size + 8);
+
+		page.drawText(text, {
+			x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
+			size: size,
+			color: BudgetConfig.PDF.Colors.SubHeaderText,
+			font: get()._PDFConfigs.SegoeUIBoldFont,
+		});
+		get().drawTextDecoration(page.getY());
+	},
+
+	drawTextDecoration: (yPos) => {
+		get()._PDFConfigs.currentPage.drawLine({
+			thickness: 0.5,
+			color: BudgetConfig.PDF.Colors.SubHeaderText,
+			start: {
+				x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
+				y: yPos - 8,
+			},
+			end: {
+				x:
+					get()._PDFConfigs.currentPage.getWidth() -
+					BudgetConfig.PDF.LayoutSizes.Margin.Left,
+				y: yPos - 8,
+			},
 		});
 	},
 
@@ -347,22 +356,26 @@ export const useBudgetStore = create((set, get) => ({
 			});
 		}
 	},
-	safeMoveDown: (yPos) => {
+
+	safeMoveDown: (amount) => {
 		let page = get()._PDFConfigs.currentPage;
-		const pageHeight = page.getHeight();
-		if (
-			page.getY() + yPos >=
-			pageHeight - BudgetConfig.PDF.LayoutSizes.Margin.Top
-		) {
+		console.log("safeM", amount);
+		if (get().willReachPageEnd(amount)) {
 			page = get().addPage();
+			page.setLineHeight(12);
+			page.moveTo(
+				0,
+				page.getHeight() - BudgetConfig.PDF.LayoutSizes.Margin.Top
+			);
 			set((state) => ({
+				...state,
 				_PDFConfigs: { ...state._PDFConfigs, currentPage: page },
 			}));
-			page.moveTo(0, pageHeight);
 		} else {
-			page.moveDown(yPos);
+			page.moveDown(amount);
 		}
 	},
+
 	drawSafeMultilineText: (text, config) => {
 		const page = get()._PDFConfigs.currentPage;
 		const lines = get()._splitTextIntoLines(text, config);
@@ -375,6 +388,12 @@ export const useBudgetStore = create((set, get) => ({
 		}
 		return lines.length;
 	},
+
+	willReachPageEnd: (yAmount) => {
+		const page = get()._PDFConfigs.currentPage;
+		return page.getY() - yAmount <= BudgetConfig.PDF.LayoutSizes.Margin.Top;
+	},
+
 	_splitTextIntoLines: (text, config) => {
 		const words = text.replace("\n", "").split(" ");
 		const lines = [];
