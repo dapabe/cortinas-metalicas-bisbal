@@ -16,6 +16,12 @@ import fontkit from "@pdf-lib/fontkit";
  */
 
 /**
+ * @typedef {Object} iTextOptions
+ * @property {number} fontSize
+ * @property {number} maxWidth
+ */
+
+/**
  * @typedef {Object} IBudgetStore
  * @property {number} _IVA
  * @property {(value: number) => string} formatCurrency
@@ -34,7 +40,8 @@ import fontkit from "@pdf-lib/fontkit";
  * @property {(data: IBudgetForm)=> void} createFooter
  * @property {()=> void} addPageEnumeration
  * @property {(yPos: number)=> void} safeMoveDown
- * @property {(text: string, font: PDFFont, fontSize: number, maxWidth: number)=> string[]} _splitTextIntoLines
+ * @property {(text: string, config: {xPos: number, font: PDFFont} & iTextOptions)=> number} drawSafeMultilineText
+ * @property {(text: string, config: {font: PDFFont} & iTextOptions)=> string[]} _splitTextIntoLines
  */
 
 /**
@@ -98,37 +105,29 @@ export const useBudgetStore = create((set, get) => ({
 		});
 		get().fillDefaultForm(data);
 
-		get()._PDFConfigs.currentPage.moveUp(540);
+		currentPage.moveUp(540);
 		// get().createProductTable(data);
 
 		get().drawSubHeader(currentPage.getY(), BudgetConfig.Titles.Notes);
 
-		currentPage.moveDown(24);
-		const lines = get()._splitTextIntoLines(
-			data.notes,
-			SegoeUINormalFont,
-			BudgetConfig.PDF.FontSizes.SM,
-			Math.ceil(
+		get().safeMoveDown(24);
+		get().drawSafeMultilineText(data.notes, {
+			xPos: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
+			font: SegoeUINormalFont,
+			fontSize: BudgetConfig.PDF.FontSizes.SM,
+			maxWidth: Math.ceil(
 				currentPage.getWidth() - BudgetConfig.PDF.LayoutSizes.Margin.Left * 2
-			)
-		);
-		for (let i = 0; i < lines.length; ++i) {
-			currentPage.drawText(lines[i], {
-				x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
-				size: BudgetConfig.PDF.FontSizes.SM,
-			});
-			if (i !== lines.length - 1)
-				currentPage.moveDown(BudgetConfig.PDF.FontSizes.SM + 2);
-		}
+			),
+		});
 
-		currentPage.moveDown(24);
+		get().safeMoveDown(24);
 		get().drawSubHeader(
 			currentPage.getY(),
 			BudgetConfig.Titles.TsCs,
 			BudgetConfig.PDF.FontSizes.LG
 		);
 
-		currentPage.moveDown(24);
+		get().safeMoveDown(24);
 		get().createFooter(data);
 
 		get().addPageEnumeration();
@@ -204,7 +203,7 @@ export const useBudgetStore = create((set, get) => ({
 		let page = get()._PDFConfigs.currentPage;
 
 		get().drawSubHeader(page.getY(), BudgetConfig.Titles.Table);
-		page.moveDown(fixedHeight + 8);
+		get().safeMoveDown(fixedHeight + 8);
 		/**	Table header bg */
 		const currentY = page.getY();
 		page.drawRectangle({
@@ -227,7 +226,7 @@ export const useBudgetStore = create((set, get) => ({
 			size: BudgetConfig.PDF.FontSizes.MD,
 		});
 
-		page.moveDown(fixedHeight + 12);
+		get().safeMoveDown(fixedHeight + 12);
 
 		data.list.forEach((item) => {
 			if (page.getY() - fixedHeight < mVertical) page = get().addPage();
@@ -250,11 +249,11 @@ export const useBudgetStore = create((set, get) => ({
 			// });
 			// }
 
-			page.moveDown(fixedHeight);
+			get().safeMoveDown(fixedHeight);
 		});
 		if (page.getY() - fixedHeight < mVertical) page = get().addPage();
 
-		page.moveDown(12);
+		get().safeMoveDown(12);
 
 		// Result footer
 		page.drawRectangle({
@@ -278,18 +277,15 @@ export const useBudgetStore = create((set, get) => ({
 		let page = get()._PDFConfigs.currentPage;
 		const normalFont = get()._PDFConfigs.SegoeUINormalFont;
 		const middleX = page.getWidth() / 2;
+		const textPaddingLeft = BudgetConfig.PDF.LayoutSizes.Margin.Left + 2;
 
-		// Footer height
 		/**
 		 * @function drawMiniSubHeader
 		 * @param {string} text
 		 * @param {number} xPos
 		 * @returns {void}
 		 */
-		const drawMiniSubHeader = (
-			text,
-			xPos = BudgetConfig.PDF.LayoutSizes.Margin.Left + 2
-		) => {
+		const drawMiniSubHeader = (text, xPos) => {
 			page.drawText(text, {
 				x: xPos,
 				size: BudgetConfig.PDF.FontSizes.MD,
@@ -297,62 +293,48 @@ export const useBudgetStore = create((set, get) => ({
 			});
 		};
 
-		drawMiniSubHeader(BudgetConfig.TableFooter.Warranty);
+		drawMiniSubHeader(BudgetConfig.TableFooter.Warranty, textPaddingLeft);
 		drawMiniSubHeader(BudgetConfig.TableFooter.WorkConditions, middleX);
 
-		page.moveDown(16);
+		get().safeMoveDown(16);
+		page.setFont(get()._PDFConfigs.SegoeUINormalFont);
 		page.setFontSize(BudgetConfig.PDF.FontSizes.SM);
+
 		/** @type {[[string, number],[string, number]]} */
 		const textAreas = [
-			[data.warranty, BudgetConfig.PDF.LayoutSizes.Margin.Left + 2],
+			[data.warranty, textPaddingLeft],
 			[data.workCompletion, middleX],
 		];
 		let yParagraphPosition = page.getY();
-		let maxLinesWritten = 0;
+		let maxLinesWritten = [];
 		for (const i of textAreas) {
-			if (!i[0].length) continue;
-			// if (get().hasReachedPageEnd()) page = get().addPage();
-			let lines = get()._splitTextIntoLines(
-				i[0],
-				normalFont,
-				BudgetConfig.PDF.FontSizes.SM,
-				260
-			);
-			maxLinesWritten = Math.max(maxLinesWritten, lines.length);
-			for (let l of lines) {
-				page.drawText(l, {
-					x: i[1],
-					font: normalFont,
-				});
-				page.moveDown(BudgetConfig.PDF.FontSizes.SM + 2);
-			}
-			page.moveTo(i[1], yParagraphPosition); // Return to the top of the paragraph to continue writing next to it
+			if (!i[0].trim().length) continue;
+			const generatedLines = get().drawSafeMultilineText(i[0], {
+				xPos: i[1],
+				font: normalFont,
+				fontSize: BudgetConfig.PDF.FontSizes.SM,
+				maxWidth: 260,
+			});
+			maxLinesWritten.push(generatedLines);
+			// Return to the top of the paragraph to continue writing next to it
+			page.moveTo(i[1], yParagraphPosition);
 		}
 		// Paragraph finalized, continue writing below
 		page.moveLeft(0);
-		page.moveDown(maxLinesWritten * BudgetConfig.PDF.FontSizes.SM + 8);
-
-		page.setFontSize(BudgetConfig.PDF.FontSizes.MD);
-		drawMiniSubHeader(BudgetConfig.TableFooter.Important);
-
-		page.moveDown(16);
-		page.setFontSize(BudgetConfig.PDF.FontSizes.SM);
-		const lines = get()._splitTextIntoLines(
-			data.important,
-			normalFont,
-			BudgetConfig.PDF.FontSizes.SM,
-			260
+		get().safeMoveDown(
+			Math.max(...maxLinesWritten) * BudgetConfig.PDF.FontSizes.SM + 8
 		);
-		for (let i = 0; i < lines.length; i++) {
-			page.drawText(lines[i], {
-				x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
-			});
-			if (i !== lines.length - 1) {
-				page.moveDown(BudgetConfig.PDF.FontSizes.SM + 2);
-			}
-			console.log(page.getY());
-		}
-		console.log(page.getY(), page.getHeight());
+
+		drawMiniSubHeader(BudgetConfig.TableFooter.Important, textPaddingLeft);
+
+		get().safeMoveDown(16);
+		page.setFontSize(BudgetConfig.PDF.FontSizes.SM);
+		get().drawSafeMultilineText(data.important, {
+			xPos: textPaddingLeft,
+			font: normalFont,
+			fontSize: BudgetConfig.PDF.FontSizes.SM,
+			maxWidth: 260,
+		});
 	},
 
 	addPageEnumeration: () => {
@@ -366,27 +348,43 @@ export const useBudgetStore = create((set, get) => ({
 		}
 	},
 	safeMoveDown: (yPos) => {
-		const currentY = get()._PDFConfigs.currentPage.getY();
-		if (currentY - yPos < BudgetConfig.PDF.LayoutSizes.Margin.Top) {
-			const p = get().addPage();
+		let page = get()._PDFConfigs.currentPage;
+		const pageHeight = page.getHeight();
+		if (
+			page.getY() + yPos >=
+			pageHeight - BudgetConfig.PDF.LayoutSizes.Margin.Top
+		) {
+			page = get().addPage();
 			set((state) => ({
-				_PDFConfigs: { ...state._PDFConfigs, currentPage: p },
+				_PDFConfigs: { ...state._PDFConfigs, currentPage: page },
 			}));
-			p.moveTo(0, p.getHeight());
+			page.moveTo(0, pageHeight);
 		} else {
-			get()._PDFConfigs.currentPage.moveDown(yPos);
+			page.moveDown(yPos);
 		}
 	},
-	_splitTextIntoLines: (text, font, fontSize, maxWidth) => {
+	drawSafeMultilineText: (text, config) => {
+		const page = get()._PDFConfigs.currentPage;
+		const lines = get()._splitTextIntoLines(text, config);
+		for (let i = 0; i < lines.length; ++i) {
+			page.drawText(lines[i], {
+				x: config.xPos,
+				size: config.fontSize,
+			});
+			if (i !== lines.length - 1) get().safeMoveDown(config.fontSize);
+		}
+		return lines.length;
+	},
+	_splitTextIntoLines: (text, config) => {
 		const words = text.replace("\n", "").split(" ");
 		const lines = [];
 		let currentLine = "";
 
 		for (const word of words) {
 			const testLine = currentLine + (currentLine ? " " : "") + word;
-			const width = font.widthOfTextAtSize(testLine, fontSize);
+			const width = config.font.widthOfTextAtSize(testLine, config.fontSize);
 
-			if (width > maxWidth && currentLine.length > 0) {
+			if (width > config.maxWidth && currentLine.length > 0) {
 				lines.push(currentLine);
 				currentLine = word;
 			} else {
