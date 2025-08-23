@@ -106,8 +106,8 @@ export const useBudgetStore = create((set, get) => ({
 		});
 		get().fillDefaultForm(data);
 
-		currentPage.moveUp(180);
-		// get().createProductTable(data);
+		currentPage.moveUp(540);
+		get().createProductTable(data);
 
 		get().safeMoveDown(28);
 		get().drawSubHeader(BudgetConfig.Titles.Notes);
@@ -132,7 +132,9 @@ export const useBudgetStore = create((set, get) => ({
 		get().createFooter(data);
 
 		get().addPageEnumeration();
-
+		doc.setAuthor("Daniel Patricio Becerra (dapabe)");
+		doc.setCreationDate(new Date());
+		doc.setTitle(`CortinasBisbal_${data.clientName}`);
 		const bytes = await doc.save();
 		const blob = new Blob([bytes], { type: "application/pdf" });
 		window.open(URL.createObjectURL(blob));
@@ -264,32 +266,50 @@ export const useBudgetStore = create((set, get) => ({
 			});
 		};
 
-		drawMiniSubHeader(BudgetConfig.TableFooter.Warranty, textPaddingLeft);
-		drawMiniSubHeader(BudgetConfig.TableFooter.WorkConditions, middleX);
-
-		get().safeMoveDown(16);
-		page.setFont(normalFont);
+		/**
+		 * Probably will be better in the future to draw the whole subheader + paragraph in a single function
+		 * and take into account the page break, so it drawn uniformly. Currently, if a page break happens
+		 * between the subheader and the paragraph, the subheader will be at the bottom of the page and the paragraph
+		 * at the top of the next one.
+		 */
+		// const topSubheaderHeight = BudgetConfig.PDF.FontSizes.MD * 2;
+		let maxLinesWritten = [1];
 		/** @type {[[string, number],[string, number]]} */
 		const textAreas = [
 			[data.warranty, textPaddingLeft],
 			[data.workCompletion, middleX],
 		];
+		for (const element of textAreas) {
+			const generatedLines = get()._splitTextIntoLines(element[0], {
+				font: normalFont,
+				fontSize: BudgetConfig.PDF.FontSizes.SM,
+				maxWidth: 260, // Arbitrary value
+			});
+			maxLinesWritten.push(generatedLines.length);
+		}
+		// const blockHeight = topSubheaderHeight + Math.max(...maxLinesWritten) * 16;
+		// if (get().willReachPageEnd(blockHeight)) get().safeMoveDown(blockHeight);
+		drawMiniSubHeader(BudgetConfig.TableFooter.Warranty, textPaddingLeft);
+		drawMiniSubHeader(BudgetConfig.TableFooter.WorkConditions, middleX);
+
+		get().safeMoveDown(16);
+		page.setFont(normalFont);
+
 		let initialParagraphPosition = page.getY();
-		let maxLinesWritten = [1];
 		for (const i of textAreas) {
 			if (!i[0].trim().length) continue;
-			const generatedLines = get().drawSafeMultilineText(i[0], {
+			get().drawSafeMultilineText(i[0], {
 				xPos: i[1],
 				font: normalFont,
 				fontSize: BudgetConfig.PDF.FontSizes.SM,
 				maxWidth: 260, // Arbitrary value
 			});
-			maxLinesWritten.push(generatedLines);
 			// Return to the top of the paragraph to continue writing next to it
 			page.moveTo(i[1], initialParagraphPosition);
 		}
 		// Paragraph finalized, continue writing below
 		page.moveLeft(page.getX());
+
 		const amountToMoveDown = Math.max(...maxLinesWritten) * 16;
 		get().safeMoveDown(amountToMoveDown);
 		drawMiniSubHeader(BudgetConfig.TableFooter.Important, textPaddingLeft);
