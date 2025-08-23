@@ -106,8 +106,8 @@ export const useBudgetStore = create((set, get) => ({
 		});
 		get().fillDefaultForm(data);
 
-		currentPage.moveUp(540);
-		get().createProductTable(data);
+		currentPage.moveUp(180);
+		// get().createProductTable(data);
 
 		get().safeMoveDown(28);
 		get().drawSubHeader(BudgetConfig.Titles.Notes);
@@ -245,7 +245,7 @@ export const useBudgetStore = create((set, get) => ({
 	},
 
 	createFooter: (data) => {
-		let page = get()._PDFConfigs.currentPage;
+		const page = get()._PDFConfigs.currentPage;
 		const normalFont = get()._PDFConfigs.SegoeUINormalFont;
 		const middleX = page.getWidth() / 2;
 		const textPaddingLeft = BudgetConfig.PDF.LayoutSizes.Margin.Left + 2;
@@ -257,7 +257,7 @@ export const useBudgetStore = create((set, get) => ({
 		 * @returns {void}
 		 */
 		const drawMiniSubHeader = (text, xPos) => {
-			page.drawText(text, {
+			get()._PDFConfigs.currentPage.drawText(text, {
 				x: xPos,
 				size: BudgetConfig.PDF.FontSizes.MD,
 				font: get()._PDFConfigs.SegoeUIBoldFont,
@@ -274,7 +274,7 @@ export const useBudgetStore = create((set, get) => ({
 			[data.warranty, textPaddingLeft],
 			[data.workCompletion, middleX],
 		];
-		let yParagraphPosition = page.getY();
+		let initialParagraphPosition = page.getY();
 		let maxLinesWritten = [1];
 		for (const i of textAreas) {
 			if (!i[0].trim().length) continue;
@@ -286,14 +286,12 @@ export const useBudgetStore = create((set, get) => ({
 			});
 			maxLinesWritten.push(generatedLines);
 			// Return to the top of the paragraph to continue writing next to it
-			page.moveTo(i[1], yParagraphPosition);
+			page.moveTo(i[1], initialParagraphPosition);
 		}
 		// Paragraph finalized, continue writing below
-		page.moveLeft(0);
-		const amountToMoveDown =
-			Math.max(...maxLinesWritten) * BudgetConfig.PDF.FontSizes.SM + 8;
+		page.moveLeft(page.getX());
+		const amountToMoveDown = Math.max(...maxLinesWritten) * 16;
 		get().safeMoveDown(amountToMoveDown);
-		console.log(page.getY());
 		drawMiniSubHeader(BudgetConfig.TableFooter.Important, textPaddingLeft);
 
 		get().safeMoveDown(16);
@@ -359,18 +357,18 @@ export const useBudgetStore = create((set, get) => ({
 
 	safeMoveDown: (amount) => {
 		let page = get()._PDFConfigs.currentPage;
-		console.log("safeM", amount);
 		if (get().willReachPageEnd(amount)) {
+			console.log({ amount });
 			page = get().addPage();
+			set((state) => ({
+				...state,
+				_PDFConfigs: { ...state._PDFConfigs, currentPage: page },
+			}));
 			page.setLineHeight(12);
 			page.moveTo(
 				0,
 				page.getHeight() - BudgetConfig.PDF.LayoutSizes.Margin.Top
 			);
-			set((state) => ({
-				...state,
-				_PDFConfigs: { ...state._PDFConfigs, currentPage: page },
-			}));
 		} else {
 			page.moveDown(amount);
 		}
@@ -384,7 +382,7 @@ export const useBudgetStore = create((set, get) => ({
 				x: config.xPos,
 				size: config.fontSize,
 			});
-			if (i !== lines.length - 1) get().safeMoveDown(config.fontSize);
+			get().safeMoveDown(config.fontSize);
 		}
 		return lines.length;
 	},
