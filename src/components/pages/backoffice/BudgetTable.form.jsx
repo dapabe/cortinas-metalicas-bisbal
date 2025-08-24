@@ -15,6 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { BudgetFormSchema } from "#/schemas/BudgetForm.schema";
 import { HorizontalTextInput } from "#/components/form/HorizontalText.input";
 import { useToastStore } from "#/stores/toaster.store";
+import { VerticalTextInput } from "#/components/form/VerticalText.input";
+import { DateInput } from "#/components/form/Date.input";
 
 export function BudgetTableForm() {
 	const budget = useBudgetStore();
@@ -59,6 +61,15 @@ export function BudgetTableForm() {
 		}
 	};
 
+	const prevCreatedAt = useWatch({
+		control: methods.control,
+		name: "createdAt",
+	});
+	const currentValidUntil = useWatch({
+		control: methods.control,
+		name: "validUntil",
+	});
+
 	return (
 		<FormProvider {...methods}>
 			<form
@@ -72,19 +83,16 @@ export function BudgetTableForm() {
 						</legend>
 
 						<div className="flex gap-2 flex-col lg:flex-row">
-							<HorizontalTextInput
+							<VerticalTextInput
 								label="Nombre/Razón Social"
 								isRequired
 								inputName="clientName"
 							/>
-							<HorizontalTextInput
-								label="Dirección"
-								inputName="clientLocation"
-							/>
+							<VerticalTextInput label="Dirección" inputName="clientLocation" />
 						</div>
 						<div className="flex gap-2 flex-col lg:flex-row">
-							<HorizontalTextInput label="Contacto" inputName="clientContact" />
-							<HorizontalTextInput label="CUIT/CUIL/DNI" inputName="clientID" />
+							<VerticalTextInput label="Contacto" inputName="clientContact" />
+							<VerticalTextInput label="CUIT/CUIL/DNI" inputName="clientID" />
 						</div>
 					</fieldset>
 
@@ -94,25 +102,21 @@ export function BudgetTableForm() {
 						</legend>
 
 						<div className="flex gap-2 flex-col">
-							<label className="input">
-								<span className="label">
-									Creado el
-									<span className="text-error">*</span>
-								</span>
-								<input
-									type="date"
-									min={new Date().toISOString().split("T")[0]}
-									{...methods.register("createdAt")}
-								/>
-							</label>
-							<label className="input">
-								<span className="label">Válido hasta</span>
-								<input
-									type="date"
-									// min={new Date().toISOString().split("T")[0]}
-									{...methods.register("validUntil")}
-								/>
-							</label>
+							<DateInput
+								inputName="createdAt"
+								label="Creado el"
+								isRequired
+								min={new Date().toISOString().split("T")[0]}
+							/>
+							<DateInput
+								inputName="validUntil"
+								label="Valido hasta (Opcional)"
+								min={
+									!!currentValidUntil
+										? new Date(prevCreatedAt).toISOString().split("T")[0]
+										: undefined
+								}
+							/>
 						</div>
 					</fieldset>
 
@@ -205,7 +209,7 @@ BudgetTableForm.ItemList = function ItemList() {
 			// for (let index = 0; index < 10; index++) {
 			append({
 				id: createId(),
-				description: "xxx",
+				description: "",
 				quantity: "1",
 				price: "0",
 				discount: "0",
@@ -232,10 +236,10 @@ BudgetTableForm.TableResult = function TableResult() {
 	/** @type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
 
-	const displayedTotal = useMemo(
-		() => budget.calculateTotal(formList),
-		[formList]
-	);
+	const displayedTotal = useMemo(() => {
+		if (formList) return budget.calculateTotal(formList);
+		return 0;
+	}, [formList]);
 
 	// useEffect(() => {
 	// 	if (!_onlyShowTotal && formList.length)

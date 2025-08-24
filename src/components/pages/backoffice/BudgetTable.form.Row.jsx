@@ -215,12 +215,13 @@ BudgetTableFormRow.RowTotal = function RowTotal({ index }) {
 
 	/**	@type {number} */
 	const subtotal = useMemo(() => {
+		if (!item) return 0;
 		const result = item.quantity * item.price;
 		return result - (result * item.discount) / 100;
 	}, [item]);
 
 	useEffect(() => {
-		setValue("subtotal", subtotal);
+		if (item) setValue("subtotal", subtotal);
 	}, [subtotal]);
 
 	return (
@@ -245,7 +246,6 @@ BudgetTableFormRow.RemoveItem = function RemoveItem({ index }) {
 	return (
 		<button
 			type="button"
-			disabled={items.length <= 1}
 			className="btn btn-sm btn-block btn-error"
 			onClick={() => {
 				unregister(`list.${index}`);
