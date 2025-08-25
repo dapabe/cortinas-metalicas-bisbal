@@ -10,8 +10,8 @@ const MaxTextSchema = z3
 	.max(38, { message: "Maximo de 38 caracteres" });
 
 const BudgetItemSchema = z3.object({
-	id: z3.string(),
-	description: z3.string().trim().optional(),
+	id: z3.string().optional(),
+	description: z3.string().optional(),
 	price: z3.coerce.number().min(0),
 	quantity: z3.coerce.number().min(1),
 	discount: z3.coerce.number().min(0).max(100),

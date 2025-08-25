@@ -2,7 +2,14 @@
 import { BudgetConfig } from "#/constants/budget.config";
 import { useBudgetStore } from "#/stores/budget.store";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { useCallback, useEffect, useId, useMemo } from "react";
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useId,
+	useMemo,
+} from "react";
 import {
 	FormProvider,
 	useFieldArray,
@@ -17,6 +24,15 @@ import { HorizontalTextInput } from "#/components/form/HorizontalText.input";
 import { useToastStore } from "#/stores/toaster.store";
 import { VerticalTextInput } from "#/components/form/VerticalText.input";
 import { DateInput } from "#/components/form/Date.input";
+
+const ListContext = createContext(null);
+/** @return {import("react-hook-form").UseFieldArrayReturn<import("#/schemas/BudgetForm.schema").IBudgetItem[]>} */
+export function useListContext() {
+	const ctx = useContext(ListContext);
+	if (!ctx)
+		throw new Error("useListContext must be used within a ListCtx.Provider");
+	return ctx;
+}
 
 export function BudgetTableForm() {
 	const budget = useBudgetStore();
@@ -68,6 +84,11 @@ export function BudgetTableForm() {
 	const currentValidUntil = useWatch({
 		control: methods.control,
 		name: "validUntil",
+	});
+
+	const fMethods = useFieldArray({
+		control: methods.control,
+		name: "list",
 	});
 
 	return (
@@ -152,10 +173,11 @@ export function BudgetTableForm() {
 				</section>
 
 				<div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-					<table className="table">
-						<thead>
-							{/* <tr> */}
-							{/* <th>
+					<ListContext.Provider value={fMethods}>
+						<table className="table">
+							<thead>
+								{/* <tr> */}
+								{/* <th>
 									<label className="label">
 										<input
 											type="checkbox"
@@ -165,27 +187,28 @@ export function BudgetTableForm() {
 										Modificar solo el resumen final
 									</label>
 								</th> */}
-							{/* <th colSpan={1}></th> */}
-							{/* </tr> */}
-							<tr className="[&>th]:text-center">
-								<th>{BudgetConfig.TableHeader.Description}</th>
-								<th>{BudgetConfig.TableHeader.Quantity}</th>
-								<th>{BudgetConfig.TableHeader.UnitPrice}</th>
-								<th>{BudgetConfig.TableHeader.Discount}</th>
-								<th>{BudgetConfig.TableHeader.Subtotal}</th>
-								<th></th>
-							</tr>
-						</thead>
-						<BudgetTableForm.ItemList />
-						<tfoot>
-							<tr>
-								<BudgetTableForm.TableResult />
-							</tr>
-							<tr>
-								<BudgetTableForm.AddItem />
-							</tr>
-						</tfoot>
-					</table>
+								{/* <th colSpan={1}></th> */}
+								{/* </tr> */}
+								<tr className="[&>th]:text-center">
+									<th>{BudgetConfig.TableHeader.Description}</th>
+									<th>{BudgetConfig.TableHeader.Quantity}</th>
+									<th>{BudgetConfig.TableHeader.UnitPrice}</th>
+									<th>{BudgetConfig.TableHeader.Discount}</th>
+									<th>{BudgetConfig.TableHeader.Subtotal}</th>
+									<th></th>
+								</tr>
+							</thead>
+							<BudgetTableForm.ItemList />
+							<tfoot>
+								<tr>
+									<BudgetTableForm.TableResult />
+								</tr>
+								<tr>
+									<BudgetTableForm.AddItem />
+								</tr>
+							</tfoot>
+						</table>
+					</ListContext.Provider>
 				</div>
 			</form>
 		</FormProvider>
@@ -193,22 +216,11 @@ export function BudgetTableForm() {
 }
 
 BudgetTableForm.ItemList = function ItemList() {
-	const { control } = useFormContext();
-	const { fields, append } = useFieldArray({
-		control: control,
-		name: "list",
-	});
-
-	const createId = useCallback(
-		() => Math.random().toString(36).slice(2, 11),
-		[]
-	);
+	const { fields, append } = useListContext();
 
 	useEffect(() => {
 		if (!fields.length) {
-			// for (let index = 0; index < 10; index++) {
 			append({
-				id: createId(),
 				description: "",
 				quantity: "1",
 				price: "0",
@@ -269,15 +281,7 @@ BudgetTableForm.TableResult = function TableResult() {
 };
 
 BudgetTableForm.AddItem = function AddItem() {
-	const { control } = useFormContext();
-	const { append } = useFieldArray({
-		control,
-		name: "list",
-	});
-	const createId = useCallback(
-		() => Math.random().toString(36).slice(2, 11),
-		[]
-	);
+	const { append } = useListContext();
 
 	return (
 		<td colSpan={"100%"} className="text-center">
@@ -286,7 +290,6 @@ BudgetTableForm.AddItem = function AddItem() {
 				className="btn btn-block btn-info"
 				onClick={() =>
 					append({
-						id: createId(),
 						description: "",
 						quantity: "1",
 						price: "0",

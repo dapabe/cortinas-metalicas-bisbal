@@ -1,8 +1,9 @@
 "use client";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useMemo } from "react";
-import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useBudgetStore } from "#/stores/budget.store";
+import { useListContext } from "./BudgetTable.form";
 
 /**
  * @component
@@ -43,7 +44,7 @@ BudgetTableFormRow.InputDescription = function InputDescription({ index }) {
 	const value = useWatch({ control, name: `list.${index}.description` });
 
 	// const [selected, setSelected] = useState(null);
-
+	console.log(formState.errors?.list?.[index]);
 	return (
 		<label
 			aria-invalid={!!formState.errors?.list?.[index] ? "true" : undefined}
@@ -68,9 +69,12 @@ BudgetTableFormRow.InputDescription = function InputDescription({ index }) {
  * @param {{index: number }} props
  */
 BudgetTableFormRow.InputQuantity = function InputQuantity({ index }) {
-	const { register, getValues, setValue } = useFormContext();
+	const { register, control, setValue } = useFormContext();
 
-	const quantity = getValues(`list.${index}.quantity`);
+	const quantity = useWatch({
+		control,
+		name: `list.${index}.quantity`,
+	});
 
 	return (
 		<div className="flex justify-center">
@@ -238,10 +242,8 @@ BudgetTableFormRow.RowTotal = function RowTotal({ index }) {
  * @param {{index: number}} props
  */
 BudgetTableFormRow.RemoveItem = function RemoveItem({ index }) {
-	const { control, unregister } = useFormContext();
-	const { remove } = useFieldArray({ control, name: `list` });
-	/**	@type {import("#/schemas/BudgetForm.schema").IBudgetItem[]} */
-	const items = useWatch({ control, name: "list" });
+	const { unregister } = useFormContext();
+	const { remove } = useListContext();
 
 	return (
 		<button
