@@ -135,11 +135,23 @@ export const useBudgetStore = create((set, get) => ({
 
 		doc.setAuthor("Daniel Patricio Becerra (dapabe)");
 		doc.setCreationDate(new Date());
-		doc.setTitle(`CortinasBisbal_${data.clientName}`);
+		const fileName = `CortinasBisbal_${data.clientName}`;
+		doc.setTitle(fileName);
 
 		const bytes = await doc.save();
 		const blob = new Blob([bytes], { type: "application/pdf" });
-		window.open(URL.createObjectURL(blob));
+		const url = URL.createObjectURL(blob);
+		console.log(data._previsualize);
+		if (data._previsualize) window.open(url);
+		else {
+			const a = document.createElement("a");
+			a.href = url;
+			a.download = fileName;
+			document.body.appendChild(a);
+			a.click();
+			window.URL.revokeObjectURL(url);
+			document.body.removeChild(a);
+		}
 	},
 
 	fillDefaultForm: (data) => {

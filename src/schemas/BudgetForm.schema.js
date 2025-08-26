@@ -21,8 +21,9 @@ const BudgetItemSchema = z3.object({
 export const BudgetFormSchema = z3
 	.object({
 		_onlyShowTotal: z3.boolean(),
-		createdAt: z3.coerce.date().default(),
-		validUntil: z3.coerce.date().nullable(),
+		_previsualize: z3.boolean(),
+		createdAt: z3.coerce.date({ message: "Fecha invalida" }),
+		validUntil: z3.coerce.date({ message: "Fecha invalida" }).nullable(),
 		clientName: MinTextSchema.max(38, { message: "Maximo de 38 caracteres" }),
 		clientLocation: MaxTextSchema.optional(),
 		clientContact: MaxTextSchema.optional(),

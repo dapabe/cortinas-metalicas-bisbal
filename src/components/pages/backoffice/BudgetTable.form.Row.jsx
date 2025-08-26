@@ -43,7 +43,9 @@ BudgetTableFormRow.InputDescription = function InputDescription({ index }) {
 
 	return (
 		<label
-			aria-invalid={!!formState.errors?.list?.[index] ? "true" : undefined}
+			aria-invalid={
+				!!formState.errors?.list?.[index]?.description ? "true" : undefined
+			}
 			className="input input-md aria-[invalid]:input-error min-w-max"
 		>
 			{/* <button type="button" className="label">
@@ -124,7 +126,7 @@ BudgetTableFormRow.InputPrice = function InputPrice({ index }) {
 	/** @type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
 
-	if (_onlyShowTotal) return "-";
+	if (_onlyShowTotal) return <p className="text-center">-</p>;
 
 	return (
 		<div className="flex justify-center">
@@ -156,7 +158,7 @@ BudgetTableFormRow.InputDiscount = function InputDiscount({ index }) {
 	/**	@type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
 
-	if (_onlyShowTotal) return "-";
+	if (_onlyShowTotal) return <p className="text-center">-</p>;
 
 	return (
 		<div className="flex justify-center">
