@@ -454,26 +454,26 @@ export const useBudgetStore = create((set, get) => ({
 	},
 
 	_splitTextIntoLines: (text, config) => {
-		const words = text.replace("\n", "").split(" ");
+		// Respetar saltos de línea manuales
+		const paragraphs = text.split(/\r?\n/);
 		const lines = [];
-		let currentLine = "";
-
-		for (const word of words) {
-			const testLine = currentLine + (currentLine ? " " : "") + word;
-			const width = config.font.widthOfTextAtSize(testLine, config.fontSize);
-
-			if (width > config.maxWidth && currentLine.length > 0) {
+		for (const paragraph of paragraphs) {
+			const words = paragraph.split(" ");
+			let currentLine = "";
+			for (const word of words) {
+				const testLine = currentLine + (currentLine ? " " : "") + word;
+				const width = config.font.widthOfTextAtSize(testLine, config.fontSize);
+				if (width > config.maxWidth && currentLine.length > 0) {
+					lines.push(currentLine);
+					currentLine = word;
+				} else {
+					currentLine = testLine;
+				}
+			}
+			if (currentLine.length > 0) {
 				lines.push(currentLine);
-				currentLine = word;
-			} else {
-				currentLine = testLine;
 			}
 		}
-
-		if (currentLine.length > 0) {
-			lines.push(currentLine);
-		}
-
 		return lines;
 	},
 }));
