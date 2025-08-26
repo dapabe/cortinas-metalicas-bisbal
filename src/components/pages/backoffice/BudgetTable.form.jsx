@@ -99,7 +99,7 @@ export function BudgetTableForm() {
 				onSubmit={methods.handleSubmit(onSubmit)}
 			>
 				<section className="grid gap-4 grid-cols-4">
-					<fieldset className="col-span-4 md:col-span-2 fieldset bg-base-200 p-4 rounded-box w-fit mx-auto">
+					<fieldset className="col-span-4 fieldset bg-base-200 p-4 rounded-box md:col-span-2">
 						<legend className="fieldset-legend text-lg">
 							Datos del cliente
 						</legend>
@@ -118,7 +118,7 @@ export function BudgetTableForm() {
 						</div>
 					</fieldset>
 
-					<fieldset className="col-span-4 md:col-span-2 lg:col-span-1 fieldset bg-base-200 p-4 rounded-box m-auto">
+					<fieldset className="col-span-4 md:col-span-2 lg:col-span-1 fieldset bg-base-200 p-4 rounded-box h-fit">
 						<legend className="fieldset-legend text-lg">
 							Fechas del presupuesto
 						</legend>
@@ -292,7 +292,9 @@ BudgetTableForm.AddItem = function AddItem() {
 				onClick={() =>
 					append({
 						description:
-							"En todo caso de requerir el trabajo se debe abonar con anticipación el 60% y el 40% restante al finalizar el trabajo.",
+							process.env.NODE_ENV === "development"
+								? "En todo caso de requerir el trabajo se debe abonar con anticipación el 60% y el 40% restante al finalizar el trabajo."
+								: "",
 						quantity: "1",
 						price: "0",
 						discount: "0",

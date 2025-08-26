@@ -245,7 +245,7 @@ export const useBudgetStore = create((set, get) => ({
 				});
 			}
 			// if (get().willReachPageEnd(amountToMove)) console.log("first");
-			if (index === data.list.length - 1)
+			if (data.list.length === 1 || index === data.list.length - 1)
 				get().safeMoveDown(genLines.length * fontSize + rowSpacing);
 			else get().safeMoveDown(rowSpacing);
 		});

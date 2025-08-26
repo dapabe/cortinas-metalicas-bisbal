@@ -12,7 +12,7 @@ export function VerticalTextInput({ label, isRequired = false, inputName }) {
 	const { register, formState } = useFormContext();
 
 	return (
-		<fieldset className="fieldset">
+		<fieldset className="fieldset w-full">
 			<legend className="fieldset-legend">
 				{label}
 				{isRequired ? <span className="text-error">*</span> : null}

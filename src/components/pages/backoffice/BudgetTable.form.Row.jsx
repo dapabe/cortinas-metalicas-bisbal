@@ -44,7 +44,7 @@ BudgetTableFormRow.InputDescription = function InputDescription({ index }) {
 	return (
 		<label
 			aria-invalid={!!formState.errors?.list?.[index] ? "true" : undefined}
-			className="input input-md aria-[invalid]:input-error"
+			className="input input-md aria-[invalid]:input-error min-w-max"
 		>
 			{/* <button type="button" className="label">
 				<ChevronDownIcon className="size-6" />
