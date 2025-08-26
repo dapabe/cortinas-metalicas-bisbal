@@ -188,7 +188,7 @@ export function BudgetTableForm() {
 						</fieldset>
 
 						<div
-							id={TourStepID._5}
+							id={TourStepID._6}
 							className="col-span-full lg:col-span-1 lg:row-start-1 lg:col-start-4 p-4 flex gap-2 items-center justify-center mx-auto lg:flex-col"
 						>
 							<BudgetTableForm.FormActions />
@@ -199,19 +199,19 @@ export function BudgetTableForm() {
 						<ListContext.Provider value={fMethods}>
 							<table className="table">
 								<thead>
-									{/* <tr> */}
-									{/* <th>
-									<label className="label">
-										<input
-											type="checkbox"
-											className="checkbox"
-											{...methods.register("_onlyShowTotal")}
-										/>
-										Modificar solo el resumen final
-									</label>
-								</th> */}
-									{/* <th colSpan={1}></th> */}
-									{/* </tr> */}
+									<tr>
+										<th>
+											<label id={TourStepID._5} className="label">
+												<input
+													type="checkbox"
+													className="checkbox"
+													{...methods.register("_onlyShowTotal")}
+												/>
+												Modificar solo el resumen final
+											</label>
+										</th>
+										<th colSpan={1}></th>
+									</tr>
 									<tr className="[&>th]:text-center">
 										<th>{BudgetConfig.TableHeader.Description}</th>
 										<th>{BudgetConfig.TableHeader.Quantity}</th>
@@ -336,12 +336,6 @@ BudgetTableForm.TableResult = function TableResult() {
 		return 0;
 	}, [formList]);
 
-	// useEffect(() => {
-	// 	if (!_onlyShowTotal && formList.length)
-	// 		setValue("total", displayedTotal.toString());
-	// 	return () => setValue("total", displayedTotal.toString());
-	// }, [_onlyShowTotal, formList]);
-
 	return (
 		<td id={TourStepID._4} colSpan={"100%"}>
 			<label
@@ -362,9 +356,11 @@ BudgetTableForm.TableResult = function TableResult() {
 					</span>
 				)}
 			</label>
-			<span className="font-mono font-semibold ml-2">
-				{budget.formatCurrency(totalInput)}
-			</span>
+			{_onlyShowTotal ? (
+				<span className="font-mono font-semibold ml-2">
+					{budget.formatCurrency(totalInput)}
+				</span>
+			) : null}
 		</td>
 	);
 };

@@ -4,6 +4,7 @@ export const TourStepID = {
 	_3: "step3",
 	_4: "step4",
 	_5: "step5",
+	_6: "step6",
 };
 
 /** @type {import("@reactour/tour").StepType[]} */
@@ -42,6 +43,16 @@ export const TourSteps = [
 	},
 	{
 		selector: `#${TourStepID._5}`,
+		content: () => (
+			<p>
+				Al desmarcar esta casilla puedes cambiar los datos de cada item
+				individualmente y el <span className="font-mono">TOTAL</span> se
+				actualiza automaticamente.
+			</p>
+		),
+	},
+	{
+		selector: `#${TourStepID._6}`,
 		content: () => <p>Aquí podras previsualizar o descargar el archivo PDF.</p>,
 	},
 ];

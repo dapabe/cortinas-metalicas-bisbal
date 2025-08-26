@@ -74,8 +74,9 @@ export const useBudgetStore = create((set, get) => ({
 	formatCurrency: (value) => currencyIntl.format(value),
 	calculateTotal: (values) => {
 		let total = values.reduce((acc, item) => {
-			const subtotal = acc + item.price * item.quantity;
-			return subtotal - (subtotal * item.discount) / 100;
+			const subtotal = item.price * item.quantity;
+			const discounted = subtotal - (subtotal * (item.discount || 0)) / 100;
+			return acc + discounted;
 		}, 0);
 		return total;
 	},
@@ -141,7 +142,7 @@ export const useBudgetStore = create((set, get) => ({
 		const bytes = await doc.save();
 		const blob = new Blob([bytes], { type: "application/pdf" });
 		const url = URL.createObjectURL(blob);
-		console.log(data._previsualize);
+
 		if (data._previsualize) window.open(url);
 		else {
 			const a = document.createElement("a");
@@ -149,9 +150,9 @@ export const useBudgetStore = create((set, get) => ({
 			a.download = fileName;
 			document.body.appendChild(a);
 			a.click();
-			window.URL.revokeObjectURL(url);
 			document.body.removeChild(a);
 		}
+		window.URL.revokeObjectURL(url);
 	},
 
 	fillDefaultForm: (data) => {
@@ -206,10 +207,10 @@ export const useBudgetStore = create((set, get) => ({
 				x: 350,
 				size: fontSize,
 			});
-			// page.drawText(BudgetConfig.TableHeader.Subtotal, {
-			// 	x: 400,
-			// 	size: fontSize,
-			// });
+			page.drawText(BudgetConfig.TableHeader.Subtotal, {
+				x: 450,
+				size: fontSize,
+			});
 			get().safeMoveDown(fontSize + 6);
 		};
 		drawTableHeader();
@@ -251,7 +252,7 @@ export const useBudgetStore = create((set, get) => ({
 
 			if (!data._onlyShowTotal) {
 				page.drawText(currencyIntl.format(item.subtotal), {
-					x: 400,
+					x: 450,
 					y: yCentered,
 					size: fontSize,
 				});
@@ -276,7 +277,10 @@ export const useBudgetStore = create((set, get) => ({
 			size: BudgetConfig.PDF.FontSizes.MD,
 			color: BudgetConfig.PDF.Colors.SubHeaderText,
 		});
-		page.drawText(currencyIntl.format(data.total), {
+		const formatedTotal = data._onlyShowTotal
+			? data.total
+			: get().calculateTotal(data.list);
+		page.drawText(currencyIntl.format(formatedTotal), {
 			x: 400,
 			size: BudgetConfig.PDF.FontSizes.MD,
 		});

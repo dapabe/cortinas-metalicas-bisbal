@@ -221,13 +221,12 @@ BudgetTableFormRow.RowTotal = function RowTotal({ index }) {
 
 	/**	@type {number} */
 	const subtotal = useMemo(() => {
-		if (!item) return 0;
 		const result = item.quantity * item.price;
 		return result - (result * item.discount) / 100;
 	}, [item]);
 
 	useEffect(() => {
-		if (item) setValue("subtotal", subtotal);
+		if (item) setValue(`list.${index}.subtotal`, subtotal);
 	}, [subtotal]);
 
 	return (
