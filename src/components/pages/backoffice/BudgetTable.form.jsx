@@ -1,7 +1,7 @@
 "use client";
 import { BudgetConfig } from "#/constants/budget.config";
 import { useBudgetStore } from "#/stores/budget.store";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { DocumentTextIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import {
 	createContext,
 	useCallback,
@@ -167,8 +167,19 @@ export function BudgetTableForm() {
 					</fieldset>
 
 					<div className="col-span-full lg:col-span-1 lg:row-start-1 lg:col-start-4 p-4 flex items-center justify-center mx-auto">
-						<button type="submit" className="btn btn-success">
-							Descargar PDF
+						<button
+							type="submit"
+							disabled={methods.formState.isSubmitting}
+							className={"btn btn-success"}
+						>
+							{methods.formState.isSubmitting ? (
+								<span className="loading loading-dots loading-md"></span>
+							) : (
+								<>
+									Descargar PDF
+									<DocumentTextIcon className="size-6" />
+								</>
+							)}
 						</button>
 					</div>
 				</section>

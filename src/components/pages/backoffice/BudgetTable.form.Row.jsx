@@ -242,17 +242,13 @@ BudgetTableFormRow.RowTotal = function RowTotal({ index }) {
  * @param {{index: number}} props
  */
 BudgetTableFormRow.RemoveItem = function RemoveItem({ index }) {
-	const { unregister } = useFormContext();
 	const { remove } = useListContext();
 
 	return (
 		<button
 			type="button"
 			className="btn btn-sm btn-block btn-error"
-			onClick={() => {
-				unregister(`list.${index}`);
-				remove(index);
-			}}
+			onClick={() => remove(index)}
 		>
 			<XMarkIcon className="size-6" />
 		</button>

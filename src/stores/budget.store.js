@@ -250,6 +250,8 @@ export const useBudgetStore = create((set, get) => ({
 			else get().safeMoveDown(rowSpacing);
 		});
 
+		if (!data.list.length) get().safeMoveDown(BudgetConfig.PDF.FontSizes.MD);
+
 		// Result footer
 		page.drawRectangle({
 			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,

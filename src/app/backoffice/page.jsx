@@ -1,4 +1,16 @@
-import { BudgetTableForm } from "#/components/pages/backoffice/BudgetTable.form";
+"use client";
+import dynamic from "next/dynamic";
+
+const BudgetTableForm = dynamic(
+	() =>
+		import("../../components/pages/backoffice/BudgetTable.form").then(
+			(mod) => mod.BudgetTableForm
+		),
+	{
+		ssr: false,
+		loading: () => <span className="loading loading-dots loading-md"></span>,
+	}
+);
 
 export default function Page() {
 	return (
