@@ -176,7 +176,7 @@ export function BudgetTableForm() {
 								<span className="loading loading-dots loading-md"></span>
 							) : (
 								<>
-									Descargar PDF
+									Generar PDF
 									<DocumentTextIcon className="size-6" />
 								</>
 							)}

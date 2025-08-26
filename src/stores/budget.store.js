@@ -244,13 +244,12 @@ export const useBudgetStore = create((set, get) => ({
 					size: fontSize,
 				});
 			}
-			// if (get().willReachPageEnd(amountToMove)) console.log("first");
-			if (data.list.length === 1 || index === data.list.length - 1)
+			if (index === data.list.length - 1)
 				get().safeMoveDown(genLines.length * fontSize + rowSpacing);
 			else get().safeMoveDown(rowSpacing);
 		});
 
-		if (!data.list.length) get().safeMoveDown(BudgetConfig.PDF.FontSizes.MD);
+		get().safeMoveDown(BudgetConfig.PDF.FontSizes.MD);
 
 		// Result footer
 		page.drawRectangle({
