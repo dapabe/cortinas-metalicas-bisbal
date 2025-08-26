@@ -9,6 +9,7 @@ import {
 	useEffect,
 	useId,
 	useMemo,
+	useRef,
 } from "react";
 import {
 	FormProvider,
@@ -131,7 +132,7 @@ export function BudgetTableForm() {
 							/>
 							<DateInput
 								inputName="validUntil"
-								label="Valido hasta (Opcional)"
+								label="Valido hasta"
 								min={
 									!!currentValidUntil
 										? new Date(prevCreatedAt).toISOString().split("T")[0]
@@ -290,7 +291,8 @@ BudgetTableForm.AddItem = function AddItem() {
 				className="btn btn-block btn-info"
 				onClick={() =>
 					append({
-						description: "",
+						description:
+							"En todo caso de requerir el trabajo se debe abonar con anticipación el 60% y el 40% restante al finalizar el trabajo.",
 						quantity: "1",
 						price: "0",
 						discount: "0",

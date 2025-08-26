@@ -34,7 +34,7 @@ import fontkit from "@pdf-lib/fontkit";
  * @property {(data: IBudgetForm) => Promise<void>} generatePDF
  * @property {()=> PDFPage} addPage
  * @property {(text: string, size?: number)=> void} drawSubHeader
- * @property {(yPos: number)=>void} drawTextDecoration
+ * @property {()=>void} drawTextDecoration
  * @property {(data: IBudgetForm)=> void} fillDefaultForm
  * @property {(data: IBudgetForm)=> void} createProductTable
  * @property {(data: IBudgetForm)=> void} createFooter
@@ -73,7 +73,6 @@ export const useBudgetStore = create((set, get) => ({
 	_IVA: 1.21, // 21% IVA
 	formatCurrency: (value) => currencyIntl.format(value),
 	calculateTotal: (values) => {
-		console.log({ values });
 		let total = values.reduce((acc, item) => {
 			const subtotal = acc + item.price * item.quantity;
 			return subtotal - (subtotal * item.discount) / 100;
@@ -110,7 +109,7 @@ export const useBudgetStore = create((set, get) => ({
 		currentPage.moveUp(540);
 		get().createProductTable(data);
 
-		get().safeMoveDown(28);
+		get().safeMoveDown(20);
 		get().drawSubHeader(BudgetConfig.Titles.Notes);
 
 		get().safeMoveDown(24);
@@ -123,7 +122,7 @@ export const useBudgetStore = create((set, get) => ({
 			),
 		});
 
-		get().safeMoveDown(24);
+		get().safeMoveDown(12);
 		get().drawSubHeader(
 			BudgetConfig.Titles.TsCs,
 			BudgetConfig.PDF.FontSizes.LG
@@ -133,9 +132,11 @@ export const useBudgetStore = create((set, get) => ({
 		get().createFooter(data);
 
 		get().addPageEnumeration();
+
 		doc.setAuthor("Daniel Patricio Becerra (dapabe)");
 		doc.setCreationDate(new Date());
 		doc.setTitle(`CortinasBisbal_${data.clientName}`);
+
 		const bytes = await doc.save();
 		const blob = new Blob([bytes], { type: "application/pdf" });
 		window.open(URL.createObjectURL(blob));
@@ -175,93 +176,98 @@ export const useBudgetStore = create((set, get) => ({
 
 		get().safeMoveDown(fixedHeight + 8);
 		const drawTableHeader = () => {
+			const fontSize = BudgetConfig.PDF.FontSizes.MD;
 			/**	Table header bg */
 			page.drawRectangle({
 				x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
-				y: page.getY() - 8,
+				// y: page.getY() - 8,
 				color: BudgetConfig.PDF.Colors.SubHeaderBG,
-				height: fixedHeight + 8,
+				height: fontSize + 8,
 				width: rectableBgWidth,
 			});
+			page.moveUp(6);
 			page.drawText(BudgetConfig.TableHeader.Description, {
 				x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
-				size: BudgetConfig.PDF.FontSizes.MD,
+				size: fontSize,
 			});
 			page.drawText(BudgetConfig.TableHeader.Quantity, {
-				x: 400,
-				size: BudgetConfig.PDF.FontSizes.MD,
+				x: 350,
+				size: fontSize,
 			});
-			page.drawText(BudgetConfig.TableHeader.Subtotal, {
-				x: 500,
-				size: BudgetConfig.PDF.FontSizes.MD,
-			});
-			get().safeMoveDown(fixedHeight + 4);
+			// page.drawText(BudgetConfig.TableHeader.Subtotal, {
+			// 	x: 400,
+			// 	size: fontSize,
+			// });
+			get().safeMoveDown(fontSize + 6);
 		};
 		drawTableHeader();
-		data.list.forEach((item) => {
+		data.list.forEach((item, index) => {
+			const genLines = get()._splitTextIntoLines(
+				item.description.trim().length ? item.description : "N/A",
+				{
+					font: get()._PDFConfigs.SegoeUINormalFont,
+					fontSize: BudgetConfig.PDF.FontSizes.SM,
+					maxWidth: 300,
+				}
+			);
+			const rowSpacing = 4;
 			const initYRow = page.getY();
-			const genLines = get()._splitTextIntoLines(item.description, {
-				font: get()._PDFConfigs.SegoeUINormalFont,
-				fontSize: BudgetConfig.PDF.FontSizes.SM,
-				maxWidth: 250,
-			});
+			const fontSize = BudgetConfig.PDF.FontSizes.SM;
 
 			for (const l of genLines) {
 				page.drawText(l, {
 					x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
-					size: BudgetConfig.PDF.FontSizes.SM,
+					size: fontSize,
 				});
-				if (get().willReachPageEnd(BudgetConfig.PDF.FontSizes.SM)) {
+				if (get().willReachPageEnd(fontSize)) {
 					// page = get().addPage();
 					console.log("si");
 					// drawTableHeader();
 				}
-				get().safeMoveDown(BudgetConfig.PDF.FontSizes.SM);
+				get().safeMoveDown(fontSize);
 			}
 
-			// console.log(genLines);
-			// page.drawText(item.description, {
-			// 	x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
-			// 	maxWidth: 250,
-			// 	size: BudgetConfig.PDF.FontSizes.SM,
-			// });
+			const blockHeight = genLines.length * fontSize;
+			const offset = (blockHeight - fontSize) / 2;
+			const yCentered = initYRow - offset;
+
 			page.drawText(item.quantity.toString(), {
-				x: 400,
-				y: initYRow,
-				size: BudgetConfig.PDF.FontSizes.SM,
+				x: 350,
+				y: yCentered,
+				size: fontSize,
 			});
 
-			// if (!data._onlyShowTotal) {
-			// page.drawText(currencyIntl.format(item.subtotal), {
-			// 	x: 500,
-			// 	y: totalHeight,
-			// 	size: BudgetConfig.PDF.FontSizes.SM,
-			// });
-			// }
+			if (!data._onlyShowTotal) {
+				page.drawText(currencyIntl.format(item.subtotal), {
+					x: 400,
+					y: yCentered,
+					size: fontSize,
+				});
+			}
 			// if (get().willReachPageEnd(amountToMove)) console.log("first");
-			// get().safeMoveDown(amountToMove);
-			// lastLineHeight = amountToMove;
+			if (index === data.list.length - 1)
+				get().safeMoveDown(genLines.length * fontSize + rowSpacing);
+			else get().safeMoveDown(rowSpacing);
 		});
 
-		// get().safeMoveDown(12);
-
 		// Result footer
-		// page.drawRectangle({
-		// 	x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
-		// 	y: page.getY() - 12,
-		// 	color: BudgetConfig.PDF.Colors.SubHeaderBG,
-		// 	height: fixedHeight + 12,
-		// 	width: 362, // Hardcoded to look good
-		// });
-		// page.drawText(BudgetConfig.Titles.BudgetTotal, {
-		// 	x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
-		// 	size: BudgetConfig.PDF.FontSizes.MD,
-		// 	color: BudgetConfig.PDF.Colors.SubHeaderText,
-		// });
-		// page.drawText(currencyIntl.format(data.total), {
-		// 	x: 400,
-		// 	size: BudgetConfig.PDF.FontSizes.MD,
-		// });
+		page.drawRectangle({
+			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
+			color: BudgetConfig.PDF.Colors.SubHeaderBG,
+			height: BudgetConfig.PDF.FontSizes.MD + 12,
+			width: 362, // Hardcoded to look good
+		});
+		page.moveUp(8);
+		page.drawText(BudgetConfig.Titles.BudgetTotal, {
+			x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
+			size: BudgetConfig.PDF.FontSizes.MD,
+			color: BudgetConfig.PDF.Colors.SubHeaderText,
+		});
+		page.drawText(currencyIntl.format(data.total), {
+			x: 400,
+			size: BudgetConfig.PDF.FontSizes.MD,
+		});
+		get().safeMoveDown(8);
 	},
 
 	createFooter: (data) => {
@@ -362,22 +368,23 @@ export const useBudgetStore = create((set, get) => ({
 			color: BudgetConfig.PDF.Colors.SubHeaderText,
 			font: get()._PDFConfigs.SegoeUIBoldFont,
 		});
-		get().drawTextDecoration(page.getY());
+		get().safeMoveDown(8);
+		get().drawTextDecoration();
+		page.moveUp(7);
 	},
 
-	drawTextDecoration: (yPos) => {
-		get()._PDFConfigs.currentPage.drawLine({
+	drawTextDecoration: () => {
+		const p = get()._PDFConfigs.currentPage;
+		p.drawLine({
 			thickness: 0.5,
 			color: BudgetConfig.PDF.Colors.SubHeaderText,
 			start: {
 				x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
-				y: yPos - 8,
+				y: p.getY(),
 			},
 			end: {
-				x:
-					get()._PDFConfigs.currentPage.getWidth() -
-					BudgetConfig.PDF.LayoutSizes.Margin.Left,
-				y: yPos - 8,
+				x: p.getWidth() - BudgetConfig.PDF.LayoutSizes.Margin.Left,
+				y: p.getY(),
 			},
 		});
 	},

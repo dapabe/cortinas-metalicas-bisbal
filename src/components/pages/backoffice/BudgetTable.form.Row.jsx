@@ -41,24 +41,24 @@ export function BudgetTableFormRow({ index }) {
 BudgetTableFormRow.InputDescription = function InputDescription({ index }) {
 	const { control, register, formState } = useFormContext();
 
-	const value = useWatch({ control, name: `list.${index}.description` });
-
-	// const [selected, setSelected] = useState(null);
-	console.log(formState.errors?.list?.[index]);
 	return (
 		<label
 			aria-invalid={!!formState.errors?.list?.[index] ? "true" : undefined}
 			className="input input-md aria-[invalid]:input-error"
 		>
-			<button type="button" className="label">
+			{/* <button type="button" className="label">
 				<ChevronDownIcon className="size-6" />
-			</button>
+			</button> */}
 			{/* {value.length ? (
 				<button type="button" className="btn btn-sm">
 					{value}
 				</button>
 			) : ( */}
-			<input type="text" {...register(`list.${index}.description`)} />
+			<input
+				type="text"
+				placeholder="Por defecto: N/A"
+				{...register(`list.${index}.description`)}
+			/>
 			{/* )} */}
 		</label>
 	);
