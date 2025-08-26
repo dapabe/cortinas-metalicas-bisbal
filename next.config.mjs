@@ -22,11 +22,11 @@ const nextConfig = {
 };
 
 // Prevent these routes from navigation
-if (process.env.NODE_ENV === "production") {
-	nextConfig.redirects = async () => [
-		{ source: "/backoffice/", destination: "/", permanent: true },
-		{ source: "/backoffice/login", destination: "/", permanent: true },
-	];
-}
+// if (process.env.NODE_ENV === "production") {
+// 	nextConfig.redirects = async () => [
+// 		{ source: "/backoffice/", destination: "/", permanent: true },
+// 		{ source: "/backoffice/login", destination: "/", permanent: true },
+// 	];
+// }
 
 export default nextConfig;
