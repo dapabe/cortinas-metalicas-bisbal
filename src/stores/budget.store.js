@@ -454,7 +454,7 @@ export const useBudgetStore = create((set, get) => ({
 	},
 
 	_splitTextIntoLines: (text, config) => {
-		// Respetar saltos de línea manuales
+		// Retain end of line jumps
 		const paragraphs = text.split(/\r?\n/);
 		const lines = [];
 		for (const paragraph of paragraphs) {
