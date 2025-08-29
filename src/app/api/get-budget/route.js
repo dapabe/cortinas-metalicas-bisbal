@@ -38,7 +38,7 @@ export async function GET() {
 					"no-store, no-cache, must-revalidate, proxy-revalidate",
 				Pragma: "no-cache",
 				Expires: "0",
-				"X-PDF-Metadata": "asdasd",
+				"X-PDF-Metadata": process.env.CLIENT_META,
 			},
 		});
 	} catch (error) {
