@@ -29,7 +29,7 @@ import { useApiStore } from "./api.store";
  * @property {()=> PDFPage} addPage
  * @property {(text: string, size?: number)=> void} drawSubHeader
  * @property {()=>void} drawTextDecoration
- * @property {(data: IBudgetForm)=> void} fillDefaultForm
+ * @property {(data: IBudgetForm, CLIENT_META: string)=> void} fillDefaultForm
  * @property {(data: IBudgetForm)=> void} createProductTable
  * @property {(data: IBudgetForm)=> void} createFooter
  * @property {()=> void} addPageEnumeration
@@ -78,10 +78,10 @@ export const useBudgetStore = create((set, get) => ({
 	_PDFConfigs: null,
 
 	generatePDF: async (data) => {
-		const templateBytes = await useApiStore.getState().GetBudgetPDF();
-		if (!templateBytes) throw new Error();
+		const budgetRes = await useApiStore.getState().GetBudgetPDF();
+		if (!budgetRes) throw new Error();
 
-		const doc = await PDFDocument.load(templateBytes);
+		const doc = await PDFDocument.load(budgetRes.PDF);
 
 		doc.registerFontkit(fontkit);
 		const SegoeUIBoldFont = await doc.embedFont(
@@ -100,7 +100,7 @@ export const useBudgetStore = create((set, get) => ({
 				currentPage,
 			},
 		});
-		get().fillDefaultForm(data);
+		get().fillDefaultForm(data, budgetRes.CLIENT_META);
 
 		currentPage.moveUp(540);
 		get().createProductTable(data);
@@ -150,7 +150,7 @@ export const useBudgetStore = create((set, get) => ({
 		window.URL.revokeObjectURL(url);
 	},
 
-	fillDefaultForm: (data) => {
+	fillDefaultForm: (data, CLIENT_META) => {
 		const form = get()._PDFConfigs.currentPage.doc.getForm();
 		/**
 		 * @function setField
@@ -172,6 +172,10 @@ export const useBudgetStore = create((set, get) => ({
 		setField("clientLocation");
 		setField("clientContact");
 		setField("clientID");
+
+		// const f = form.getTextField("clientMeta");
+		// f.setText(CLIENT_META);
+		// f.enableReadOnly();
 	},
 
 	createProductTable: (data) => {
@@ -188,7 +192,6 @@ export const useBudgetStore = create((set, get) => ({
 			/**	Table header bg */
 			page.drawRectangle({
 				x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
-				// y: page.getY() - 8,
 				color: BudgetConfig.PDF.Colors.SubHeaderBG,
 				height: fontSize + 8,
 				width: rectableBgWidth,

@@ -10,7 +10,7 @@ import { useToastStore } from "./toaster.store";
  * @prop {(data: IDashboard)=> Promise<boolean>} LogIn
  * @prop {() => Promise<boolean>} LogOut
  * @prop {(data: IMessage) => Promise<void>} SendReview
- * @prop {() => Promise<false | ArrayBuffer>} GetBudgetPDF
+ * @prop {() => Promise<false | {PDF: ArrayBuffer, CLIENT_META: string}>} GetBudgetPDF
  */
 
 const toast = useToastStore.getState();
@@ -65,6 +65,9 @@ export const useApiStore = create((set, get) => ({
 		const res = await get()._GET("/get-budget");
 		const isOk = await get()._handleResponse(res);
 		if (!isOk) return false;
-		return await res.arrayBuffer();
+		return {
+			PDF: await res.arrayBuffer(),
+			CLIENT_META: res.headers.get("X-PDF-Metadata"),
+		};
 	},
 }));
