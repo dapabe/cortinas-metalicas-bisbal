@@ -31,6 +31,7 @@ import { VerticalTextInput } from "#/components/form/VerticalText.input";
 import { DateInput } from "#/components/form/Date.input";
 import { BudgetTourProvider } from "#/components/BudgetTourProvider.tour";
 import { TourStepID } from "#/constants/tour.steps";
+import { useApiStore } from "#/stores/api.store";
 
 const ListContext = createContext(null);
 /** @return {import("react-hook-form").UseFieldArrayReturn<import("#/schemas/BudgetForm.schema").IBudgetItem[]>} */
@@ -72,10 +73,8 @@ export function BudgetTableForm() {
 	const onSubmit = async (data) => {
 		try {
 			data._previsualize = false;
-			await new Promise((res) => {
-				budget.generatePDF(data);
-				res();
-			});
+			// await useApiStore.getState().GetBudgetPDF();
+			await budget.generatePDF(data);
 		} catch (error) {
 			toaster.addToast({
 				content:
@@ -207,7 +206,7 @@ export function BudgetTableForm() {
 													className="checkbox"
 													{...methods.register("_onlyShowTotal")}
 												/>
-												Modificar solo el resumen final
+												Modificar solo el TOTAL
 											</label>
 										</th>
 										<th colSpan={1}></th>

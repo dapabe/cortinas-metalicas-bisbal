@@ -1,14 +1,8 @@
 import { create } from "zustand";
 import { BudgetConfig } from "#/constants/budget.config";
-import {
-	BlendMode,
-	ColorTypes,
-	PDFDocument,
-	PDFFont,
-	PDFPage,
-	rgb,
-} from "pdf-lib";
+import { PDFDocument, PDFFont, PDFPage } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
+import { useApiStore } from "./api.store";
 
 /**
  * @typedef {import("../schemas/BudgetForm.schema").IBudgetForm} IBudgetForm
@@ -84,10 +78,11 @@ export const useBudgetStore = create((set, get) => ({
 	_PDFConfigs: null,
 
 	generatePDF: async (data) => {
-		const templateBytes = await fetch("/CortinasBisbal-Plantilla2.pdf").then(
-			(x) => x.arrayBuffer()
-		);
+		const templateBytes = await useApiStore.getState().GetBudgetPDF();
+		if (!templateBytes) throw new Error();
+
 		const doc = await PDFDocument.load(templateBytes);
+
 		doc.registerFontkit(fontkit);
 		const SegoeUIBoldFont = await doc.embedFont(
 			await fetch("/Segoe UI Bold.ttf").then((x) => x.arrayBuffer())
@@ -207,14 +202,16 @@ export const useBudgetStore = create((set, get) => ({
 				x: 350,
 				size: fontSize,
 			});
-			page.drawText(BudgetConfig.TableHeader.Subtotal, {
-				x: 450,
-				size: fontSize,
-			});
+			if (!data._onlyShowTotal) {
+				page.drawText(BudgetConfig.TableHeader.Subtotal, {
+					x: 450,
+					size: fontSize,
+				});
+			}
 			get().safeMoveDown(fontSize + 6);
 		};
 		drawTableHeader();
-		data.list.forEach((item, index) => {
+		data.list.forEach((item) => {
 			const genLines = get()._splitTextIntoLines(
 				item.description.trim().length ? item.description : "N/A",
 				{
@@ -224,24 +221,26 @@ export const useBudgetStore = create((set, get) => ({
 				}
 			);
 			const rowSpacing = 4;
-			const initYRow = page.getY();
 			const fontSize = BudgetConfig.PDF.FontSizes.SM;
+			const rowHeight = genLines.length * fontSize + rowSpacing;
+
+			// if the row doesn't fit
+			if (get().willReachPageEnd(rowHeight + rowSpacing)) {
+				page = get().addPage();
+				drawTableHeader();
+			}
+
+			const initYRow = page.getY();
 
 			for (const l of genLines) {
 				page.drawText(l, {
 					x: BudgetConfig.PDF.LayoutSizes.Margin.Left + 2,
 					size: fontSize,
 				});
-				if (get().willReachPageEnd(fontSize)) {
-					// page = get().addPage();
-					console.log("si");
-					// drawTableHeader();
-				}
 				get().safeMoveDown(fontSize);
 			}
 
-			const blockHeight = genLines.length * fontSize;
-			const offset = (blockHeight - fontSize) / 2;
+			const offset = (rowHeight - fontSize) / 2;
 			const yCentered = initYRow - offset;
 
 			page.drawText(item.quantity.toString(), {
@@ -257,18 +256,22 @@ export const useBudgetStore = create((set, get) => ({
 					size: fontSize,
 				});
 			}
-			if (index === data.list.length - 1)
-				get().safeMoveDown(genLines.length * fontSize + rowSpacing);
-			else get().safeMoveDown(rowSpacing);
+			get().safeMoveDown(rowSpacing);
 		});
 
-		get().safeMoveDown(BudgetConfig.PDF.FontSizes.MD);
+		// Espacio después de la tabla y altura del resumen
+		const paddingAfterTable = BudgetConfig.PDF.FontSizes.MD;
+		const resumenHeight = BudgetConfig.PDF.FontSizes.MD + 12;
+		if (get().willReachPageEnd(paddingAfterTable + resumenHeight)) {
+			page = get().addPage();
+		} else {
+			get().safeMoveDown(resumenHeight);
+		}
 
-		// Result footer
 		page.drawRectangle({
 			x: BudgetConfig.PDF.LayoutSizes.Margin.Left,
 			color: BudgetConfig.PDF.Colors.SubHeaderBG,
-			height: BudgetConfig.PDF.FontSizes.MD + 12,
+			height: resumenHeight,
 			width: 362, // Hardcoded to look good
 		});
 		page.moveUp(8);
@@ -370,7 +373,8 @@ export const useBudgetStore = create((set, get) => ({
 			...state,
 			_PDFConfigs: { ...state._PDFConfigs, currentPage: nwP },
 		}));
-
+		nwP.moveTo(0, nwP.getHeight() - BudgetConfig.PDF.LayoutSizes.Margin.Top);
+		nwP.setLineHeight(12);
 		return get()._PDFConfigs.currentPage;
 	},
 
@@ -421,24 +425,18 @@ export const useBudgetStore = create((set, get) => ({
 		let page = get()._PDFConfigs.currentPage;
 		if (get().willReachPageEnd(amount)) {
 			page = get().addPage();
-			set((state) => ({
-				...state,
-				_PDFConfigs: { ...state._PDFConfigs, currentPage: page },
-			}));
-			page.setLineHeight(12);
-			page.moveTo(
-				0,
-				page.getHeight() - BudgetConfig.PDF.LayoutSizes.Margin.Top
-			);
 		} else {
 			page.moveDown(amount);
 		}
 	},
 
 	drawSafeMultilineText: (text, config) => {
-		const page = get()._PDFConfigs.currentPage;
+		let page = get()._PDFConfigs.currentPage;
 		const lines = get()._splitTextIntoLines(text, config);
 		for (let i = 0; i < lines.length; ++i) {
+			if (get().willReachPageEnd(config.fontSize)) {
+				page = get().addPage();
+			}
 			page.drawText(lines[i], {
 				x: config.xPos,
 				size: config.fontSize,
