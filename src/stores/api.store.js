@@ -32,18 +32,16 @@ export const useApiStore = create((set, get) => ({
 		});
 	},
 	_handleResponse: async (res) => {
-		let api;
-		if (res.bodyUsed) {
-			api = await res.json();
-		}
+		const api = await res.json();
 		if (!res.ok || res.status !== 200) {
 			if (res.status == 500) {
 				toast.addToast({ status: "error", content: api.message });
 			}
+
 			toast.addToast({ status: "warning", content: api.message });
 			return false;
 		}
-		if (api && api?.message)
+		if (api?.message)
 			toast.addToast({ status: "success", content: api.message });
 
 		return true;
@@ -63,10 +61,27 @@ export const useApiStore = create((set, get) => ({
 	},
 	GetBudgetPDF: async () => {
 		const res = await get()._GET("/get-budget");
-		const isOk = await get()._handleResponse(res);
-		if (!isOk) return false;
+		const cloned = res.clone();
+
+		const hasResponse = async () => {
+			try {
+				return await res.json();
+			} catch (_) {
+				return null;
+			}
+		};
+
+		const api = await hasResponse();
+		if (!res.ok || res.status !== 200) {
+			if (res.status == 500) {
+				api && toast.addToast({ status: "error", content: api.message });
+			}
+			api && toast.addToast({ status: "warning", content: api.message });
+			return false;
+		}
+
 		return {
-			PDF: await res.arrayBuffer(),
+			PDF: await cloned.arrayBuffer(),
 			CLIENT_META: res.headers.get("X-PDF-Metadata"),
 		};
 	},
