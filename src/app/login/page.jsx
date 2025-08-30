@@ -34,6 +34,7 @@ export default function Page() {
 						<VerticalTextInput
 							label="Contraseña"
 							inputName="password"
+							isPassword
 							isRequired
 						/>
 

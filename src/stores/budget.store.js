@@ -284,7 +284,7 @@ export const useBudgetStore = create((set, get) => ({
 			color: BudgetConfig.PDF.Colors.SubHeaderText,
 		});
 		const formatedTotal = data._onlyShowTotal
-			? data.total
+			? data.total - (data.total * data.totalDiscount) / 100
 			: get().calculateTotal(data.list);
 		page.drawText(currencyIntl.format(formatedTotal), {
 			x: 400,

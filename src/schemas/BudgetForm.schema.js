@@ -9,13 +9,13 @@ const MaxTextSchema = z3
 	.trim()
 	.max(38, { message: "Maximo de 38 caracteres" });
 
-const BudgetItemSchema = z3.object({
+export const BudgetItemSchema = z3.object({
 	id: z3.string().optional(),
-	description: z3.string().optional(),
-	price: z3.coerce.number().min(0),
-	quantity: z3.coerce.number().min(1),
-	discount: z3.coerce.number().min(0).max(100),
-	subtotal: z3.coerce.number().min(0),
+	description: z3.string().default("").optional(),
+	price: z3.coerce.number().min(0).default(0),
+	quantity: z3.coerce.number().min(1).default(1),
+	discount: z3.coerce.number().min(0).max(100).default(0),
+	subtotal: z3.coerce.number().min(0).default(0),
 });
 
 export const BudgetFormSchema = z3
@@ -30,6 +30,7 @@ export const BudgetFormSchema = z3
 		clientID: MaxTextSchema.optional(),
 		list: BudgetItemSchema.array(),
 		total: z3.coerce.number().min(0),
+		totalDiscount: z3.coerce.number().min(0).default(0),
 		notes: z3.string().optional(),
 		warranty: z3.string().optional(),
 		workCompletion: z3.string().optional(),

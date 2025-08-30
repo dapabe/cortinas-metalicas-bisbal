@@ -5,6 +5,7 @@ import { useFormContext } from "react-hook-form";
  * @param {{
  *  label: string
  *  isRequired?: boolean
+ * 	isPassword?: boolean
  *  inputName: string
  * 	wrapperEL: HTMLFieldSetElement
  * 	inputEL: HTMLInputElement
@@ -13,6 +14,7 @@ import { useFormContext } from "react-hook-form";
 export function VerticalTextInput({
 	label,
 	isRequired = false,
+	isPassword = false,
 	inputName,
 	wrapperEL,
 	inputEL,
@@ -26,7 +28,7 @@ export function VerticalTextInput({
 				{isRequired ? <span className="text-error">*</span> : null}
 			</legend>
 			<input
-				type="text"
+				type={isPassword ? "password" : "text"}
 				aria-invalid={!!formState.errors[inputName] ? "true" : undefined}
 				className="input aria-[invalid]:input-error w-full"
 				{...inputEL}

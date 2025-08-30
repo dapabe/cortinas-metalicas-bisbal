@@ -24,7 +24,10 @@ import {
 } from "react-hook-form";
 import { BudgetTableFormRow } from "./BudgetTable.form.Row";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BudgetFormSchema } from "#/schemas/BudgetForm.schema";
+import {
+	BudgetFormSchema,
+	BudgetItemSchema,
+} from "#/schemas/BudgetForm.schema";
 import { HorizontalTextInput } from "#/components/form/HorizontalText.input";
 import { useToastStore } from "#/stores/toaster.store";
 import { VerticalTextInput } from "#/components/form/VerticalText.input";
@@ -58,6 +61,7 @@ export function BudgetTableForm() {
 			clientID: "",
 			list: [],
 			total: "0",
+			totalDiscount: "0",
 			notes: "Ninguna",
 			warranty: "De 1 año.",
 			workCompletion:
@@ -323,6 +327,8 @@ BudgetTableForm.TableResult = function TableResult() {
 
 	/** @type {number} */
 	const totalInput = useWatch({ control, name: "total" });
+	/** @type {number} */
+	const totalDiscount = useWatch({ control, name: "totalDiscount" });
 	/** @type {import("#/schemas/BudgetForm.schema").IBudgetItem[]} */
 	const formList = useWatch({ control, name: "list" });
 	/** @type {boolean} */
@@ -334,7 +340,7 @@ BudgetTableForm.TableResult = function TableResult() {
 	}, [formList]);
 
 	return (
-		<td id={TourStepID._4} colSpan={"100%"}>
+		<td id={TourStepID._4} colSpan={"100%"} className="flex flex-col gap-2">
 			<label
 				aria-invalid={!!formState.errors?.total ? "true" : undefined}
 				className="input input-md aria-[invalid]:input-error"
@@ -353,10 +359,16 @@ BudgetTableForm.TableResult = function TableResult() {
 					</span>
 				)}
 			</label>
+			{_onlyShowTotal ? <BudgetTableForm.TotalDiscountInput /> : null}
 			{_onlyShowTotal ? (
-				<span className="font-mono font-semibold ml-2">
-					{budget.formatCurrency(totalInput)}
-				</span>
+				<div>
+					<label>Resultado</label>
+					<span className="font-mono font-semibold ml-2">
+						{budget.formatCurrency(
+							totalInput - (totalInput * totalDiscount) / 100
+						)}
+					</span>
+				</div>
 			) : null}
 		</td>
 	);
@@ -390,5 +402,68 @@ BudgetTableForm.AddItem = function AddItem() {
 				Nuevo Item
 			</button>
 		</td>
+	);
+};
+
+BudgetTableForm.TotalDiscountInput = function TotalDiscountInput() {
+	const { control, register, setValue } = useFormContext();
+
+	/** @type {number} */
+	const discount = useWatch({ control, name: `totalDiscount` });
+
+	/**	@type {boolean} */
+	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
+
+	useEffect(() => {
+		return () =>
+			setValue(
+				`totalDiscount`,
+				BudgetFormSchema._def.schema.shape.totalDiscount._def.defaultValue()
+			);
+	}, [_onlyShowTotal]);
+
+	return (
+		<label>
+			<span className="mr-2">Descuento</span>
+			<div className="join">
+				<button
+					type="button"
+					className="btn btn-sm join-item rounded-l-full"
+					disabled={discount <= 0}
+					onClick={() => {
+						let newValue = Math.max(0, parseInt(discount) - 1);
+						if (isNaN(newValue)) newValue = 0;
+						setValue(`totalDiscount`, newValue);
+					}}
+				>
+					-
+				</button>
+				<label
+					aria-invalid={discount < 0 || discount > 100 ? "true" : undefined}
+					className="join-item input input-sm aria-[invalid]:input-error w-22"
+				>
+					<input
+						type="number"
+						inputMode="numeric"
+						min={0}
+						max={100}
+						{...register(`totalDiscount`)}
+					/>
+					<span className="label">%</span>
+				</label>
+				<button
+					type="button"
+					className="btn btn-sm join-item rounded-r-full"
+					disabled={discount >= 100}
+					onClick={() => {
+						let newValue = Math.min(100, parseInt(discount) + 1);
+						if (isNaN(newValue)) newValue = 0;
+						setValue(`totalDiscount`, newValue);
+					}}
+				>
+					+
+				</button>
+			</div>
+		</label>
 	);
 };

@@ -4,6 +4,7 @@ import { useEffect, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useBudgetStore } from "#/stores/budget.store";
 import { useListContext } from "./BudgetTable.form";
+import { BudgetItemSchema } from "#/schemas/BudgetForm.schema";
 
 /**
  * @component
@@ -121,17 +122,27 @@ BudgetTableFormRow.InputQuantity = function InputQuantity({ index }) {
  * @param {{index: number }} props
  */
 BudgetTableFormRow.InputPrice = function InputPrice({ index }) {
-	const { control, register, formState } = useFormContext();
+	const { control, register, formState, setValue } = useFormContext();
 
 	/** @type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
+
+	useEffect(() => {
+		return () =>
+			setValue(
+				`list.${index}.price`,
+				BudgetItemSchema.shape.price._def.defaultValue()
+			);
+	}, [_onlyShowTotal]);
 
 	if (_onlyShowTotal) return <p className="text-center">-</p>;
 
 	return (
 		<div className="flex justify-center">
 			<label
-				aria-invalid={!!formState.errors?.list?.[index] ? "true" : undefined}
+				aria-invalid={
+					!!formState.errors?.list?.[index]?.price ? "true" : undefined
+				}
 				className="input input-sm aria-[invalid]:input-error w-32"
 			>
 				<span className="label">$</span>
@@ -157,6 +168,14 @@ BudgetTableFormRow.InputDiscount = function InputDiscount({ index }) {
 	const discount = useWatch({ control, name: `list.${index}.discount` });
 	/**	@type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
+
+	useEffect(() => {
+		return () =>
+			setValue(
+				`list.${index}.discount`,
+				BudgetItemSchema.shape.discount._def.defaultValue()
+			);
+	}, [_onlyShowTotal]);
 
 	if (_onlyShowTotal) return <p className="text-center">-</p>;
 
