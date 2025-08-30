@@ -76,7 +76,7 @@ export function Footer() {
 					</Link>
 					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
 				</div>
-				{/* <div className="inline-flex items-center gap-x-1">
+				<div className="inline-flex items-center gap-x-1">
 					<Link
 						tabIndex={-1}
 						href="/backoffice"
@@ -84,7 +84,7 @@ export function Footer() {
 					>
 						Personal Autorizado
 					</Link>
-				</div> */}
+				</div>
 			</nav>
 		</footer>
 	);

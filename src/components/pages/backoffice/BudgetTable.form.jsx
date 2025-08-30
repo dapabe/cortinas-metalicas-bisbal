@@ -1,8 +1,20 @@
 "use client";
 import { BudgetConfig } from "#/constants/budget.config";
 import { useBudgetStore } from "#/stores/budget.store";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { useCallback, useEffect, useId, useMemo } from "react";
+import {
+	DocumentTextIcon,
+	EyeIcon,
+	PlusCircleIcon,
+} from "@heroicons/react/24/outline";
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useId,
+	useMemo,
+	useRef,
+} from "react";
 import {
 	FormProvider,
 	useFieldArray,
@@ -12,15 +24,35 @@ import {
 } from "react-hook-form";
 import { BudgetTableFormRow } from "./BudgetTable.form.Row";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BudgetFormSchema } from "#/schemas/BudgetForm.schema";
+import {
+	BudgetFormSchema,
+	BudgetItemSchema,
+} from "#/schemas/BudgetForm.schema";
 import { HorizontalTextInput } from "#/components/form/HorizontalText.input";
+import { useToastStore } from "#/stores/toaster.store";
+import { VerticalTextInput } from "#/components/form/VerticalText.input";
+import { DateInput } from "#/components/form/Date.input";
+import { BudgetTourProvider } from "#/components/BudgetTourProvider.tour";
+import { TourStepID } from "#/constants/tour.steps";
+
+const ListContext = createContext(null);
+/** @return {import("react-hook-form").UseFieldArrayReturn<import("#/schemas/BudgetForm.schema").IBudgetItem[]>} */
+export function useListContext() {
+	const ctx = useContext(ListContext);
+	if (!ctx)
+		throw new Error("useListContext must be used within a ListCtx.Provider");
+	return ctx;
+}
 
 export function BudgetTableForm() {
 	const budget = useBudgetStore();
+	const toaster = useToastStore();
+
 	const methods = useForm({
 		/** @type {import("#/schemas/BudgetForm.schema").IBudgetForm} */
 		defaultValues: {
 			_onlyShowTotal: true,
+			_previsualize: false,
 			createdAt: new Date().toISOString().split("T")[0],
 			validUntil: null,
 			clientName: "",
@@ -29,6 +61,7 @@ export function BudgetTableForm() {
 			clientID: "",
 			list: [],
 			total: "0",
+			totalDiscount: "0",
 			notes: "Ninguna",
 			warranty: "De 1 año.",
 			workCompletion:
@@ -41,159 +74,236 @@ export function BudgetTableForm() {
 
 	/**	@param {import("#/schemas/BudgetForm.schema").IBudgetForm} data */
 	const onSubmit = async (data) => {
-		await new Promise((res) => {
-			budget.generatePDF(data);
-			res();
-		});
+		try {
+			data._previsualize = false;
+			await budget.generatePDF(data);
+		} catch (error) {
+			toaster.addToast({
+				content:
+					"Ha ocurrido un error al crear el presupuesto, contacte con el desarrollador",
+				status: "error",
+			});
+			console.error(error);
+		}
 	};
 
-	return (
-		<FormProvider {...methods}>
-			<form
-				className="flex flex-col gap-4"
-				onSubmit={methods.handleSubmit(onSubmit)}
-			>
-				<section className="grid gap-4 grid-cols-4">
-					<fieldset className="col-span-4 md:col-span-2 fieldset bg-base-200 p-4 rounded-box w-fit mx-auto">
-						<legend className="fieldset-legend text-lg">
-							Datos del cliente
-						</legend>
+	const prevCreatedAt = useWatch({
+		control: methods.control,
+		name: "createdAt",
+	});
+	const currentValidUntil = useWatch({
+		control: methods.control,
+		name: "validUntil",
+	});
 
-						<div className="flex gap-2 flex-col lg:flex-row">
-							<HorizontalTextInput
-								label="Nombre/Razón Social"
-								isRequired
-								inputName="clientName"
-							/>
-							<HorizontalTextInput
-								label="Dirección"
-								inputName="clientLocation"
-							/>
-						</div>
-						<div className="flex gap-2 flex-col lg:flex-row">
-							<HorizontalTextInput label="Contacto" inputName="clientContact" />
-							<HorizontalTextInput label="CUIT/CUIL/DNI" inputName="clientID" />
-						</div>
-					</fieldset>
-
-					<fieldset className="col-span-4 md:col-span-2 lg:col-span-1 fieldset bg-base-200 p-4 rounded-box m-auto">
-						<legend className="fieldset-legend text-lg">
-							Fechas del presupuesto
-						</legend>
-
-						<div className="flex gap-2 flex-col">
-							<label className="input">
-								<span className="label">
-									Creado el
-									<span className="text-error">*</span>
-								</span>
-								<input
-									type="date"
-									min={new Date().toISOString().split("T")[0]}
-									{...methods.register("createdAt")}
-								/>
-							</label>
-							<label className="input">
-								<span className="label">Válido hasta</span>
-								<input
-									type="date"
-									// min={new Date().toISOString().split("T")[0]}
-									{...methods.register("validUntil")}
-								/>
-							</label>
-						</div>
-					</fieldset>
-
-					<fieldset className="col-span-4 md:col-span-2 fieldset bg-base-200 p-4 rounded-box">
-						<legend className="fieldset-legend text-lg">
-							Términos y Condiciones
-						</legend>
-						<div className="flex flex-col w-full gap-2">
-							<HorizontalTextInput label="Garantía" inputName="warranty" />
-							<HorizontalTextInput
-								label="Condición de trabajo"
-								inputName="workCompletion"
-							/>
-							<HorizontalTextInput label="Importante" inputName="important" />
-						</div>
-					</fieldset>
-
-					<fieldset className="col-span-4 md:col-span-2 md:col-start-3 fieldset bg-base-200 p-4 rounded-box">
-						<legend className="fieldset-legend text-lg">
-							Notas Adicionales
-						</legend>
-						<textarea
-							className="textarea resize-none w-full"
-							{...methods.register("notes")}
-						></textarea>
-					</fieldset>
-
-					<div className="col-span-full lg:col-span-1 lg:row-start-1 lg:col-start-4 p-4 flex items-center justify-center mx-auto">
-						<button type="submit" className="btn btn-success">
-							Descargar PDF
-						</button>
-					</div>
-				</section>
-
-				<div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-					<table className="table">
-						<thead>
-							{/* <tr> */}
-							{/* <th>
-									<label className="label">
-										<input
-											type="checkbox"
-											className="checkbox"
-											{...methods.register("_onlyShowTotal")}
-										/>
-										Modificar solo el resumen final
-									</label>
-								</th> */}
-							{/* <th colSpan={1}></th> */}
-							{/* </tr> */}
-							<tr className="[&>th]:text-center">
-								<th>{BudgetConfig.TableHeader.Description}</th>
-								<th>{BudgetConfig.TableHeader.Quantity}</th>
-								<th>{BudgetConfig.TableHeader.UnitPrice}</th>
-								<th>{BudgetConfig.TableHeader.Discount}</th>
-								<th>{BudgetConfig.TableHeader.Subtotal}</th>
-								<th></th>
-							</tr>
-						</thead>
-						<BudgetTableForm.ItemList />
-						<tfoot>
-							<tr>
-								<BudgetTableForm.TableResult />
-							</tr>
-							<tr>
-								<BudgetTableForm.AddItem />
-							</tr>
-						</tfoot>
-					</table>
-				</div>
-			</form>
-		</FormProvider>
-	);
-}
-
-BudgetTableForm.ItemList = function ItemList() {
-	const { control } = useFormContext();
-	const { fields, append } = useFieldArray({
-		control: control,
+	const fMethods = useFieldArray({
+		control: methods.control,
 		name: "list",
 	});
 
-	const createId = useCallback(
-		() => Math.random().toString(36).slice(2, 11),
-		[]
+	return (
+		<BudgetTourProvider>
+			<FormProvider {...methods}>
+				<form
+					className="flex flex-col gap-4"
+					onSubmit={methods.handleSubmit(onSubmit)}
+				>
+					<section>
+						<BudgetTourProvider.TutorialButton />
+					</section>
+					<section className="grid gap-4 grid-cols-4">
+						<fieldset className="col-span-4 fieldset bg-base-200 p-4 rounded-box md:col-span-2">
+							<legend className="fieldset-legend text-lg">
+								Datos del cliente
+							</legend>
+
+							<div className="flex gap-2 flex-col lg:flex-row">
+								<VerticalTextInput
+									label="Nombre/Razón Social"
+									isRequired
+									inputName="clientName"
+									wrapperEL={{
+										id: TourStepID._1,
+									}}
+									inputEL={{
+										id: TourStepID._2,
+									}}
+								/>
+								<VerticalTextInput
+									label="Dirección"
+									inputName="clientLocation"
+								/>
+							</div>
+							<div className="flex gap-2 flex-col lg:flex-row">
+								<VerticalTextInput label="Contacto" inputName="clientContact" />
+								<VerticalTextInput label="CUIT/CUIL/DNI" inputName="clientID" />
+							</div>
+						</fieldset>
+
+						<fieldset className="col-span-4 md:col-span-2 lg:col-span-1 fieldset bg-base-200 p-4 rounded-box h-fit">
+							<legend className="fieldset-legend text-lg">
+								Fechas del presupuesto
+							</legend>
+
+							<div className="flex gap-2 flex-col">
+								<DateInput
+									inputName="createdAt"
+									label="Creado el"
+									isRequired
+									min={new Date().toISOString().split("T")[0]}
+								/>
+								<DateInput
+									inputName="validUntil"
+									label="Valido hasta"
+									min={
+										!!currentValidUntil
+											? new Date(prevCreatedAt).toISOString().split("T")[0]
+											: undefined
+									}
+								/>
+							</div>
+						</fieldset>
+
+						<fieldset className="col-span-4 md:col-span-2 fieldset bg-base-200 p-4 rounded-box">
+							<legend className="fieldset-legend text-lg">
+								Términos y Condiciones
+							</legend>
+							<div className="flex flex-col w-full gap-2">
+								<HorizontalTextInput label="Garantía" inputName="warranty" />
+								<HorizontalTextInput
+									label="Condición de trabajo"
+									inputName="workCompletion"
+								/>
+								<HorizontalTextInput label="Importante" inputName="important" />
+							</div>
+						</fieldset>
+
+						<fieldset className="col-span-4 md:col-span-2 md:col-start-3 fieldset bg-base-200 p-4 rounded-box">
+							<legend className="fieldset-legend text-lg">
+								Notas Adicionales
+							</legend>
+							<textarea
+								className="textarea resize-none w-full"
+								{...methods.register("notes")}
+							></textarea>
+						</fieldset>
+
+						<div
+							id={TourStepID._6}
+							className="col-span-full lg:col-span-1 lg:row-start-1 lg:col-start-4 p-4 flex gap-2 items-center justify-center mx-auto lg:flex-col"
+						>
+							<BudgetTableForm.FormActions />
+						</div>
+					</section>
+
+					<div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+						<ListContext.Provider value={fMethods}>
+							<table className="table">
+								<thead>
+									<tr>
+										<th>
+											<label id={TourStepID._5} className="label">
+												<input
+													type="checkbox"
+													className="checkbox"
+													{...methods.register("_onlyShowTotal")}
+												/>
+												Modificar solo el TOTAL
+											</label>
+										</th>
+										<th colSpan={1}></th>
+									</tr>
+									<tr className="[&>th]:text-center">
+										<th>{BudgetConfig.TableHeader.Description}</th>
+										<th>{BudgetConfig.TableHeader.Quantity}</th>
+										<th>{BudgetConfig.TableHeader.UnitPrice}</th>
+										<th>{BudgetConfig.TableHeader.Discount}</th>
+										<th>{BudgetConfig.TableHeader.Subtotal}</th>
+										<th></th>
+									</tr>
+								</thead>
+								<BudgetTableForm.ItemList />
+								<tfoot>
+									<tr>
+										<BudgetTableForm.TableResult />
+									</tr>
+									<tr>
+										<BudgetTableForm.AddItem />
+									</tr>
+								</tfoot>
+							</table>
+						</ListContext.Provider>
+					</div>
+				</form>
+			</FormProvider>
+		</BudgetTourProvider>
 	);
+}
+
+BudgetTableForm.FormActions = function FormActions() {
+	const budget = useBudgetStore();
+	const {
+		handleSubmit,
+		getValues,
+		formState: { isSubmitting },
+	} = useFormContext();
+
+	/**	@param {import("#/schemas/BudgetForm.schema").IBudgetForm} data */
+	const onSubmit = async (data) => {
+		try {
+			data._previsualize = true;
+			await new Promise((res) => {
+				budget.generatePDF(data);
+				res();
+			});
+		} catch (error) {
+			toaster.addToast({
+				content:
+					"Ha ocurrido un error al crear el presupuesto, contacte con el desarrollador",
+				status: "error",
+			});
+			console.error(error);
+		}
+	};
+
+	return (
+		<>
+			<button
+				type="button"
+				disabled={isSubmitting}
+				className={"btn btn-info"}
+				onClick={() => handleSubmit(onSubmit)(getValues)}
+			>
+				{isSubmitting ? (
+					<span className="loading loading-dots loading-md"></span>
+				) : (
+					<>
+						Previsualizar
+						<EyeIcon className="size-6" />
+					</>
+				)}
+			</button>{" "}
+			<button type="submit" disabled={isSubmitting} className={"btn btn-error"}>
+				{isSubmitting ? (
+					<span className="loading loading-dots loading-md"></span>
+				) : (
+					<>
+						Descargar PDF
+						<DocumentTextIcon className="size-6" />
+					</>
+				)}
+			</button>
+		</>
+	);
+};
+
+BudgetTableForm.ItemList = function ItemList() {
+	const { fields, append } = useListContext();
 
 	useEffect(() => {
 		if (!fields.length) {
-			// for (let index = 0; index < 10; index++) {
 			append({
-				id: createId(),
-				description: "xxx",
+				description: "",
 				quantity: "1",
 				price: "0",
 				discount: "0",
@@ -203,7 +313,7 @@ BudgetTableForm.ItemList = function ItemList() {
 	}, []);
 
 	return (
-		<tbody>
+		<tbody id={TourStepID._3} className="overflow-scroll max-h-40">
 			{fields.map((i, index) => (
 				<BudgetTableFormRow key={i.id} index={index} />
 			))}
@@ -213,27 +323,28 @@ BudgetTableForm.ItemList = function ItemList() {
 
 BudgetTableForm.TableResult = function TableResult() {
 	const budget = useBudgetStore();
-	const { control, register } = useFormContext();
+	const { control, register, formState } = useFormContext();
 
+	/** @type {number} */
+	const totalInput = useWatch({ control, name: "total" });
+	/** @type {number} */
+	const totalDiscount = useWatch({ control, name: "totalDiscount" });
 	/** @type {import("#/schemas/BudgetForm.schema").IBudgetItem[]} */
 	const formList = useWatch({ control, name: "list" });
 	/** @type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
 
-	const displayedTotal = useMemo(
-		() => budget.calculateTotal(formList),
-		[formList]
-	);
-
-	// useEffect(() => {
-	// 	if (!_onlyShowTotal && formList.length)
-	// 		setValue("total", displayedTotal.toString());
-	// 	return () => setValue("total", displayedTotal.toString());
-	// }, [_onlyShowTotal, formList]);
+	const displayedTotal = useMemo(() => {
+		if (formList) return budget.calculateTotal(formList);
+		return 0;
+	}, [formList]);
 
 	return (
-		<td colSpan={"100%"}>
-			<label className="input input-md">
+		<td id={TourStepID._4} colSpan={"100%"} className="flex flex-col gap-2">
+			<label
+				aria-invalid={!!formState.errors?.total ? "true" : undefined}
+				className="input input-md aria-[invalid]:input-error"
+			>
 				Total:
 				{_onlyShowTotal ? (
 					<input
@@ -248,20 +359,23 @@ BudgetTableForm.TableResult = function TableResult() {
 					</span>
 				)}
 			</label>
+			{_onlyShowTotal ? <BudgetTableForm.TotalDiscountInput /> : null}
+			{_onlyShowTotal ? (
+				<div>
+					<label>Resultado</label>
+					<span className="font-mono font-semibold ml-2">
+						{budget.formatCurrency(
+							totalInput - (totalInput * totalDiscount) / 100
+						)}
+					</span>
+				</div>
+			) : null}
 		</td>
 	);
 };
 
 BudgetTableForm.AddItem = function AddItem() {
-	const { control } = useFormContext();
-	const { append } = useFieldArray({
-		control,
-		name: "list",
-	});
-	const createId = useCallback(
-		() => Math.random().toString(36).slice(2, 11),
-		[]
-	);
+	const { append } = useListContext();
 
 	return (
 		<td colSpan={"100%"} className="text-center">
@@ -269,19 +383,87 @@ BudgetTableForm.AddItem = function AddItem() {
 				type="button"
 				className="btn btn-block btn-info"
 				onClick={() =>
-					append({
-						id: createId(),
-						description: "",
-						quantity: "1",
-						price: "0",
-						discount: "0",
-						subtotal: "0",
-					})
+					append(
+						{
+							description:
+								process.env.NODE_ENV === "development"
+									? "En todo caso de requerir el trabajo se debe abonar con anticipación el 60% y el 40% restante al finalizar el trabajo."
+									: "",
+							quantity: "1",
+							price: "0",
+							discount: "0",
+							subtotal: "0",
+						},
+						{ shouldFocus: false }
+					)
 				}
 			>
 				<PlusCircleIcon className="inline size-6" />
 				Nuevo Item
 			</button>
 		</td>
+	);
+};
+
+BudgetTableForm.TotalDiscountInput = function TotalDiscountInput() {
+	const { control, register, setValue } = useFormContext();
+
+	/** @type {number} */
+	const discount = useWatch({ control, name: `totalDiscount` });
+
+	/**	@type {boolean} */
+	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
+
+	useEffect(() => {
+		return () =>
+			setValue(
+				`totalDiscount`,
+				BudgetFormSchema._def.schema.shape.totalDiscount._def.defaultValue()
+			);
+	}, [_onlyShowTotal]);
+
+	return (
+		<label>
+			<span className="mr-2">Descuento</span>
+			<div className="join">
+				<button
+					type="button"
+					className="btn btn-sm join-item rounded-l-full"
+					disabled={discount <= 0}
+					onClick={() => {
+						let newValue = Math.max(0, parseInt(discount) - 1);
+						if (isNaN(newValue)) newValue = 0;
+						setValue(`totalDiscount`, newValue);
+					}}
+				>
+					-
+				</button>
+				<label
+					aria-invalid={discount < 0 || discount > 100 ? "true" : undefined}
+					className="join-item input input-sm aria-[invalid]:input-error w-22"
+				>
+					<input
+						type="number"
+						inputMode="numeric"
+						min={0}
+						max={100}
+						{...register(`totalDiscount`)}
+					/>
+					<span className="label">%</span>
+				</label>
+				<button
+					type="button"
+					className="btn btn-sm join-item rounded-r-full"
+					disabled={discount >= 100}
+					onClick={() => {
+						let newValue = Math.min(100, parseInt(discount) + 1);
+						if (isNaN(newValue)) newValue = 0;
+						setValue(`totalDiscount`, newValue);
+					}}
+				>
+					+
+				</button>
+			</div>
+		</label>
 	);
 };

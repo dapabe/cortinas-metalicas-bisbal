@@ -5,11 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MessageReviewSchema } from "#/schemas/MessageReview.schema";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { twJoin } from "tailwind-merge";
-import z3 from "zod";
-import { useToastStore } from "#/stores/toaster.store";
+import { useApiStore } from "#/stores/api.store";
 
 export function MessageReviewForm() {
-	const toast = useToastStore();
+	const Api = useApiStore();
+
 	const {
 		handleSubmit,
 		register,
@@ -22,19 +22,9 @@ export function MessageReviewForm() {
 		resolver: zodResolver(MessageReviewSchema),
 	});
 
-	/** @param {z3.TypeOf<typeof MessageReviewSchema>} data*/
+	/** @param {import("#/schemas/MessageReview.schema").IMessageReview} data*/
 	const onSubmit = async (data) => {
-		const res = await fetch("/api/send-review", {
-			method: "POST",
-			body: JSON.stringify(data),
-		});
-		const api = await res.json();
-		if (!res.ok || res.status !== 200) {
-			if (res.status == 500)
-				return toast.addToast({ status: "error", content: api.message });
-			return toast.addToast({ status: "warning", content: api.message });
-		}
-		return toast.addToast({ status: "success", content: api.message });
+		await Api.SendReview(data);
 	};
 	return (
 		<form

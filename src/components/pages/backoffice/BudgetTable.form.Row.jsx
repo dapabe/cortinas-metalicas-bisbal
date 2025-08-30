@@ -1,8 +1,10 @@
 "use client";
 import { ChevronDownIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useMemo } from "react";
-import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { useBudgetStore } from "#/stores/budget.store";
+import { useListContext } from "./BudgetTable.form";
+import { BudgetItemSchema } from "#/schemas/BudgetForm.schema";
 
 /**
  * @component
@@ -40,24 +42,26 @@ export function BudgetTableFormRow({ index }) {
 BudgetTableFormRow.InputDescription = function InputDescription({ index }) {
 	const { control, register, formState } = useFormContext();
 
-	const value = useWatch({ control, name: `list.${index}.description` });
-
-	// const [selected, setSelected] = useState(null);
-
 	return (
 		<label
-			aria-invalid={!!formState.errors?.list?.[index] ? "true" : undefined}
-			className="input input-md aria-[invalid]:input-error"
+			aria-invalid={
+				!!formState.errors?.list?.[index]?.description ? "true" : undefined
+			}
+			className="input input-md aria-[invalid]:input-error min-w-max"
 		>
-			<button type="button" className="label">
+			{/* <button type="button" className="label">
 				<ChevronDownIcon className="size-6" />
-			</button>
+			</button> */}
 			{/* {value.length ? (
 				<button type="button" className="btn btn-sm">
 					{value}
 				</button>
 			) : ( */}
-			<input type="text" {...register(`list.${index}.description`)} />
+			<input
+				type="text"
+				placeholder="Por defecto: N/A"
+				{...register(`list.${index}.description`)}
+			/>
 			{/* )} */}
 		</label>
 	);
@@ -68,9 +72,12 @@ BudgetTableFormRow.InputDescription = function InputDescription({ index }) {
  * @param {{index: number }} props
  */
 BudgetTableFormRow.InputQuantity = function InputQuantity({ index }) {
-	const { register, getValues, setValue } = useFormContext();
+	const { register, control, setValue } = useFormContext();
 
-	const quantity = getValues(`list.${index}.quantity`);
+	const quantity = useWatch({
+		control,
+		name: `list.${index}.quantity`,
+	});
 
 	return (
 		<div className="flex justify-center">
@@ -115,17 +122,27 @@ BudgetTableFormRow.InputQuantity = function InputQuantity({ index }) {
  * @param {{index: number }} props
  */
 BudgetTableFormRow.InputPrice = function InputPrice({ index }) {
-	const { control, register, formState } = useFormContext();
+	const { control, register, formState, setValue } = useFormContext();
 
 	/** @type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
 
-	if (_onlyShowTotal) return "-";
+	useEffect(() => {
+		return () =>
+			setValue(
+				`list.${index}.price`,
+				BudgetItemSchema.shape.price._def.defaultValue()
+			);
+	}, [_onlyShowTotal]);
+
+	if (_onlyShowTotal) return <p className="text-center">-</p>;
 
 	return (
 		<div className="flex justify-center">
 			<label
-				aria-invalid={!!formState.errors?.list?.[index] ? "true" : undefined}
+				aria-invalid={
+					!!formState.errors?.list?.[index]?.price ? "true" : undefined
+				}
 				className="input input-sm aria-[invalid]:input-error w-32"
 			>
 				<span className="label">$</span>
@@ -152,7 +169,15 @@ BudgetTableFormRow.InputDiscount = function InputDiscount({ index }) {
 	/**	@type {boolean} */
 	const _onlyShowTotal = useWatch({ control, name: "_onlyShowTotal" });
 
-	if (_onlyShowTotal) return "-";
+	useEffect(() => {
+		return () =>
+			setValue(
+				`list.${index}.discount`,
+				BudgetItemSchema.shape.discount._def.defaultValue()
+			);
+	}, [_onlyShowTotal]);
+
+	if (_onlyShowTotal) return <p className="text-center">-</p>;
 
 	return (
 		<div className="flex justify-center">
@@ -220,7 +245,7 @@ BudgetTableFormRow.RowTotal = function RowTotal({ index }) {
 	}, [item]);
 
 	useEffect(() => {
-		setValue("subtotal", subtotal);
+		if (item) setValue(`list.${index}.subtotal`, subtotal);
 	}, [subtotal]);
 
 	return (
@@ -237,20 +262,13 @@ BudgetTableFormRow.RowTotal = function RowTotal({ index }) {
  * @param {{index: number}} props
  */
 BudgetTableFormRow.RemoveItem = function RemoveItem({ index }) {
-	const { control, unregister } = useFormContext();
-	const { remove } = useFieldArray({ control, name: `list` });
-	/**	@type {import("#/schemas/BudgetForm.schema").IBudgetItem[]} */
-	const items = useWatch({ control, name: "list" });
+	const { remove } = useListContext();
 
 	return (
 		<button
 			type="button"
-			disabled={items.length <= 1}
 			className="btn btn-sm btn-block btn-error"
-			onClick={() => {
-				unregister(`list.${index}`);
-				remove(index);
-			}}
+			onClick={() => remove(index)}
 		>
 			<XMarkIcon className="size-6" />
 		</button>
