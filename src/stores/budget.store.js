@@ -173,9 +173,9 @@ export const useBudgetStore = create((set, get) => ({
 		setField("clientContact");
 		setField("clientID");
 
-		// const f = form.getTextField("clientMeta");
-		// f.setText(CLIENT_META);
-		// f.enableReadOnly();
+		const f = form.getTextField("clientMeta");
+		f.setText(CLIENT_META);
+		f.enableReadOnly();
 	},
 
 	createProductTable: (data) => {
