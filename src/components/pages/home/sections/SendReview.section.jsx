@@ -1,4 +1,4 @@
-import { MessageReviewForm } from "../MessageReview.form";
+import { MessageReviewForm } from "../../../MessageReview.form";
 
 export function SendReviewSection() {
 	return (

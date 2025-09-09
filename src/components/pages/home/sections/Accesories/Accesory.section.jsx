@@ -1,6 +1,7 @@
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
-import { AccesoryCardList } from "../AccesoryCardList";
-import { SectionTitle } from "../SectionTitle";
+import { AccesoryCardList } from "../../../../AccesoryCardList";
+import { SectionDivider } from "../../../../SectionDivider";
+import { SectionTitle } from "../../../../SectionTitle";
 
 export function AccesorySection() {
 	return (
@@ -33,7 +34,7 @@ export function AccesorySection() {
 				</div>
 			</div>
 
-			<div className="divider divider-primary w-1/3 mx-auto"></div>
+			<SectionDivider />
 		</section>
 	);
 }

@@ -161,4 +161,11 @@ export const WorkImagePaths = new Map([
 			sizes: [960, 1280],
 		},
 	],
+	[
+		25,
+		{
+			src: "/work/cort17.webp",
+			sizes: [1280, 720],
+		},
+	],
 ]);

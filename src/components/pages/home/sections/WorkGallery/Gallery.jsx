@@ -1,6 +1,6 @@
 "use client";
 import "react-photo-view/dist/react-photo-view.css";
-import { WorkImagePaths } from "#/constants/workImagePaths";
+import { WorkImagePaths } from "#/constants/WorkImagePaths.data";
 import { MagnifyingGlassPlusIcon } from "@heroicons/react/24/outline";
 import Masonry from "react-masonry-css";
 import { PhotoProvider, PhotoView } from "react-photo-view";

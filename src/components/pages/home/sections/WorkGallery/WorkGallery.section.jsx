@@ -4,7 +4,7 @@ import {
 	ExclamationTriangleIcon,
 	Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
-import { SectionTitle } from "../../SectionTitle";
+import { SectionTitle } from "../../../../SectionTitle";
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 import { Gallery } from "./Gallery";
 

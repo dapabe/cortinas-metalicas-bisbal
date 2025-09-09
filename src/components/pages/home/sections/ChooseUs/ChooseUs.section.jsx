@@ -1,24 +1,27 @@
-import { SectionTitle } from "../SectionTitle";
+import { SectionTitle } from "../../../../SectionTitle";
 import Link from "next/link";
 import * as Solid from "@heroicons/react/24/solid";
 import * as Out from "@heroicons/react/24/outline";
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
-import { Accordion } from "../Accordion";
+import { Accordion } from "../../../../Accordion";
+import { SectionDivider } from "../../../../SectionDivider";
+import { WorkImagePaths } from "#/constants/WorkImagePaths.data";
+import Image from "next/image";
 
-export function AskQuestionsSection() {
+export function ChooseUsSection() {
+	const Img18 = WorkImagePaths.get(18);
+	const Img21 = WorkImagePaths.get(21);
 	return (
 		<section
-			id={AnchorSectionNames.FrequentlyAskedQuestions}
+			id={AnchorSectionNames.ChooseUs}
 			className="container mx-auto p-4 flex flex-col gap-4 items-center"
 		>
 			<div className="divider divider-primary w-1/3 mx-auto"></div>
-			<SectionTitle
-				anchorSectionName={AnchorSectionNames.FrequentlyAskedQuestions}
-			>
-				<span className="underline decoration-primary">Preguntas</span>{" "}
-				Frecuentes
+			<SectionTitle anchorSectionName={AnchorSectionNames.ChooseUs}>
+				¿<span className="underline decoration-primary">Por qué</span> nos
+				siguen eligiendo?
 			</SectionTitle>
-
+			{/* 
 			<div className="join join-vertical max-w-md lg:hidden">
 				<Accordion title="¿En que lugares solemos trabajar?">
 					Por toda la zona de <b>CABA</b> y <b>Provincia de Buenos Aires</b>
@@ -26,7 +29,7 @@ export function AskQuestionsSection() {
 				<Accordion title="¿Hasta donde hacen envios?">
 					Hacemos envios a <b>todo el país</b>
 				</Accordion>
-			</div>
+			</div> */}
 
 			<div className="flex w-full gap-4 justify-center">
 				<aside className="w-max space-y-4 flex flex-col justify-around">
@@ -34,15 +37,28 @@ export function AskQuestionsSection() {
 						title="¿En que lugares solemos trabajar?"
 						icon={Out.MapPinIcon}
 					>
-						Por toda la zona de <b>CABA</b> y <b>Provincia de Buenos Aires</b>
+						Por toda la zona de <b>CABA</b> y <b>Provincia de Buenos Aires</b>.
 					</AsideCard>
 
 					<AsideCard title="¿Horarios de atención?" icon={Out.ClockIcon}>
-						De lunes a viernes las <b>24 horas</b> todos los días del año
+						De lunes a viernes las <b>24 horas todos los días</b> del año.
 					</AsideCard>
 				</aside>
 
 				<figure className="space-y-2">
+					<div className="bg-base-300 shadow-md p-1.5 rounded-box max-w-60">
+						<Image
+							src={Img18.src}
+							loading="lazy"
+							width={Img18.sizes[0]}
+							height={Img18.sizes[1]}
+							alt="Mini"
+							className="object-cover rounded-box"
+						/>
+					</div>
+				</figure>
+
+				{/* <figure className="space-y-2">
 					<div className="flex flex-col justify-center gap-4 2xl:flex-row">
 						<video
 							id="demo1"
@@ -66,7 +82,7 @@ export function AskQuestionsSection() {
 					<figcaption className="text-center text-sm italic">
 						Demostraciones de Cortina Metálica ya instalada
 					</figcaption>
-				</figure>
+				</figure> */}
 
 				<aside className="w-max space-y-4 flex flex-col justify-around">
 					<AsideCard
@@ -80,13 +96,13 @@ export function AskQuestionsSection() {
 						title="¿Que calidad tienen las Cortinas Metálicas?"
 						icon={Out.LockClosedIcon}
 					>
-						Son reforzadas y de calidad industrial de primera categoria, buen
-						aislante acústico y térmico
+						Son reforzadas y de calidad industrial de <b>primera categoria</b>,{" "}
+						<b>buen aislante</b> acústico y térmico.
 					</AsideCard>
 				</aside>
 			</div>
 
-			<div className="join join-vertical max-w-md lg:hidden">
+			{/* <div className="join join-vertical max-w-md lg:hidden">
 				<Accordion title="¿Horarios de atención?">
 					De lunes a viernes las <b>24 horas</b> todos los días del año
 				</Accordion>
@@ -94,9 +110,9 @@ export function AskQuestionsSection() {
 					Son reforzadas y de calidad industrial de primera categoria, buen
 					aislante acústico y térmico
 				</Accordion>
-			</div>
+			</div> */}
 
-			<div className="divider divider-primary w-1/3 mx-auto"></div>
+			<SectionDivider />
 
 			<div className="card shadow-sm card-md">
 				<div className="card-body p-4">

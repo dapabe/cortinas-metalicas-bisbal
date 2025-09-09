@@ -6,15 +6,7 @@ import {
 	EyeIcon,
 	PlusCircleIcon,
 } from "@heroicons/react/24/outline";
-import {
-	createContext,
-	useCallback,
-	useContext,
-	useEffect,
-	useId,
-	useMemo,
-	useRef,
-} from "react";
+import { createContext, useContext, useEffect, useMemo } from "react";
 import {
 	FormProvider,
 	useFieldArray,
@@ -24,15 +16,12 @@ import {
 } from "react-hook-form";
 import { BudgetTableFormRow } from "./BudgetTable.form.Row";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-	BudgetFormSchema,
-	BudgetItemSchema,
-} from "#/schemas/BudgetForm.schema";
+import { BudgetFormSchema } from "#/schemas/BudgetForm.schema";
 import { HorizontalTextInput } from "#/components/form/HorizontalText.input";
 import { useToastStore } from "#/stores/toaster.store";
 import { VerticalTextInput } from "#/components/form/VerticalText.input";
 import { DateInput } from "#/components/form/Date.input";
-import { BudgetTourProvider } from "#/components/BudgetTourProvider.tour";
+import { BudgetTourProvider } from "#/components/pages/backoffice/BudgetTourProvider.tour";
 import { TourStepID } from "#/constants/tour.steps";
 
 const ListContext = createContext(null);

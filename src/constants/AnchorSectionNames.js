@@ -1,6 +1,7 @@
 export const AnchorSectionNames = Object.freeze({
+	Hero: "inicio",
 	JobPreview: "trabajos-hechos",
-	FrequentlyAskedQuestions: "preguntas-frecuentes",
+	ChooseUs: "por-que-elegirnos",
 	Promotion: "promociones",
 	Accesories: "accesorios-a-la-venta",
 	Review: "reseñas",

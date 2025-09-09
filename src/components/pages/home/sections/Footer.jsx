@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { OpenMail } from "../OpenMail";
+import { OpenMail } from "../../../OpenMail";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 
 export function Footer() {

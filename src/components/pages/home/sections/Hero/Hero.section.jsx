@@ -6,7 +6,7 @@ import {
 	MegaphoneIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { WorkImagePaths } from "#const/workImagePaths";
+import { WorkImagePaths } from "#/constants/WorkImagePaths.data";
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
 

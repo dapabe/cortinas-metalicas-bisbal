@@ -1,12 +1,12 @@
-import { SectionTitle } from "../SectionTitle";
 import { ReceiptPercentIcon } from "@heroicons/react/24/solid";
 import { HashtagIcon } from "@heroicons/react/24/outline";
-import { OpenMail } from "../OpenMail";
-import { CopyPhoneNumber } from "../CopyPhoneNumber";
+import { OpenMail } from "#/components/OpenMail";
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 import Link from "next/link";
+import { CopyPhoneNumber } from "#/components/CopyPhoneNumber";
+import { SectionTitle } from "#/components/SectionTitle";
 
-export function PromotionSection() {
+export function ServicePromotionSection() {
 	return (
 		<section
 			id={AnchorSectionNames.Promotion}
