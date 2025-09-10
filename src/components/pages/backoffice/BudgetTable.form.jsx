@@ -56,7 +56,7 @@ export function BudgetTableForm() {
 			workCompletion:
 				"En todo caso de requerir el trabajo se debe abonar con anticipación el 60% y el 40% restante al finalizar el trabajo.",
 			important:
-				"Los trabajos de electricidad no los realizamos, contrate al electricista.",
+				"No realizamos trabajos de electricidad. No Pasamos cables por caño, no instalamos terminas ni disyuntor.  Deberá solicitar un electricista.",
 		},
 		resolver: zodResolver(BudgetFormSchema),
 	});
