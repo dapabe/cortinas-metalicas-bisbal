@@ -241,10 +241,7 @@ BudgetTableForm.FormActions = function FormActions() {
 	const onSubmit = async (data) => {
 		try {
 			data._previsualize = true;
-			await new Promise((res) => {
-				budget.generatePDF(data);
-				res();
-			});
+			await budget.generatePDF(data);
 		} catch (error) {
 			toaster.addToast({
 				content:
