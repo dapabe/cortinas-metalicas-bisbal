@@ -2,7 +2,7 @@ import Link from "next/link";
 
 /** @type {import("next").Metadata} */
 export const metadata = {
-	title: "Backoffice - Cortinas Metálicas Bisbal",
+	title: "Backoffice - Cortinas Metalicas Bisbal",
 };
 
 export default async function Layout({ children }) {

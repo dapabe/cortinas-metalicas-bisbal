@@ -1,10 +1,10 @@
 /** @returns {import("next").MetadataRoute.Manifest} */
 export default function manifest() {
 	return {
-		name: "Cortinas Metálicas Bisbal",
+		name: "Cortinas Metalicas Bisbal",
 		short_name: "Cortinas Bisbal",
 		description:
-			"Instalación, reparación y mantenimiento de cortinas metálicas por todo CABA, Provincia y venta de articulos por toda Argentina. Abierto las 24 horas.",
+			"Instalación, reparación y mantenimiento de cortinas metalicas por todo CABA, Provincia y venta de articulos por toda Argentina. Abierto las 24 horas.",
 		lang: "es-AR",
 		dir: "ltr",
 		display: "standalone",

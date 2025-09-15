@@ -93,7 +93,7 @@ export function ChooseUsSection() {
 					</AsideCard>
 
 					<AsideCard
-						title="¿Que calidad tienen las Cortinas Metálicas?"
+						title="¿Que calidad tienen las Cortinas Metalicas?"
 						icon={Out.LockClosedIcon}
 					>
 						Son reforzadas y de calidad industrial de <b>primera categoria</b>,{" "}
@@ -106,7 +106,7 @@ export function ChooseUsSection() {
 				<Accordion title="¿Horarios de atención?">
 					De lunes a viernes las <b>24 horas</b> todos los días del año
 				</Accordion>
-				<Accordion title="¿Que calidad tienen las Cortinas Metálicas?">
+				<Accordion title="¿Que calidad tienen las Cortinas Metalicas?">
 					Son reforzadas y de calidad industrial de primera categoria, buen
 					aislante acústico y térmico
 				</Accordion>

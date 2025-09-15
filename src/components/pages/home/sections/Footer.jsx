@@ -6,7 +6,7 @@ export function Footer() {
 	return (
 		<footer className="footer sm:footer-horizontal bg-neutral text-neutral-content p-10 overflow-x-scroll">
 			<aside className="max-w-xs md:mx-auto">
-				<h2 className="text-5xl font-bold">Cortinas Metálicas Bisbal</h2>
+				<h2 className="text-5xl font-bold">Cortinas Metalicas Bisbal</h2>
 				<p>
 					Copyright <span>©</span> 2025
 				</p>
@@ -30,7 +30,7 @@ export function Footer() {
 				<h3 className="footer-title">Contacto</h3>
 				<Link
 					aria-label="Link para charlar por WhatsApp"
-					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metálicas%20Bisbal,%20me%20gustaría%20consultar"
+					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metalicas%20Bisbal,%20me%20gustaría%20consultar"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="link link-hover inline-flex items-center gap-x-1"

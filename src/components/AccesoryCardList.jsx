@@ -5,7 +5,7 @@ export function AccesoryCardList() {
 	return (
 		<ul
 			className="carousel yes-scrollbar p-8 w-full gap-2 px-12"
-			aria-label="Galeria de accesorios de Cortinas Metálicas a la venta"
+			aria-label="Galeria de accesorios de Cortinas Metalicas a la venta"
 		>
 			{[...AccesoriesData.entries()].map(
 				(/** @type {[string, IAccesoryMetadata]} */ [filePath, metadata]) => {

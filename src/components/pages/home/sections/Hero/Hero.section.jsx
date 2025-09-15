@@ -24,7 +24,7 @@ export function HeroSection() {
 			<div className="mb-2 rounded-md rounded-br-full p-4 pr-8 shadow-xl max-w-sm md:max-w-lg relative text-left">
 				<h1 className="text-5xl text-left font-bold flex flex-wrap gap-x-2">
 					<span className="indent-2">Cortinas</span>{" "}
-					<span className="indent-2">Metálicas</span>{" "}
+					<span className="indent-2">Metalicas</span>{" "}
 				</h1>
 
 				<div className="absolute -bottom-10 md:-bottom-8 left-0 py-2 px-4 rounded-b-xl bg-base-100 shadow-xl z-30">
@@ -116,7 +116,7 @@ function CallToAction() {
 			>
 				<Link
 					aria-label="Link para charlar por WhatsApp"
-					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metálicas%20Bisbal,%20me%20gustaría%20consultar"
+					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metalicas%20Bisbal,%20me%20gustaría%20consultar"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="btn btn-success font-bold rounded-box"
