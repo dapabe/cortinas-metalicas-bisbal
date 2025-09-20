@@ -20,8 +20,8 @@ export function AccesorySection() {
 					<p className="text-center text-wrap">
 						Si desea consultar por precios o por algún accesorio que no se
 						encuentre en venta, no dude en contactarnos por{" "}
-						<Underlined>WhatsApp</Underlined>, <Underlined>correo</Underlined> o
-						consultar nuestro servicio en <Underlined>Mercado Libre</Underlined>
+						<Underlined>WhatsApp</Underlined>, <Underlined>correo</Underlined>
+						{/* o consultar nuestro servicio en <Underlined>Mercado Libre</Underlined> */}
 						.
 					</p>
 					{/* <Link

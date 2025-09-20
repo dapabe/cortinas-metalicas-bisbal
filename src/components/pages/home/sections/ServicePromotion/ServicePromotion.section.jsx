@@ -79,7 +79,7 @@ export function ServicePromotionSection() {
 						</div>
 					</div>
 
-					<div className="stat">
+					{/* <div className="stat">
 						<div className="stat-title text-center">
 							También brindamos servicios por Mercado Libre
 						</div>
@@ -102,7 +102,7 @@ export function ServicePromotionSection() {
 								/>
 							</Link>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</section>

@@ -38,7 +38,7 @@ export function Footer() {
 					WhatsApp
 					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
 				</Link>
-				<Link
+				{/* <Link
 					aria-label="Link hacia el post del servicio en Mercado Libre"
 					href="https://servicio.mercadolibre.com.ar/MLA-1506820187-cortinas-metalicas-bisbal-_JM"
 					target="_blank"
@@ -47,7 +47,7 @@ export function Footer() {
 				>
 					Mercado Libre
 					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
-				</Link>
+				</Link> */}
 			</nav>
 
 			<nav aria-label="Enlaces de correo electrónico">

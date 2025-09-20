@@ -2,9 +2,10 @@
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { twJoin } from "tailwind-merge";
 
 export function FloatingNavbar() {
-	const ref = useRef(null);
+	// const ref = useRef(null);
 	const [visible, setVisible] = useState(false);
 	const sentinelRef = useRef(null);
 
@@ -26,34 +27,43 @@ export function FloatingNavbar() {
 		<>
 			<div ref={sentinelRef} style={{ height: 0.1 }} aria-hidden></div>
 			<section
-				className={`sticky top-0 z-50 transition-all duration-300 ${
-					visible ? "block opacity-100" : "hidden opacity-0"
-				}`}
+				className={twJoin(
+					`sticky top-0 z-50 ${
+						visible ? "block opacity-100" : "hidden opacity-0"
+					}`
+				)}
+				style={{ paddingTop: "env(safe-area-inset-top)" }}
 			>
 				<nav className="flex gap-2 font-bold justify-center flex-wrap bg-base-100 p-2 size-full">
 					<Link
 						href={`#${AnchorSectionNames.ChooseUs}`}
-						className="btn btn-neutral btn-active btn-sm"
+						className="btn btn-neutral rounded-box btn-sm md:btn-md"
 					>
 						¿Por qué elegirnos?
 					</Link>
 					<Link
 						href={`#${AnchorSectionNames.JobPreview}`}
-						className="btn btn-neutral btn-active btn-sm"
+						className="btn btn-neutral rounded-box btn-sm md:btn-md"
 					>
 						Trabajos Realizados
 					</Link>
 					<Link
 						href={`#${AnchorSectionNames.Promotion}`}
-						className="btn btn-neutral btn-active btn-sm"
+						className="btn btn-neutral rounded-box btn-sm md:btn-md"
 					>
 						Promociones
 					</Link>
 					<Link
 						href={`#${AnchorSectionNames.Accesories}`}
-						className="btn btn-neutral btn-active btn-sm"
+						className="btn btn-neutral rounded-box btn-sm md:btn-md"
 					>
 						Articulos a la venta
+					</Link>
+					<Link
+						href={`#${AnchorSectionNames.Accesories}`}
+						className="btn btn-neutral rounded-box btn-sm md:btn-md"
+					>
+						Dejar Reseña
 					</Link>
 				</nav>
 			</section>
