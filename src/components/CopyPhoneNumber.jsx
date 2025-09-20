@@ -21,7 +21,7 @@ export function CopyPhoneNumber({ phoneNumber }) {
 			data-tip="Copiar al portapapeles"
 			onClick={() => {
 				toast.addToast({
-					status: "info",
+					status: "success",
 					content: "Número copiado al portapapeles",
 				});
 				navigator.clipboard.writeText(phoneNumber.trim());
