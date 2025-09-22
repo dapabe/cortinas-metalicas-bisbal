@@ -168,7 +168,7 @@ export function ChooseUsSection() {
 function AsideCard({ title, icon: Icon, children }) {
 	return (
 		<div className={"card card-sm shadow-md h-max"}>
-			<Icon className="absolute size-6 lg:size-12 text-secondary -top-1.5 lg:-top-6 left-1/2 -translate-x-1/2" />
+			<Icon className="absolute size-6 lg:size-12 text-secondary -top-1.5 lg:-top-8 left-1/2 -translate-x-1/2" />
 			<div className="card-body max-w-xs text-center">
 				<h3 className="card-title">{title}</h3>
 				<p>{children}</p>
