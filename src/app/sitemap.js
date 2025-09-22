@@ -6,7 +6,10 @@ export default function sitemap() {
 			lastModified: new Date(),
 			changeFrequency: "yearly",
 			priority: 1,
-			images: ["https://www.cortinasbisbal.com.ar/work/cortina6.jpg"],
+			images: [
+				"https://www.cortinasbisbal.com.ar/work/cortina6.jpg",
+				"https://www.cortinasbisbal.com.ar/work/people2.jpg",
+			],
 		},
 	];
 }
