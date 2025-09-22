@@ -6,10 +6,10 @@ export function WhatsAppCTA() {
 		<Link
 			id="wsp"
 			aria-label="Link para charlar por WhatsApp"
-			href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metálicas%20Bisbal,%20me%20gustaría%20consultar"
+			href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metalicas%20Bisbal,%20me%20gustaría%20consultar"
 			target="_blank"
 			rel="noopener noreferrer"
-			className="fixed bottom-1.5 right-1.5 z-10 p-3 rounded-full shadow-xl tooltip tooltip-left bg-[#00E676]"
+			className="fixed bottom-1.5 right-1.5 z-10 p-3 rounded-full shadow-xl tooltip tooltip-left tooltip-success bg-[#00E676]"
 			data-tip="Contactanos por WhatsApp"
 		>
 			<Image

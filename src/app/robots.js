@@ -6,10 +6,10 @@ export default function robots() {
 			allow: "/",
 			disallow: [
 				"/api",
-				"/work/demo1.mp4",
-				"/work/demo5.mp4",
-				"/sign-up",
+				"/login",
 				"/backoffice",
+				"/Segoe UI Bold.ttf",
+				"/Segoe UI.ttf",
 			],
 		},
 		sitemap: "https://www.cortinasbisbal.com.ar/sitemap.xml",

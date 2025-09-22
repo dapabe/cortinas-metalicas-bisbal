@@ -6,7 +6,7 @@ import {
 	MegaphoneIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { WorkImagePaths } from "#const/workImagePaths";
+import { WorkImagePaths } from "#/constants/WorkImagePaths.data";
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
 
@@ -24,7 +24,7 @@ export function HeroSection() {
 			<div className="mb-2 rounded-md rounded-br-full p-4 pr-8 shadow-xl max-w-sm md:max-w-lg relative text-left">
 				<h1 className="text-5xl text-left font-bold flex flex-wrap gap-x-2">
 					<span className="indent-2">Cortinas</span>{" "}
-					<span className="indent-2">Metálicas</span>{" "}
+					<span className="indent-2">Metalicas</span>{" "}
 				</h1>
 
 				<div className="absolute -bottom-10 md:-bottom-8 left-0 py-2 px-4 rounded-b-xl bg-base-100 shadow-xl z-30">
@@ -55,6 +55,7 @@ export function HeroSection() {
 						quality={75}
 						width={People1.sizes[0]}
 						height={People1.sizes[1]}
+						priority
 					/>
 				</div>
 
@@ -67,6 +68,7 @@ export function HeroSection() {
 						quality={75}
 						width={People2.sizes[0]}
 						height={People2.sizes[1]}
+						priority
 					/>
 				</div>
 
@@ -78,7 +80,7 @@ export function HeroSection() {
 
 function InfoFloaters() {
 	return (
-		<div className="absolute -right-4 bottom-12 sm:bottom-full overflow-visible z-40">
+		<div className="absolute -right-4 bottom-12 sm:bottom-full overflow-visible text-md md:text-xl z-40">
 			<div className="stats shadow-lg bg-base-100 absolute right-4 -bottom-12 overflow-visible">
 				<div className="stat p-2">
 					<AcademicCapIcon className="size-12 text-primary absolute -top-6 right-0" />
@@ -112,11 +114,11 @@ function CallToAction() {
 		<div className="z-20 col-start-1 col-span-4 row-start-3  lg:mb-auto lg:row-start-2 xl:col-span-2 px-2 mt-auto sm:mt-0 lg:my-auto xl:mt-0">
 			<nav
 				aria-label="Links a secciones importantes del sitio web"
-				className="flex flex-col gap-2 max-w-fit"
+				className="flex flex-col gap-3 max-w-fit"
 			>
 				<Link
 					aria-label="Link para charlar por WhatsApp"
-					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metálicas%20Bisbal,%20me%20gustaría%20consultar"
+					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metalicas%20Bisbal,%20me%20gustaría%20consultar"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="btn btn-success font-bold rounded-box"
@@ -135,7 +137,7 @@ function CallToAction() {
 					href={`#${AnchorSectionNames.Promotion}`}
 					className="btn btn-secondary btn-outline font-bold w-max rounded-box"
 				>
-					Ver Promociones
+					Ver Promociones y Envios
 					<MegaphoneIcon className="size-6" />
 				</Link>
 			</nav>

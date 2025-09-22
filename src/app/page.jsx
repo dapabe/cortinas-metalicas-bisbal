@@ -1,12 +1,14 @@
-import { HeroSection } from "#/components/sections/Hero.section";
-import { PromotionSection } from "#/components/sections/Promotion.section";
+import { HeroSection } from "#/components/pages/home/sections/Hero/Hero.section";
+import { ServicePromotionSection } from "#/components/pages/home/sections/ServicePromotion/ServicePromotion.section";
 import { WhatsAppCTA } from "#/components/WhatsAppCTA";
-import { WorkGallerySection } from "#/components/sections/WorkGallery/WorkGallery.section";
-import { AskQuestionsSection } from "#/components/sections/AskQuestions.section";
-import { AccesorySection } from "#/components/sections/Accesory.section";
-import { Footer } from "#/components/sections/Footer";
-import { SendReviewSection } from "#/components/sections/SendReview.section";
+import { WorkGallerySection } from "#/components/pages/home/sections/WorkGallery/WorkGallery.section";
+import { ChooseUsSection } from "#/components/pages/home/sections/ChooseUs/ChooseUs.section";
+import { AccesorySection } from "#/components/pages/home/sections/Accesories/Accesory.section";
+import { Footer } from "#/components/pages/home/sections/Footer";
+import { SendReviewSection } from "#/components/pages/home/sections/SendReview.section";
 import { SelfAdvertise } from "#/components/other/SelfAdvertise";
+import { UserReviewSection } from "#/components/pages/home/sections/UserReviews/UserReview.section";
+import { FloatingNavbar } from "#/components/pages/home/FloatingNavbar";
 
 export default function Home() {
 	return (
@@ -14,9 +16,11 @@ export default function Home() {
 			<main className="flex-1 space-y-4 flex flex-col">
 				<SelfAdvertise />
 				<HeroSection />
-				<AskQuestionsSection />
+				<FloatingNavbar />
+				<ChooseUsSection />
 				<WorkGallerySection />
-				<PromotionSection />
+				<UserReviewSection />
+				<ServicePromotionSection />
 				<AccesorySection />
 				<SendReviewSection />
 				<WhatsAppCTA />

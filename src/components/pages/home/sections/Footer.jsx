@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { OpenMail } from "../OpenMail";
+import { OpenMail } from "../../../OpenMail";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 
 export function Footer() {
 	return (
 		<footer className="footer sm:footer-horizontal bg-neutral text-neutral-content p-10 overflow-x-scroll">
 			<aside className="max-w-xs md:mx-auto">
-				<h2 className="text-5xl font-bold">Cortinas Metálicas Bisbal</h2>
+				<h2 className="text-5xl font-bold">Cortinas Metalicas Bisbal</h2>
 				<p>
 					Copyright <span>©</span> 2025
 				</p>
@@ -30,7 +30,7 @@ export function Footer() {
 				<h3 className="footer-title">Contacto</h3>
 				<Link
 					aria-label="Link para charlar por WhatsApp"
-					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metálicas%20Bisbal,%20me%20gustaría%20consultar"
+					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metalicas%20Bisbal,%20me%20gustaría%20consultar"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="link link-hover inline-flex items-center gap-x-1"
@@ -38,7 +38,7 @@ export function Footer() {
 					WhatsApp
 					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
 				</Link>
-				<Link
+				{/* <Link
 					aria-label="Link hacia el post del servicio en Mercado Libre"
 					href="https://servicio.mercadolibre.com.ar/MLA-1506820187-cortinas-metalicas-bisbal-_JM"
 					target="_blank"
@@ -47,7 +47,7 @@ export function Footer() {
 				>
 					Mercado Libre
 					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
-				</Link>
+				</Link> */}
 			</nav>
 
 			<nav aria-label="Enlaces de correo electrónico">
