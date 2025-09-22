@@ -10,6 +10,7 @@ import { useApiStore } from "#/stores/api.store";
 export default function Page() {
 	const Api = useApiStore();
 	const router = useRouter();
+	const toast = useToastStore();
 
 	const methods = useForm({
 		defaultValues: {

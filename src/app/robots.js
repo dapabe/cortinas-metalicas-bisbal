@@ -4,7 +4,13 @@ export default function robots() {
 		rules: {
 			userAgent: "*",
 			allow: "/",
-			disallow: ["/api", "/sign-up", "/backoffice"],
+			disallow: [
+				"/api",
+				"/login",
+				"/backoffice",
+				"/Segoe UI Bold.ttf",
+				"/Segoe UI.ttf",
+			],
 		},
 		sitemap: "https://www.cortinasbisbal.com.ar/sitemap.xml",
 	};

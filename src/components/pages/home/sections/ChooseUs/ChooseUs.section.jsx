@@ -140,7 +140,6 @@ export function ChooseUsSection() {
 					</figure>
 				</div>
 			</div>
-			<SectionDivider />
 			<div className="card shadow-sm card-md">
 				<div className="card-body p-4">
 					<p className="text-center">

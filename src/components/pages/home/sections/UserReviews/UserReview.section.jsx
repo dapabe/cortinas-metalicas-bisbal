@@ -1,11 +1,29 @@
+import { SectionDivider } from "#/components/SectionDivider";
+import { SectionTitle } from "#/components/SectionTitle";
+import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 import { UserReviews } from "#/constants/UserReviews.data";
 
 export function UserReviewSection() {
 	return (
-		<section className="w-full relative flex flex-wrap">
-			{[...UserReviews.entries()].slice(0, 4).map((x, i) => (
-				<UserReview key={i} name={x[0]} message={x[1]} />
-			))}
+		<section className="container mx-auto p-4 flex flex-col gap-4 items-center">
+			<SectionTitle anchorSectionName={AnchorSectionNames.Review}>
+				<span className="underline decoration-primary">Reseñas</span> recientes
+			</SectionTitle>
+
+			<ul
+				className="carousel yes-scrollbar w-full gap-4 px-14 py-2"
+				aria-label="Reseñas de usuarios"
+			>
+				{[...UserReviews.entries()].slice(0, 4).map((x, i) => (
+					<li
+						key={i}
+						className="carousel-item rounded-box max-w-64 sm:max-w-paragraph"
+					>
+						<UserReview name={x[0]} message={x[1]} />
+					</li>
+				))}
+			</ul>
+			<SectionDivider />
 		</section>
 	);
 }
@@ -29,7 +47,7 @@ function UserReview(props) {
 				className="card-body max-w-sm flex"
 			>
 				<QuoteIcon />
-				<q>{props.message}</q>
+				<q className="text-md">{props.message}</q>
 				<footer className="font-semibold text-end mt-auto">
 					~ {props.name}
 				</footer>

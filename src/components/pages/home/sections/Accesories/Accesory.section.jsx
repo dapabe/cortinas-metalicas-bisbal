@@ -24,13 +24,6 @@ export function AccesorySection() {
 						{/* o consultar nuestro servicio en <Underlined>Mercado Libre</Underlined> */}
 						.
 					</p>
-					{/* <Link
-						href={`#${AnchorSectionNames.Accesories}`}
-						className="btn btn-primary btn-outline w-fit mx-auto"
-					>
-						Ver Accesorios{" "}
-						<Solid.ShoppingBagIcon className="size-6 inline-block" />
-					</Link> */}
 				</div>
 			</div>
 
