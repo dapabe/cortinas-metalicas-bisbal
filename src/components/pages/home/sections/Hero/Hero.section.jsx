@@ -55,7 +55,6 @@ export function HeroSection() {
 						quality={75}
 						width={People1.sizes[0]}
 						height={People1.sizes[1]}
-						priority
 					/>
 				</div>
 
@@ -68,7 +67,6 @@ export function HeroSection() {
 						quality={75}
 						width={People2.sizes[0]}
 						height={People2.sizes[1]}
-						priority
 					/>
 				</div>
 
