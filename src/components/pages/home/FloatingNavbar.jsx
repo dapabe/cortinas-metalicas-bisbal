@@ -60,7 +60,7 @@ export function FloatingNavbar() {
 						Articulos a la venta
 					</Link>
 					<Link
-						href={`#${AnchorSectionNames.Accesories}`}
+						href={`#${AnchorSectionNames.ReviewForm}`}
 						className="btn btn-neutral rounded-box btn-sm md:btn-md"
 					>
 						Dejar Reseña

@@ -55,6 +55,7 @@ export function HeroSection() {
 						quality={75}
 						width={People1.sizes[0]}
 						height={People1.sizes[1]}
+						priority
 					/>
 				</div>
 
@@ -67,6 +68,7 @@ export function HeroSection() {
 						quality={75}
 						width={People2.sizes[0]}
 						height={People2.sizes[1]}
+						priority
 					/>
 				</div>
 
@@ -78,7 +80,7 @@ export function HeroSection() {
 
 function InfoFloaters() {
 	return (
-		<div className="absolute -right-4 bottom-12 sm:bottom-full overflow-visible z-40">
+		<div className="absolute -right-4 bottom-12 sm:bottom-full overflow-visible text-md md:text-xl z-40">
 			<div className="stats shadow-lg bg-base-100 absolute right-4 -bottom-12 overflow-visible">
 				<div className="stat p-2">
 					<AcademicCapIcon className="size-12 text-primary absolute -top-6 right-0" />
@@ -112,7 +114,7 @@ function CallToAction() {
 		<div className="z-20 col-start-1 col-span-4 row-start-3  lg:mb-auto lg:row-start-2 xl:col-span-2 px-2 mt-auto sm:mt-0 lg:my-auto xl:mt-0">
 			<nav
 				aria-label="Links a secciones importantes del sitio web"
-				className="flex flex-col gap-2 max-w-fit"
+				className="flex flex-col gap-3 max-w-fit"
 			>
 				<Link
 					aria-label="Link para charlar por WhatsApp"
@@ -135,7 +137,7 @@ function CallToAction() {
 					href={`#${AnchorSectionNames.Promotion}`}
 					className="btn btn-secondary btn-outline font-bold w-max rounded-box"
 				>
-					Ver Promociones
+					Ver Promociones y Envios
 					<MegaphoneIcon className="size-6" />
 				</Link>
 			</nav>

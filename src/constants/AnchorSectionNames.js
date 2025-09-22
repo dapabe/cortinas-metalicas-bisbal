@@ -5,4 +5,5 @@ export const AnchorSectionNames = Object.freeze({
 	Promotion: "promociones",
 	Accesories: "accesorios-a-la-venta",
 	Review: "reseñas",
+	ReviewForm: "dejar-reseña",
 });

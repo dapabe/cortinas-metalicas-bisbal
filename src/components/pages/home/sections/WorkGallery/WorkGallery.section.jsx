@@ -42,7 +42,7 @@ export function WorkGallerySection() {
 									<ExclamationTriangleIcon className="size-6 text-primary" />
 									<span>
 										Urgencias las{" "}
-										<b className="text-primary-content bg-primary px-1 transition-transform skew-x-12">
+										<b className="text-primary-content bg-primary px-1">
 											24 horas
 										</b>
 									</span>

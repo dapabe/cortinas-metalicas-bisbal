@@ -20,7 +20,7 @@ export function AccesorySection() {
 					<p className="text-center text-wrap">
 						Si desea consultar por precios o por algún accesorio que no se
 						encuentre en venta, no dude en contactarnos por{" "}
-						<Underlined>WhatsApp</Underlined>, <Underlined>correo</Underlined>
+						<Bold>WhatsApp</Bold> o <Bold>correo electronico</Bold>
 						{/* o consultar nuestro servicio en <Underlined>Mercado Libre</Underlined> */}
 						.
 					</p>
@@ -43,6 +43,6 @@ export function AccesorySection() {
  * @component
  * @param {import("react").PropsWithChildren} props
  */
-function Underlined({ children }) {
-	return <span className="underline underline-offset-2"> {children}</span>;
+function Bold({ children }) {
+	return <b className="text-primary-content bg-primary px-1"> {children}</b>;
 }

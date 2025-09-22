@@ -3,14 +3,15 @@ import Link from "next/link";
 import * as Solid from "@heroicons/react/24/solid";
 import * as Out from "@heroicons/react/24/outline";
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
-import { Accordion } from "../../../../Accordion";
 import { SectionDivider } from "../../../../SectionDivider";
 import { WorkImagePaths } from "#/constants/WorkImagePaths.data";
 import Image from "next/image";
 
 export function ChooseUsSection() {
 	const Img18 = WorkImagePaths.get(18);
-	const Img21 = WorkImagePaths.get(21);
+	const Img2 = WorkImagePaths.get(2);
+	const Img17 = WorkImagePaths.get(20);
+
 	return (
 		<section
 			id={AnchorSectionNames.ChooseUs}
@@ -21,18 +22,16 @@ export function ChooseUsSection() {
 				¿<span className="underline decoration-primary">Por qué</span> nos
 				siguen eligiendo?
 			</SectionTitle>
-			{/* 
-			<div className="join join-vertical max-w-md lg:hidden">
-				<Accordion title="¿En que lugares solemos trabajar?">
-					Por toda la zona de <b>CABA</b> y <b>Provincia de Buenos Aires</b>
-				</Accordion>
-				<Accordion title="¿Hasta donde hacen envios?">
-					Hacemos envios a <b>todo el país</b>
-				</Accordion>
-			</div> */}
 
-			<div className="flex w-full gap-4 justify-center">
-				<aside className="w-max space-y-4 flex flex-col justify-around">
+			<div className="card shadow-sm card-md">
+				<p className="card-body p-4 max-w-paragraph mx-auto text-center">
+					Tenemos un extenso historial de trabajos realizados a lo largo de los
+					años, garantizamos buena calidad, precio y tiempo de respuesta.
+				</p>
+			</div>
+			{/* Desktop */}
+			<div className="hidden lg:flex gap-4">
+				<div className="flex w-max flex-col justify-around">
 					<AsideCard
 						title="¿En que lugares solemos trabajar?"
 						icon={Out.MapPinIcon}
@@ -43,53 +42,45 @@ export function ChooseUsSection() {
 					<AsideCard title="¿Horarios de atención?" icon={Out.ClockIcon}>
 						De lunes a viernes las <b>24 horas todos los días</b> del año.
 					</AsideCard>
-				</aside>
-
-				<figure className="space-y-2">
-					<div className="bg-base-300 shadow-md p-1.5 rounded-box max-w-60">
+				</div>
+				<figure className="bg-base-300 shadow-md p-1 rounded-box max-w-60 my-auto">
+					<Image
+						src={Img18.src}
+						loading="lazy"
+						width={Img18.sizes[0]}
+						height={Img18.sizes[1]}
+						alt="Un señor instalando una persiana automática en un local"
+						className="object-cover rounded-box"
+					/>
+				</figure>
+				<div className="space-y-2">
+					<figure className="bg-base-300 shadow-md p-1 rounded-box max-w-60">
 						<Image
-							src={Img18.src}
+							src={Img2.src}
 							loading="lazy"
-							width={Img18.sizes[0]}
-							height={Img18.sizes[1]}
-							alt="Mini"
+							width={Img2.sizes[0]}
+							height={Img2.sizes[1]}
+							alt="Figura de un señor trabajando en la instalación de una cortina metálica"
 							className="object-cover rounded-box"
 						/>
-					</div>
-				</figure>
-
-				{/* <figure className="space-y-2">
-					<div className="flex flex-col justify-center gap-4 2xl:flex-row">
-						<video
-							id="demo1"
-							src="/work/demo1.mp4"
-							controls
-							controlsList="nodownload noplaybackrate"
-							className="aspect-video 2xl:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs lg:max-w-md mx-auto"
-						>
-							Tu navegador no admite el elemento <code>video</code>
-						</video>
-						<video
-							id="demo1"
-							src="/work/demo5.mp4"
-							controls
-							controlsList="nodownload noplaybackrate"
-							className="aspect-video 2xl:aspect-square rounded-box bg-base-300 border-dashed shadow-md max-w-xs lg:max-w-md mx-auto"
-						>
-							Tu navegador no admite el elemento <code>video</code>
-						</video>
-					</div>
-					<figcaption className="text-center text-sm italic">
-						Demostraciones de Cortina Metálica ya instalada
-					</figcaption>
-				</figure> */}
-
-				<aside className="w-max space-y-4 flex flex-col justify-around">
+					</figure>
+					<figure className="bg-base-300 shadow-md p-1 rounded-box max-w-60">
+						<Image
+							src={Img17.src}
+							loading="lazy"
+							width={Img17.sizes[0]}
+							height={Img17.sizes[1]}
+							alt="Un señor contemplando dos cortinas metalicas gigantes"
+							className="object-cover rounded-box"
+						/>
+					</figure>
+				</div>
+				<div className="flex w-max flex-col justify-around">
 					<AsideCard
-						title="¿Hasta donde hacen envios?"
-						icon={Out.GlobeAmericasIcon}
+						title="¿En que lugares solemos trabajar?"
+						icon={Out.MapPinIcon}
 					>
-						Hacemos envios a <b>todo el país</b>
+						Por toda la zona de <b>CABA</b> y <b>Provincia de Buenos Aires</b>.
 					</AsideCard>
 
 					<AsideCard
@@ -99,21 +90,57 @@ export function ChooseUsSection() {
 						Son reforzadas y de calidad industrial de <b>primera categoria</b>,{" "}
 						<b>buen aislante</b> acústico y térmico.
 					</AsideCard>
-				</aside>
+				</div>
 			</div>
 
-			{/* <div className="join join-vertical max-w-md lg:hidden">
-				<Accordion title="¿Horarios de atención?">
-					De lunes a viernes las <b>24 horas</b> todos los días del año
-				</Accordion>
-				<Accordion title="¿Que calidad tienen las Cortinas Metalicas?">
-					Son reforzadas y de calidad industrial de primera categoria, buen
-					aislante acústico y térmico
-				</Accordion>
-			</div> */}
+			{/* Mobile */}
+			<div className="flex lg:hidden gap-2">
+				<div className="flex flex-col gap-4 place-items-end justify-around">
+					<figure className="bg-base-300 shadow-md p-1.5 rounded-box max-w-60">
+						<Image
+							src={Img18.src}
+							loading="lazy"
+							width={Img18.sizes[0]}
+							height={Img18.sizes[1]}
+							alt="Un señor instalando una persiana automática en un local"
+							className="object-cover rounded-box"
+						/>
+					</figure>
+					<AsideCard title="¿Hasta donde hacen envios?" icon={Out.GiftIcon}>
+						Hacemos envios a <b>todo el país</b>.
+					</AsideCard>
+					<AsideCard title="¿Horarios de atención?" icon={Out.ClockIcon}>
+						De lunes a viernes las <b>24 horas todos los días</b> del año.
+					</AsideCard>
+				</div>
+				<div className="flex flex-col gap-4 place-items-start justify-around">
+					<AsideCard
+						title="¿En que lugares solemos trabajar?"
+						icon={Out.MapPinIcon}
+					>
+						Por toda la zona de <b>CABA</b> y <b>Provincia de Buenos Aires</b>.
+					</AsideCard>
 
+					<AsideCard
+						title="¿Que calidad tienen las Cortinas Metalicas?"
+						icon={Out.LockClosedIcon}
+					>
+						Son reforzadas y de calidad industrial de <b>primera categoria</b>,{" "}
+						<b>buen aislante</b> acústico y térmico.
+					</AsideCard>
+					<figure className="bg-base-300 shadow-md p-1.5 rounded-box max-w-60">
+						<Image
+							src={Img2.src}
+							loading="lazy"
+							width={Img2.sizes[0]}
+							height={Img2.sizes[1]}
+							alt="Figura de un señor trabajando en la instalación de una cortina metálica"
+							className="object-cover rounded-box"
+						/>
+					</figure>
+				</div>
+			</div>
 			<SectionDivider />
-
 			<div className="card shadow-sm card-md">
 				<div className="card-body p-4">
 					<p className="text-center">
@@ -128,6 +155,7 @@ export function ChooseUsSection() {
 					</Link>
 				</div>
 			</div>
+			<SectionDivider />
 		</section>
 	);
 }
@@ -139,8 +167,8 @@ export function ChooseUsSection() {
  */
 function AsideCard({ title, icon: Icon, children }) {
 	return (
-		<div className="hidden lg:card card-lg shadow-md h-max">
-			<Icon className="absolute size-12 text-secondary -top-6 left-1/2 -translate-x-1/2" />
+		<div className={"card card-sm shadow-md h-max"}>
+			<Icon className="absolute size-6 lg:size-12 text-secondary -top-1.5 lg:-top-6 left-1/2 -translate-x-1/2" />
 			<div className="card-body max-w-xs text-center">
 				<h3 className="card-title">{title}</h3>
 				<p>{children}</p>
