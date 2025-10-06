@@ -18,18 +18,18 @@ export default function manifest() {
 				url: "/backoffice",
 				icons: [
 					{
-						src: "/favicon.ico",
+						src: "/favicon.png",
 						sizes: "any",
-						type: "image/x-icon",
+						type: "image/png",
 					},
 				],
 			},
 		],
 		icons: [
 			{
-				src: "/favicon.ico",
+				src: "/favicon.png",
 				sizes: "any",
-				type: "image/x-icon",
+				type: "image/png",
 			},
 		],
 	};
