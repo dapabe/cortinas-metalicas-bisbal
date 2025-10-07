@@ -10,7 +10,7 @@ import Image from "next/image";
 export function ChooseUsSection() {
 	const Img18 = WorkImagePaths.get(18);
 	const Img2 = WorkImagePaths.get(2);
-	const Img17 = WorkImagePaths.get(20);
+	const Img20 = WorkImagePaths.get(20);
 
 	return (
 		<section
@@ -66,10 +66,10 @@ export function ChooseUsSection() {
 					</figure>
 					<figure className="bg-base-300 shadow-md p-1 rounded-box max-w-60">
 						<Image
-							src={Img17.src}
+							src={Img20.src}
 							loading="lazy"
-							width={Img17.sizes[0]}
-							height={Img17.sizes[1]}
+							width={Img20.sizes[0]}
+							height={Img20.sizes[1]}
 							alt="Un señor contemplando dos cortinas metalicas gigantes"
 							className="object-cover rounded-box"
 						/>
@@ -77,10 +77,10 @@ export function ChooseUsSection() {
 				</div>
 				<div className="flex w-max flex-col justify-around">
 					<AsideCard
-						title="¿En que lugares solemos trabajar?"
-						icon={Out.MapPinIcon}
+						title="¿Hasta donde hacen envios?"
+						icon={Out.GiftIcon}
 					>
-						Por toda la zona de <b>CABA</b> y <b>Provincia de Buenos Aires</b>.
+						Hacemos envios a <b>todo el país</b>.
 					</AsideCard>
 
 					<AsideCard
@@ -169,7 +169,7 @@ function AsideCard({ title, icon: Icon, children }) {
 		<div className={"card card-sm shadow-md h-max"}>
 			<Icon className="absolute size-6 lg:size-12 text-secondary -top-1.5 lg:-top-8 left-1/2 -translate-x-1/2" />
 			<div className="card-body max-w-xs text-center">
-				<h3 className="card-title">{title}</h3>
+				<h3 className="card-title mx-auto">{title}</h3>
 				<p>{children}</p>
 			</div>
 		</div>

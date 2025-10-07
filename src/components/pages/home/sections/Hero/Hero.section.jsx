@@ -9,6 +9,7 @@ import Link from "next/link";
 import { WorkImagePaths } from "#/constants/WorkImagePaths.data";
 import { AnchorSectionNames } from "#/constants/AnchorSectionNames";
 import { ChatBubbleLeftEllipsisIcon } from "@heroicons/react/24/outline";
+import { SocialLinks } from "#/constants/SocialLinks";
 
 export function HeroSection() {
 	const People1 = WorkImagePaths.get(16);
@@ -78,8 +79,8 @@ export function HeroSection() {
 
 function InfoFloaters() {
 	return (
-		<div className="absolute -right-4 bottom-12 sm:bottom-full overflow-visible text-md md:text-xl z-40">
-			<div className="stats shadow-lg bg-base-100 absolute right-4 -bottom-12 overflow-visible">
+		<div className="absolute right-0 bottom-12 sm:bottom-full overflow-visible text-md md:text-xl lg:right-24 z-40">
+			<div className="stats shadow-lg bg-base-100 absolute right-4 -bottom-12 overflow-visible z-10">
 				<div className="stat p-2">
 					<AcademicCapIcon className="size-12 text-primary absolute -top-6 right-0" />
 					<span className="stat-value text-center">+15 años</span>
@@ -87,7 +88,7 @@ function InfoFloaters() {
 				</div>
 			</div>
 
-			<div className="stats shadow-2xl bg-base-100 absolute -bottom-28 right-4">
+			<div className="stats shadow-2xl bg-base-100 absolute -bottom-32 right-4 rounded-t-none">
 				<div className="stat p-2 *:inline-flex *:justify-between *:gap-x-2">
 					<p className="stat-desc">
 						Instalaciones
@@ -95,6 +96,10 @@ function InfoFloaters() {
 					</p>
 					<p className="stat-desc">
 						Reparaciones
+						<CheckIcon className="size-4 inline-block text-secondary" />
+					</p>
+					<p className="stat-desc">
+						Motorizaciones
 						<CheckIcon className="size-4 inline-block text-secondary" />
 					</p>
 					<p className="stat-desc">
@@ -116,7 +121,7 @@ function CallToAction() {
 			>
 				<Link
 					aria-label="Link para charlar por WhatsApp"
-					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metalicas%20Bisbal,%20me%20gustaría%20consultar"
+					href={SocialLinks.WhatsApp}
 					target="_blank"
 					rel="noopener noreferrer"
 					className="btn btn-success font-bold rounded-box"

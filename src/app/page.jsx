@@ -9,6 +9,7 @@ import { SendReviewSection } from "#/components/pages/home/sections/SendReview.s
 import { SelfAdvertise } from "#/components/other/SelfAdvertise";
 import { UserReviewSection } from "#/components/pages/home/sections/UserReviews/UserReview.section";
 import { FloatingNavbar } from "#/components/pages/home/FloatingNavbar";
+import { SocialSection } from "#/components/pages/home/sections/Socials/Social.section";
 
 export default function Home() {
 	return (
@@ -20,6 +21,7 @@ export default function Home() {
 				<ChooseUsSection />
 				<WorkGallerySection />
 				<UserReviewSection />
+				<SocialSection/>
 				<ServicePromotionSection />
 				<AccesorySection />
 				<SendReviewSection />

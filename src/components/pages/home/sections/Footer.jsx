@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { OpenMail } from "../../../OpenMail";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
+import { SocialLinks } from "#/constants/SocialLinks";
 
 export function Footer() {
 	return (
-		<footer className="footer sm:footer-horizontal bg-neutral text-neutral-content p-10 overflow-x-scroll">
+		<footer className="footer md:footer-horizontal bg-neutral text-neutral-content p-10">
 			<aside className="max-w-xs md:mx-auto">
 				<h2 className="text-5xl font-bold">Cortinas Metalicas Bisbal</h2>
 				<p>
@@ -13,15 +14,25 @@ export function Footer() {
 			</aside>
 
 			<nav aria-label="Enlaces sociales">
-				<h3 className="footer-title">Social</h3>
+				<h3 className="footer-title">Redes Sociales</h3>
 				<Link
-					aria-label="Link a la página oficial de Facebook"
-					href={"https://www.facebook.com/share/16namTSGSD/"}
+					aria-label="Enlace a la página oficial de Facebook"
+					href={SocialLinks.Facebook}
 					target="_blank"
 					rel="noopener noreferrer"
 					className="link link-hover inline-flex items-center gap-x-1"
 				>
 					Facebook
+					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
+				</Link>
+				<Link
+					aria-label="Enlace a la página oficial de Instagram"
+					href={SocialLinks.Instagram}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="link link-hover inline-flex items-center gap-x-1"
+				>
+					Instagram
 					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
 				</Link>
 			</nav>
@@ -30,7 +41,7 @@ export function Footer() {
 				<h3 className="footer-title">Contacto</h3>
 				<Link
 					aria-label="Link para charlar por WhatsApp"
-					href="https://wa.me/5491126942624?text=Hola%20Cortinas%20Metalicas%20Bisbal,%20me%20gustaría%20consultar"
+					href={SocialLinks.WhatsApp}
 					target="_blank"
 					rel="noopener noreferrer"
 					className="link link-hover inline-flex items-center gap-x-1"
