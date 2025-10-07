@@ -17,6 +17,10 @@ const nextConfig = {
 				pathname: "/accesory/**",
 				search: "",
 			},
+			{
+				pathname: "/*.png",
+				search: ""
+			}
 		],
 	},
 	// webpack: (config) => {

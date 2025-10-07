@@ -16,7 +16,7 @@ export function Footer() {
 			<nav aria-label="Enlaces sociales">
 				<h3 className="footer-title">Redes Sociales</h3>
 				<Link
-					aria-label="Link a la página oficial de Facebook"
+					aria-label="Enlace a la página oficial de Facebook"
 					href={SocialLinks.Facebook}
 					target="_blank"
 					rel="noopener noreferrer"
@@ -26,7 +26,7 @@ export function Footer() {
 					<ArrowTopRightOnSquareIcon className="size-3 inline-block" />
 				</Link>
 				<Link
-					aria-label="Link a la página oficial de Facebook"
+					aria-label="Enlace a la página oficial de Instagram"
 					href={SocialLinks.Instagram}
 					target="_blank"
 					rel="noopener noreferrer"

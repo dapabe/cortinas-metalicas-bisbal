@@ -77,10 +77,10 @@ export function ChooseUsSection() {
 				</div>
 				<div className="flex w-max flex-col justify-around">
 					<AsideCard
-						title="¿En que lugares solemos trabajar?"
-						icon={Out.MapPinIcon}
+						title="¿Hasta donde hacen envios?"
+						icon={Out.GiftIcon}
 					>
-						Por toda la zona de <b>CABA</b> y <b>Provincia de Buenos Aires</b>.
+						Hacemos envios a <b>todo el país</b>.
 					</AsideCard>
 
 					<AsideCard
