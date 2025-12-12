@@ -1,40 +1,40 @@
 {
-	"name": "cortinas-metalicas-bisbal",
-	"version": "0.1.0",
-	"private": true,
-	"scripts": {
-		"dev": "next dev --turbopack",
-		"build": "next build",
-		"start": "next start",
-		"lint": "next lint"
-	},
-	"dependencies": {
-		"@emailjs/nodejs": "5.0.2",
-		"@heroicons/react": "2.2.0",
-		"@hookform/resolvers": "5.1.1",
-		"@pdf-lib/fontkit": "1.1.1",
-		"@reactour/tour": "3.8.0",
-		"@vercel/analytics": "1.5.0",
-		"@vercel/speed-insights": "1.2.0",
-		"body-scroll-lock": "4.0.0-beta.0",
-		"iron-session": "8.0.4",
-		"next": "15.3.3",
-		"pdf-lib": "1.17.1",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
-		"react-hook-form": "7.58.1",
-		"react-masonry-css": "1.0.16",
-		"react-photo-view": "1.2.7",
-		"zod": "3.25.67",
-		"zustand": "5.0.5"
-	},
-	"devDependencies": {
-		"@eslint/eslintrc": "^3",
-		"@tailwindcss/postcss": "^4",
-		"daisyui": "^5.0.43",
-		"eslint": "^9",
-		"eslint-config-next": "15.3.3",
-		"tailwind-merge": "3.3.1",
-		"tailwindcss": "^4"
-	}
+  "name": "cortinas-metalicas-bisbal",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emailjs/nodejs": "5.0.2",
+    "@heroicons/react": "2.2.0",
+    "@hookform/resolvers": "5.1.1",
+    "@pdf-lib/fontkit": "1.1.1",
+    "@reactour/tour": "3.8.0",
+    "@vercel/analytics": "1.5.0",
+    "@vercel/speed-insights": "1.2.0",
+    "body-scroll-lock": "4.0.0-beta.0",
+    "iron-session": "8.0.4",
+    "next": "15.3.8",
+    "pdf-lib": "1.17.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "7.58.1",
+    "react-masonry-css": "1.0.16",
+    "react-photo-view": "1.2.7",
+    "zod": "3.25.67",
+    "zustand": "5.0.5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "daisyui": "^5.0.43",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.3",
+    "tailwind-merge": "3.3.1",
+    "tailwindcss": "^4"
+  }
 }
